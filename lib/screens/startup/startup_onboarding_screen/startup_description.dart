@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/database.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/stage_startup_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/stage_startup_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';

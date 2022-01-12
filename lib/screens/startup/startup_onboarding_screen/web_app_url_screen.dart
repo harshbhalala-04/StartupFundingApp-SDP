@@ -2,43 +2,27 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/controllers/web_app_controller.dart';
 import 'package:startupfunding/database/database.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/single_founder_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/linkedin_url_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
-class LinkedinUrlScreen extends StatefulWidget {
-  @override
-  State<LinkedinUrlScreen> createState() => _LinkedinUrlScreenState();
-}
+class WebAppUrlScreen extends StatelessWidget {
+  final TextEditingController _webAppUrl = TextEditingController();
 
-class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
-  final TextEditingController _linkedinUrlController = TextEditingController();
-
-  bool error = false;
+  final WebAppController webAppController = Get.put(WebAppController());
 
   checkData() {
-    print(_linkedinUrlController.text.substring(0, 21));
-    if (_linkedinUrlController.text == "") {
-      createAlertDialogue("Please enter your linkedin url.");
+    if (webAppController.isSelected.value) {
+      Get.to(LinkedinUrlScreen());
     } else {
-      if (_linkedinUrlController.text.length < 20) {
-        setState(() {
-          error = true;
-        });
-      } else if (_linkedinUrlController.text.substring(0, 21) ==
-          "https://linkedin.com/") {
-        print(_linkedinUrlController.text.substring(0, 21));
-        setState(() {
-          error = false;
-        });
-        Get.to(SingleFounderScreen());
-        DataBase().addLinkedinUrl(_linkedinUrlController.text);
+      if (_webAppUrl.text == "") {
+        createAlertDialogue("Please Enter Web/App url");
       } else {
-        setState(() {
-          error = true;
-        });
+        Get.to(LinkedinUrlScreen());
+        DataBase().addWebAppUrl(_webAppUrl.text);
       }
     }
   }
@@ -69,7 +53,7 @@ class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
               height: 10,
             ),
             Text(
-              'Enter linkedin URL',
+              'What is the website/app URL of your startup',
               style: TextStyle(
                   fontFamily: "Cabin",
                   fontSize: 20,
@@ -82,10 +66,10 @@ class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onChanged: (val) {
-                  _linkedinUrlController.text = val;
+                  _webAppUrl.text = val;
                 },
                 decoration: InputDecoration(
-                  hintText: "https:/linkedin.com/",
+                  hintText: "Enter Your Website/App URL...",
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 2),
@@ -93,22 +77,24 @@ class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
                 ),
               ),
             ),
-            error
-                ? Text(
-                    "Enter valid linkedin url",
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontFamily: "Cabin",
-                      fontSize: 16,
-                    ),
-                  )
-                : Container(),
+            Row(
+              children: [
+                Obx(() => Checkbox(
+                      value: webAppController.isSelected.value,
+                      onChanged: (val) {
+                        webAppController.toggoleSelection();
+                      },
+                    )),
+                Text(
+                  "Don't have a Website/App",
+                  style: TextStyle(fontFamily: "Cabin", fontSize: 18),
+                )
+              ],
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationButton(
-        checkData: checkData,
-      ),
+      bottomNavigationBar: BottomNavigationButton(checkData: checkData),
     );
   }
 }

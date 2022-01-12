@@ -2,28 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/controllers/web_app_controller.dart';
 import 'package:startupfunding/database/database.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/linkedin_url_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/reg_startup_name.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
-class WebAppUrlScreen extends StatelessWidget {
-  final TextEditingController _webAppUrl = TextEditingController();
-
-  final WebAppController webAppController = Get.put(WebAppController());
+class StartupNameScreen extends StatelessWidget {
+  final TextEditingController _startupNameController = TextEditingController();
 
   checkData() {
-    if (webAppController.isSelected.value) {
-      Get.to(LinkedinUrlScreen());
+    if (_startupNameController.text == "") {
+      createAlertDialogue("Please enter your startup name.");
     } else {
-      if (_webAppUrl.text == "") {
-        createAlertDialogue("Please Enter Web/App url");
-      } else {
-        Get.to(LinkedinUrlScreen());
-        DataBase().addWebAppUrl(_webAppUrl.text);
-      }
+      Get.to(RegStartupName());
+      DataBase().addStartupName(_startupNameController.text);
     }
   }
 
@@ -53,7 +46,7 @@ class WebAppUrlScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'What is the website/app URL of your startup',
+              'What is the name of your startup?',
               style: TextStyle(
                   fontFamily: "Cabin",
                   fontSize: 20,
@@ -66,10 +59,10 @@ class WebAppUrlScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onChanged: (val) {
-                  _webAppUrl.text = val;
+                  _startupNameController.text = val;
                 },
                 decoration: InputDecoration(
-                  hintText: "Enter Your Website/App URL...",
+                  hintText: "Enter Your Startup Name...",
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 2),
@@ -77,24 +70,12 @@ class WebAppUrlScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Obx(() => Checkbox(
-                      value: webAppController.isSelected.value,
-                      onChanged: (val) {
-                        webAppController.toggoleSelection();
-                      },
-                    )),
-                Text(
-                  "Don't have a Website/App",
-                  style: TextStyle(fontFamily: "Cabin", fontSize: 18),
-                )
-              ],
-            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationButton(checkData: checkData),
+      bottomNavigationBar: BottomNavigationButton(
+        checkData: checkData,
+      ),
     );
   }
 }

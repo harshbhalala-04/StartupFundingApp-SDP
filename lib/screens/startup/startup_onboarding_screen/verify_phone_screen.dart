@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp/flutter_otp.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/user_name_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/user_name_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 

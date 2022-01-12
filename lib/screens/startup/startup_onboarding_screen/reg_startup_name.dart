@@ -3,20 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/database.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/reg_startup_name.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/web_app_url_screen.dart';
 
-class StartupNameScreen extends StatelessWidget {
-  final TextEditingController _startupNameController = TextEditingController();
+
+
+class RegStartupName extends StatelessWidget {
+  final TextEditingController _regStartupNameController =
+      TextEditingController();
 
   checkData() {
-    if (_startupNameController.text == "") {
-      createAlertDialogue("Please enter your startup name.");
+    if (_regStartupNameController.text == "") {
+      createAlertDialogue("Please enter your registered startup name.");
     } else {
-      Get.to(RegStartupName());
-      DataBase().addStartupName(_startupNameController.text);
+      Get.to(WebAppUrlScreen());
+      DataBase().addRegStartupName(_regStartupNameController.text);
     }
   }
 
@@ -46,7 +49,7 @@ class StartupNameScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'What is the name of your startup?',
+              'What is the registered name of your startup?',
               style: TextStyle(
                   fontFamily: "Cabin",
                   fontSize: 20,
@@ -59,10 +62,10 @@ class StartupNameScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onChanged: (val) {
-                  _startupNameController.text = val;
+                  _regStartupNameController.text = val;
                 },
                 decoration: InputDecoration(
-                  hintText: "Enter Your Startup Name...",
+                  hintText: "Enter Registered Startup Name...",
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 2),

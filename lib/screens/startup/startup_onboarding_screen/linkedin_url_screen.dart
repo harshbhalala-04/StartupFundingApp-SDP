@@ -3,21 +3,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/database.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/pitch_deck_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/reg_startup_name.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/single_founder_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
-class StartupCityScreen extends StatelessWidget {
-  final TextEditingController _startupCityController = TextEditingController();
+class LinkedinUrlScreen extends StatefulWidget {
+  @override
+  State<LinkedinUrlScreen> createState() => _LinkedinUrlScreenState();
+}
+
+class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
+  final TextEditingController _linkedinUrlController = TextEditingController();
+
+  bool error = false;
 
   checkData() {
-    if (_startupCityController.text == "") {
-      createAlertDialogue("Please enter city name");
+    print(_linkedinUrlController.text.substring(0, 21));
+    if (_linkedinUrlController.text == "") {
+      createAlertDialogue("Please enter your linkedin url.");
     } else {
-      Get.to(PitchDeckScreen());
-      DataBase().addStartupCityName(_startupCityController.text);
+      if (_linkedinUrlController.text.length < 20) {
+        setState(() {
+          error = true;
+        });
+      } else if (_linkedinUrlController.text.substring(0, 21) ==
+          "https://linkedin.com/") {
+        print(_linkedinUrlController.text.substring(0, 21));
+        setState(() {
+          error = false;
+        });
+        Get.to(SingleFounderScreen());
+        DataBase().addLinkedinUrl(_linkedinUrlController.text);
+      } else {
+        setState(() {
+          error = true;
+        });
+      }
     }
   }
 
@@ -47,7 +69,7 @@ class StartupCityScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'In which city do you operate this startup?',
+              'Enter linkedin URL',
               style: TextStyle(
                   fontFamily: "Cabin",
                   fontSize: 20,
@@ -60,10 +82,10 @@ class StartupCityScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 onChanged: (val) {
-                  _startupCityController.text = val;
+                  _linkedinUrlController.text = val;
                 },
                 decoration: InputDecoration(
-                  hintText: "Enter City Name...",
+                  hintText: "https:/linkedin.com/",
                   border: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     borderSide: BorderSide(width: 2),
@@ -71,6 +93,16 @@ class StartupCityScreen extends StatelessWidget {
                 ),
               ),
             ),
+            error
+                ? Text(
+                    "Enter valid linkedin url",
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontFamily: "Cabin",
+                      fontSize: 16,
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

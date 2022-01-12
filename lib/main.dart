@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/screens/auth_screen.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/linkedin_url_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/pitch_deck_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/verify_phone_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/linkedin_url_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/pitch_deck_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 import 'controllers/bindings/authBinding.dart';
 import 'screens/start_screen.dart';
 

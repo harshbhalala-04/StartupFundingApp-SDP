@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen.dart/verify_phone_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
