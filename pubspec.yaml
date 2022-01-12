@@ -34,10 +34,20 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
+  get: ^4.6.1
+  firebase_auth: ^3.3.5
+  shared_preferences: ^2.0.11
+  cloud_firestore: ^3.1.6
+  flutter_otp: ^0.3.2
+  dropdown_search: ^2.0.1
+  file_picker: ^4.3.1
+  firebase_storage: ^10.2.5
+  firebase_storage_web: ^3.2.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -45,6 +55,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+  sms_maintained:
+    git:
+      url: https://github.com/andreimc/flutter_sms.git
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -58,9 +72,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/investors.jfif
+    - assets/startup.png
+    - assets/auth_bg.jfif
+    - assets/upload.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -73,11 +89,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Schyler
+      fonts:
+        - asset: assets/Cabin-Regular.ttf
+        - asset: assets/Cabin-Italic.ttf
+        - asset: assets/Cabin-Bold.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

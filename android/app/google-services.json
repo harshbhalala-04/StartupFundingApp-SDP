@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "835136382993",
+    "project_id": "startup-funding-aedad",
+    "storage_bucket": "startup-funding-aedad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835136382993:android:7b579c5a5fa3ce5f55e9b0",
+        "android_client_info": {
+          "package_name": "com.example.startupfunding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "835136382993-ok3ac482gpdurdgcbuoggf1npsfced4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaSXJAsv6tOHsctQkh7KThRJagyCJteCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "835136382993-ok3ac482gpdurdgcbuoggf1npsfced4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
