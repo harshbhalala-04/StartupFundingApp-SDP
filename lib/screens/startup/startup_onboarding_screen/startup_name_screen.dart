@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/reg_startup_name.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -16,7 +16,7 @@ class StartupNameScreen extends StatelessWidget {
       createAlertDialogue("Please enter your startup name.");
     } else {
       Get.to(RegStartupName());
-      DataBase().addStartupName(_startupNameController.text);
+      StartupDataBase().addStartupName(_startupNameController.text);
     }
   }
 

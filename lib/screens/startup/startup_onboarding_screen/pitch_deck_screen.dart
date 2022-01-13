@@ -6,7 +6,7 @@ import 'package:path/path.dart' as p;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -47,7 +47,7 @@ class _PitchDeckScreenState extends State<PitchDeckScreen> {
     final fileName = p.basename(file!.path);
     final destination = 'files/$fileName';
 
-    task = DataBase.uploadFile(destination, file!);
+    task = StartupDataBase.uploadFile(destination, file!);
     setState(() {});
 
     if (task == null) return;
@@ -57,7 +57,7 @@ class _PitchDeckScreenState extends State<PitchDeckScreen> {
 
     print('Download-Link: $urlDownload');
 
-    DataBase().addPitchDeckUrl(urlDownload);
+    StartupDataBase().addPitchDeckUrl(urlDownload);
 
     Get.to(StartupHomeScreen());
   }

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/web_app_controller.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/linkedin_url_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -22,7 +22,7 @@ class WebAppUrlScreen extends StatelessWidget {
         createAlertDialogue("Please Enter Web/App url");
       } else {
         Get.to(LinkedinUrlScreen());
-        DataBase().addWebAppUrl(_webAppUrl.text);
+        StartupDataBase().addWebAppUrl(_webAppUrl.text);
       }
     }
   }

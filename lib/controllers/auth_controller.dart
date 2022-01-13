@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
+import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_personal_info_screen.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 
@@ -89,7 +90,7 @@ class AuthController extends GetxController {
           'createdAt': Timestamp.now(),
           'uid': userCredential.user!.uid,
         });
-        Get.to(InvestorHomeScreen());
+        Get.to(InvestorPersonalInfoScreen());
       }
     } on FirebaseAuthException catch (error) {
       print(error);

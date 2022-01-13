@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/startup_category_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
@@ -24,10 +24,10 @@ class _SingleFounderScreenState extends State<SingleFounderScreen> {
 
   checkData() {
     if (reply == Selection.Yes) {
-      DataBase().addFounderInfo("Yes", secondFounderName.text,
+      StartupDataBase().addFounderInfo("Yes", secondFounderName.text,
           secondFounderEmail.text, secondFounderLinkedinUrl.text);
     } else {
-      DataBase().addFounderInfo("No", secondFounderName.text,
+      StartupDataBase().addFounderInfo("No", secondFounderName.text,
           secondFounderEmail.text, secondFounderLinkedinUrl.text);
     }
 

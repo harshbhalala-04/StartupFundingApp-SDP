@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
@@ -19,7 +19,7 @@ class RegStartupName extends StatelessWidget {
       createAlertDialogue("Please enter your registered startup name.");
     } else {
       Get.to(WebAppUrlScreen());
-      DataBase().addRegStartupName(_regStartupNameController.text);
+      StartupDataBase().addRegStartupName(_regStartupNameController.text);
     }
   }
 

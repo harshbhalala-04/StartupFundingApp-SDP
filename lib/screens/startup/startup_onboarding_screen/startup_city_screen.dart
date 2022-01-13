@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/pitch_deck_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/reg_startup_name.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
@@ -17,7 +17,7 @@ class StartupCityScreen extends StatelessWidget {
       createAlertDialogue("Please enter city name");
     } else {
       Get.to(PitchDeckScreen());
-      DataBase().addStartupCityName(_startupCityController.text);
+      StartupDataBase().addStartupCityName(_startupCityController.text);
     }
   }
 

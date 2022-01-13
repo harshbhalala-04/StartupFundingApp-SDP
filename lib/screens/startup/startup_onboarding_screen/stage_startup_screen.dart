@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/startup_city_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
@@ -25,15 +25,15 @@ class _StartupStageScreenState extends State<StartupStageScreen> {
 
   checkData() {
     if (reply == Stage.IdeaStage) {
-      DataBase().addStartupStage("Idea Stage");
+      StartupDataBase().addStartupStage("Idea Stage");
     } else if (reply == Stage.BetaLaunched) {
-      DataBase().addStartupStage("Beta Launched");
+      StartupDataBase().addStartupStage("Beta Launched");
     } else if (reply == Stage.EarlyTraction) {
-      DataBase().addStartupStage("Early Traction");
+      StartupDataBase().addStartupStage("Early Traction");
     } else if (reply == Stage.ProofOfConcept) {
-      DataBase().addStartupStage("Proof of Concept");
+      StartupDataBase().addStartupStage("Proof of Concept");
     } else if (reply == Stage.SteadyRevenues) {
-      DataBase().addStartupStage("Steady Revenues");
+      StartupDataBase().addStartupStage("Steady Revenues");
     }
     Get.to(StartupCityScreen());
   }

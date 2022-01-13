@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/database/database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/single_founder_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -34,7 +34,7 @@ class _LinkedinUrlScreenState extends State<LinkedinUrlScreen> {
           error = false;
         });
         Get.to(SingleFounderScreen());
-        DataBase().addLinkedinUrl(_linkedinUrlController.text);
+        StartupDataBase().addLinkedinUrl(_linkedinUrlController.text);
       } else {
         setState(() {
           error = true;
