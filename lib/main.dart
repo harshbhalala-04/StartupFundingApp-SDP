@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,24 +58,25 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Cabin",
           primarySwatch: Colors.indigo,
           primaryColor: const Color.fromRGBO(117, 104, 177, 1)),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, userSnapshot) {
-          if (userSnapshot.hasData) {
-            if (flag == 0) {
-              return CircularProgressIndicator();
-            } else {
-              if (userType == 'Startup') {
-                return StartupHomeScreen();
-              } else {
-                return InvestorHomeScreen();
-              }
-            }
-          } else {
-            return StartScreen();
-          }
-        },
-      ),
+          home: PitchDeckScreen(),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, userSnapshot) {
+      //     if (userSnapshot.hasData) {
+      //       if (flag == 0) {
+      //         return CircularProgressIndicator();
+      //       } else {
+      //         if (userType == 'Startup') {
+      //           return StartupHomeScreen();
+      //         } else {
+      //           return InvestorHomeScreen();
+      //         }
+      //       }
+      //     } else {
+      //       return StartScreen();
+      //     }
+      //   },
+      // ),
     );
   }
 }
