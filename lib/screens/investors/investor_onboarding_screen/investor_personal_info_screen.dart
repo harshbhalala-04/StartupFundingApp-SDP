@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:startupfunding/database/investor_database.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
 class InvestorPersonalInfoScreen extends StatefulWidget {
-  TextEditingController firstname = new TextEditingController();
-  TextEditingController lastname = new TextEditingController();
-  TextEditingController linkedinurl = new TextEditingController();
-  TextEditingController cityname = new TextEditingController();
-   InvestorPersonalInfoScreen({Key? key}) : super(key: key);
+  final User? user = FirebaseAuth.instance.currentUser;
+
+  InvestorPersonalInfoScreen({Key? key}) : super(key: key);
 
   @override
   _InvestorPersonalInfoScreenState createState() =>
@@ -17,13 +18,11 @@ class InvestorPersonalInfoScreen extends StatefulWidget {
 
 class _InvestorPersonalInfoScreenState
     extends State<InvestorPersonalInfoScreen> {
-  var firstname;
-
-  var lastname;
-
-  var linkedinurl;
-
-  var cityname;
+  TextEditingController firstName = new TextEditingController();
+  TextEditingController lastName = new TextEditingController();
+  TextEditingController linkedinUrl = new TextEditingController();
+  TextEditingController cityName = new TextEditingController();
+  final User? user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +37,10 @@ class _InvestorPersonalInfoScreenState
                 height: 100,
               ),
               Container(
+                  padding: EdgeInsets.only(left: 30),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "       Help us get to know you better!",
+                    "Help us get to know you better!",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )),
               SizedBox(
@@ -68,7 +68,7 @@ class _InvestorPersonalInfoScreenState
                     ),
                     new Expanded(
                         child: TextFormField(
-                      controller: firstname,
+                      controller: firstName,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -107,7 +107,7 @@ class _InvestorPersonalInfoScreenState
                     ),
                     new Expanded(
                         child: TextFormField(
-                      controller: lastname,
+                      controller: lastName,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -146,7 +146,7 @@ class _InvestorPersonalInfoScreenState
                     ),
                     new Expanded(
                         child: TextFormField(
-                      controller: linkedinurl,
+                      controller: linkedinUrl,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -185,7 +185,7 @@ class _InvestorPersonalInfoScreenState
                     ),
                     new Expanded(
                         child: TextFormField(
-                      controller: cityname,
+                      controller: cityName,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -211,23 +211,12 @@ class _InvestorPersonalInfoScreenState
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25)),
                   ),
-                  onPressed: () {
-                    Map<String, dynamic> data = {
-                      "First Name": firstname.text,
-                      "Last Name": lastname.text,
-                      "Likedin URL": linkedinurl.text,
-                      "City Name": cityname.text
-                    };
-                    Firestore.instance.collection("Investor Details").add(data);
-                  },
+                  onPressed: () => InvestorDataBase().addInvestorPersonalInfo(
+                      firstName, lastName, linkedinUrl, cityName,user),
                 ),
               ),
             ],
           ),
         ));
   }
-}
-
-class Firestore {
-  static var instance;
 }

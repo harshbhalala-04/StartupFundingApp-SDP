@@ -59,25 +59,26 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Cabin",
           primarySwatch: Colors.indigo,
           primaryColor: const Color.fromRGBO(117, 104, 177, 1)),
-          home: InvestorPersonalInfoScreen(),
-      // home: StreamBuilder(
-      //   stream: FirebaseAuth.instance.authStateChanges(),
-      //   builder: (context, userSnapshot) {
-      //     if (userSnapshot.hasData) {
-      //       if (flag == 0) {
-      //         return CircularProgressIndicator();
-      //       } else {
-      //         if (userType == 'Startup') {
-      //           return StartupHomeScreen();
-      //         } else {
-      //           return InvestorHomeScreen();
-      //         }
-      //       }
-      //     } else {
-      //       return StartScreen();
-      //     }
-      //   },
-      // ),
+         
+
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, userSnapshot) {
+          if (userSnapshot.hasData) {
+            if (flag == 0) {
+              return CircularProgressIndicator();
+            } else {
+              if (userType == 'Startup') {
+                return StartupHomeScreen();
+              } else {
+                return InvestorHomeScreen();
+              }
+            }
+          } else {
+            return StartScreen();
+          }
+        },
+      ),
     );
   }
 }
