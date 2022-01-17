@@ -107,7 +107,7 @@ class StartupCategoryScreen extends StatelessWidget {
               height: 20,
             ),
             Text(
-              'Whats Your Education?',
+              'Select category for your project',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,

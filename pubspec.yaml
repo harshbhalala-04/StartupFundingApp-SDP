@@ -43,6 +43,7 @@ dependencies:
   file_picker: ^4.3.1
   firebase_storage: ^10.2.5
   firebase_storage_web: ^3.2.6
+  multi_select_flutter: ^4.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -90,7 +91,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Schyler
+    - family: Cabin
       fonts:
         - asset: assets/Cabin-Regular.ttf
         - asset: assets/Cabin-Italic.ttf
