@@ -12,6 +12,8 @@ import 'package:startupfunding/screens/investors/investor_onboarding_screen/inve
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/linkedin_url_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/pitch_deck_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/single_founder_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/user_name_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 import 'controllers/bindings/authBinding.dart';
 import 'screens/start_screen.dart';
@@ -60,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Cabin",
           primarySwatch: Colors.indigo,
           primaryColor: const Color.fromRGBO(117, 104, 177, 1)),
-          // home: InvestorInvestmentProfileScreen(),
+          
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {

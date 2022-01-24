@@ -97,8 +97,6 @@ class StartupDataBase {
       final ref = FirebaseStorage.instance.ref(destination);
 
       return ref.putFile(file);
-
-      
     } on FirebaseException catch (e) {
       return null;
     }
@@ -119,5 +117,37 @@ class StartupDataBase {
         .collection("Startups")
         .doc(user!.uid)
         .update({"pitchDeckUrl": url});
+  }
+
+  uploadUserImages(File userImages, String folderTitle) async {
+    if (userImages.path != '') {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('startup_img')
+          .child(folderTitle)
+          .child(user!.uid + folderTitle + '.jpg');
+
+      await ref.putFile(userImages).whenComplete(() => print('Image Upload'));
+
+      String url = await ref.getDownloadURL();
+      print("This is uploaded img url: $url");
+      print("_________________________");
+      if (folderTitle == "startupLogo") {
+        await firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupLogoUrl": url});
+      } else if (folderTitle == "Founder") {
+        await firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"founderImg": url});
+      } else if (folderTitle == "Co-Founder") {
+        await firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"coFounderImg": url});
+      }
+    }
   }
 }

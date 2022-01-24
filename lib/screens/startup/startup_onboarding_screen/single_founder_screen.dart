@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, constant_identifier_names, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:startupfunding/controllers/startup_controllers/image_picker_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/startup_category_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -17,6 +20,8 @@ class SingleFounderScreen extends StatefulWidget {
 class _SingleFounderScreenState extends State<SingleFounderScreen> {
   Selection? reply;
   bool isVisible = false;
+  final ImagePickerController imagePickerController =
+      Get.put(ImagePickerController());
   final TextEditingController secondFounderName = TextEditingController();
   final TextEditingController secondFounderEmail = TextEditingController();
   final TextEditingController secondFounderLinkedinUrl =
@@ -24,9 +29,15 @@ class _SingleFounderScreenState extends State<SingleFounderScreen> {
 
   checkData() {
     if (reply == Selection.Yes) {
-      StartupDataBase().addFounderInfo("Yes", secondFounderName.text,
-          secondFounderEmail.text, secondFounderLinkedinUrl.text);
+      StartupDataBase().addFounderInfo(
+        "Yes",
+        secondFounderName.text,
+        secondFounderEmail.text,
+        secondFounderLinkedinUrl.text,
+      );
     } else {
+      StartupDataBase().uploadUserImages(
+          imagePickerController.choosenImage.value, "Co-Founder");
       StartupDataBase().addFounderInfo("No", secondFounderName.text,
           secondFounderEmail.text, secondFounderLinkedinUrl.text);
     }
@@ -178,6 +189,63 @@ class _SingleFounderScreenState extends State<SingleFounderScreen> {
                       ),
                     )
                   : Container(),
+              isVisible
+                  ? Text(
+                      "Upload Second founder Image",
+                      style: TextStyle(
+                          fontFamily: "Cabin",
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    )
+                  : Container(),
+              isVisible
+                  ? SizedBox(
+                      height: 20,
+                    )
+                  : Container(),
+              isVisible
+                  ? Center(
+                      child: Obx(
+                        () => imagePickerController.isLoading.value
+                            ? CircularProgressIndicator()
+                            : InkWell(
+                                onTap: () {
+                                  imagePickerController.pickImage(context);
+                                },
+                                child: Obx(() => imagePickerController
+                                        .isUploadedImage.value
+                                    ? Container(
+                                        child: Image(
+                                          width: 90,
+                                          height: 90,
+                                          image: FileImage(imagePickerController
+                                              .choosenImage.value),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Container(
+                                        width: 90,
+                                        height: 90,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color.fromRGBO(
+                                                    0, 0, 0, 0.25),
+                                                blurRadius: 5,
+                                              ),
+                                            ]),
+                                        child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor: Colors.white,
+                                          child: SvgPicture.asset(
+                                            'assets/add.svg',
+                                          ),
+                                        ))),
+                              ),
+                      ),
+                    )
+                  : Container()
             ],
           ),
         ),

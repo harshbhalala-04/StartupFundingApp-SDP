@@ -44,6 +44,10 @@ dependencies:
   firebase_storage: ^10.2.5
   firebase_storage_web: ^3.2.6
   multi_select_flutter: ^4.0.0
+  flutter_svg: ^1.0.3
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.0
+  cached_network_image: ^3.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,6 +82,13 @@ flutter:
     - assets/startup.png
     - assets/auth_bg.jfif
     - assets/upload.png
+    - assets/linkedin.svg
+    - assets/add.svg
+    - assets/chat.png
+    - assets/notification.png
+    - assets/startup-bottom.png
+    - assets/request.png
+    - assets/linkedin-color.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
