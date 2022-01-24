@@ -50,7 +50,6 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
       ),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-       
         currentIndex: currentIndex,
         onTap: onTappedBar,
         items: [
