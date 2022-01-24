@@ -48,6 +48,8 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       userType = sharedPreferences.getString('title');
+      print(userType);
+      print(")))))))))))))))))))))))))))");
       flag = 1;
     });
   }
@@ -62,15 +64,16 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Cabin",
           primarySwatch: Colors.indigo,
           primaryColor: const Color.fromRGBO(117, 104, 177, 1)),
-          
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {
+          print("Here val: $userType");
           if (userSnapshot.hasData) {
             if (flag == 0) {
               return CircularProgressIndicator();
             } else {
               if (userType == 'Startup') {
+                print("Here condition true");
                 return StartupHomeScreen();
               } else {
                 return InvestorHomeScreen();

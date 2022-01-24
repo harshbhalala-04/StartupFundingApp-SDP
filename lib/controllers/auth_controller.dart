@@ -109,12 +109,18 @@ class AuthController extends GetxController {
       userEmailId.value = email;
 
       loginState.value = true;
+       
 
       if (title == "Startup") {
         Get.to(StartupHomeScreen());
       } else {
         Get.to(InvestorHomeScreen());
       }
+
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      // sharedPreferences.setBool('answers', false);
+      sharedPreferences.setString('title', title);
     } on FirebaseAuthException catch (error) {
       print(error);
       Get.snackbar("Error Logging in ", error.message!,

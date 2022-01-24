@@ -36,9 +36,15 @@ class InvestorHomeScreen extends StatelessWidget {
           centerTitle: true,
           leading: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 20,
+            child: InkWell(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Get.off(StartScreen());
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.grey,
+                radius: 20,
+              ),
             ),
           ),
           backgroundColor: Colors.white,

@@ -6,9 +6,7 @@ import 'investor_detail_screen.dart';
 class StartupInvestorsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text("Investors"),
-        ),
+        
         body: Center(
             child: Container(
           width: 350,
