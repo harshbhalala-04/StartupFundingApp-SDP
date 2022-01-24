@@ -79,6 +79,13 @@ flutter:
     - assets/startup.png
     - assets/auth_bg.jfif
     - assets/upload.png
+    - assets/test_image.png
+    - assets/chat_icon.png
+    - assets/investor_detail_icon.png
+    - assets/connection_request_icon.png
+    - assets/notification_icon.png
+
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

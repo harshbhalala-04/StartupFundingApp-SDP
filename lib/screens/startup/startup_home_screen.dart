@@ -5,29 +5,91 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/screens/start_screen.dart';
+import 'package:startupfunding/screens/startup/startup_chat_screen.dart';
+import 'package:startupfunding/screens/startup/startup_investors_screen.dart';
+import 'package:startupfunding/screens/startup/startup_notification_screen.dart';
+import 'package:startupfunding/screens/startup/startup_request_screen.dart';
 
-class StartupHomeScreen extends StatelessWidget {
+class StartupHomeScreen extends StatefulWidget {
   const StartupHomeScreen({Key? key}) : super(key: key);
 
-  removeSharedPreferences() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    sharedPreferences.remove('title');
+  @override
+  State<StartupHomeScreen> createState() => _StartupHomeScreenState();
+}
+
+class _StartupHomeScreenState extends State<StartupHomeScreen> {
+  int currentIndex = 1;
+  final List<Widget> screens = [
+    StartupChatScreen(),
+    StartupInvestorsScreen(),
+    StartupRequestScreen(),
+    StartupNotificationScreen(),
+  ];
+  void onTappedBar(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: ElevatedButton(
-          child: Text("Log out"),
-          onPressed: () {
-            removeSharedPreferences();
-            Get.off(StartScreen());
-            FirebaseAuth.instance.signOut();
-          },
+      appBar: AppBar(
+        centerTitle: true,
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25.0),
+                child: Image.asset(
+                  "assets/test_image.png",
+                  fit: BoxFit.cover,
+                  height: 43,
+                ),
+              ),
+            ),
+            Container(
+                padding: const EdgeInsets.all(52.0),
+                child: Text('Startup Funding'))
+          ],
         ),
+      ),
+      body: screens[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: currentIndex,
+        onTap: onTappedBar,
+        items: [
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/chat_icon.png"),
+              color: Color(0xFF3A5A98),
+            ),
+            label: "Chat",
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/investor_detail_icon.png"),
+              color: Color(0xFF3A5A98),
+            ),
+            label: 'Investors',
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/connection_request_icon.png"),
+              color: Color(0xFF3A5A98),
+            ),
+            label: "Request",
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/notification_icon.png"),
+              color: Color(0xFF3A5A98),
+            ),
+            label: "Notification",
+          ),
+        ],
       ),
     );
   }
