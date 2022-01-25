@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:startupfunding/models/startup_model.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:open_file/open_file.dart';
 
 class StartupDetailScreen extends StatelessWidget {
   final StartupModel startup;
@@ -11,6 +17,39 @@ class StartupDetailScreen extends StatelessWidget {
 
   void _launchURL(String url) async {
     await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  }
+
+  ///Download file into private folder
+  Future<File?> downloadFile(String url, String fileName) async {
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File("${appStorage.path}/$fileName");
+
+    try {
+      final response = await Dio().get(
+        url,
+        options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0),
+      );
+
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future openFile({required String url, String? fileName}) async {
+    final name = fileName ?? url.split('/').last;
+    final file = await downloadFile(url, name);
+    if (file == null) return;
+
+    print("path: ${file.path}");
+    OpenFile.open(file.path);
   }
 
   @override
@@ -296,24 +335,35 @@ class StartupDetailScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.picture_as_pdf,
-                color: Theme.of(context).primaryColor,
-                size: 30,
-              ),
-              title: Text(
-                "Google Pitch Deck",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Cabin",
-                  fontSize: 20,
+            InkWell(
+              onTap: () {
+                Get.snackbar(
+                  "Wait",
+                  "File Downloading",
+                  snackPosition: SnackPosition.BOTTOM,
+                  colorText: Theme.of(context).primaryColor,
+                );
+                openFile(url: startup.pitchDeckUrl!);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.picture_as_pdf,
+                  color: Theme.of(context).primaryColor,
+                  size: 30,
                 ),
-              ),
-              trailing: Icon(
-                Icons.download,
-                size: 30,
-                color: Colors.black,
+                title: Text(
+                  "${startup.startupName} Pitch Deck",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: "Cabin",
+                    fontSize: 20,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.download,
+                  size: 30,
+                  color: Colors.black,
+                ),
               ),
             ),
             SizedBox(
