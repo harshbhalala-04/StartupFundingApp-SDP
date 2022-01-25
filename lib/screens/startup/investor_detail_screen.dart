@@ -1,16 +1,25 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/models/investor_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InvestorDetailScreen extends StatefulWidget {
-  const InvestorDetailScreen({Key? key}) : super(key: key);
+  final InvestorModel investor;
+
+  InvestorDetailScreen({required this.investor});
 
   @override
   _InvestorDetailScreenState createState() => _InvestorDetailScreenState();
 }
 
 class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
+  void _launchURL(String url) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,15 +46,14 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: CircleAvatar(
                   radius: 75.0,
-                  child: ClipRRect(
-                    child: Image.asset('assets/test_image.png'),
-                    borderRadius: BorderRadius.circular(75.0),
+                  backgroundImage: CachedNetworkImageProvider(
+                    widget.investor.investorImg!,
                   ),
                 ),
               ),
               Center(
                 child: Text(
-                  "Abc Def",
+                  "${widget.investor.firstName} ${widget.investor.lastName}",
                   style: TextStyle(
                     color: Colors.black,
                     fontFamily: "Cabin",
@@ -68,7 +76,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 height: 5,
               ),
               Center(
-                child: Text("City",
+                child: Text(widget.investor.cityName!,
                     style: TextStyle(
                       color: Colors.grey,
                       fontFamily: "Cabin",
@@ -80,7 +88,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Expanded(
                     child: Divider(
                       indent: 30.0,
@@ -89,8 +97,13 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                       color: Colors.black,
                     ),
                   ),
-                  Image(
-                    image: AssetImage("assets/linkedin-color.png"),
+                  InkWell(
+                    onTap: () {
+                      _launchURL(widget.investor.linkedinUrl!);
+                    },
+                    child: Image(
+                      image: AssetImage("assets/linkedin-color.png"),
+                    ),
                   ),
                   Expanded(
                     child: Divider(
@@ -102,7 +115,9 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -157,7 +172,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "About ABC",
+                        "About ${widget.investor.firstName}",
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).primaryColor),
@@ -181,7 +196,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Category Abc invests in",
+                        "Category ${widget.investor.firstName} invests in",
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).primaryColor),
@@ -302,7 +317,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Best Describe you",
+                            widget.investor.category!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -342,7 +357,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Yes",
+                            widget.investor.investedBefore!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -382,7 +397,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Co-invest with a group",
+                            widget.investor.preferInvestment!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -422,7 +437,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Yes",
+                            widget.investor.mentorStartup!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,

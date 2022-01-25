@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:startupfunding/controllers/investor_controllers/investor_home_controller.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/screens/investors/chat_screen.dart';
 import 'package:startupfunding/screens/investors/investor_feed_screen.dart';
 import 'package:startupfunding/screens/investors/notification_screen.dart';
@@ -19,8 +19,8 @@ class InvestorHomeScreen extends StatelessWidget {
     sharedPreferences.remove('title');
   }
 
-  final InvestorHomeController investorHomeController =
-      Get.put(InvestorHomeController());
+  final InvestorGlobalController investorGlobalController =
+      Get.put(InvestorGlobalController());
   final screens = [
     ChatScreen(),
     InvestorFeedScreen(),
@@ -40,6 +40,7 @@ class InvestorHomeScreen extends StatelessWidget {
               onTap: () {
                 FirebaseAuth.instance.signOut();
                 Get.off(StartScreen());
+                removeSharedPreferences();
               },
               child: CircleAvatar(
                 backgroundColor: Colors.grey,
@@ -50,16 +51,20 @@ class InvestorHomeScreen extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         body: Obx(
-          () => IndexedStack(
-            index: investorHomeController.currentIndex.value,
-            children: screens,
-          ),
+          () => investorGlobalController.isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : IndexedStack(
+                  index: investorGlobalController.currentIndex.value,
+                  children: screens,
+                ),
         ),
         bottomNavigationBar: Obx(
           () => BottomNavigationBar(
-            currentIndex: investorHomeController.currentIndex.value,
+            currentIndex: investorGlobalController.currentIndex.value,
             onTap: (index) {
-              investorHomeController.currentIndex.value = index;
+              investorGlobalController.currentIndex.value = index;
             },
             items: [
               BottomNavigationBarItem(

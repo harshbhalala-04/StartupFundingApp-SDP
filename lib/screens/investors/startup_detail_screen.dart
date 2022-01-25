@@ -1,9 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:startupfunding/models/startup_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StartupDetailScreen extends StatelessWidget {
-  const StartupDetailScreen({Key? key}) : super(key: key);
+  final StartupModel startup;
+  StartupDetailScreen({required this.startup});
+
+  void _launchURL(String url) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +31,13 @@ class StartupDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(
-              image: AssetImage("assets/startup.png"),
+              image: CachedNetworkImageProvider(startup.startupLogoUrl!),
               width: MediaQuery.of(context).size.width,
               height: 300,
             ),
             Center(
               child: Text(
-                "Google",
+                startup.startupName!,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontFamily: "Cabin",
@@ -47,7 +55,7 @@ class StartupDetailScreen extends StatelessWidget {
                     size: 20,
                   ),
                   Text(
-                    "Delhi, India",
+                    startup.startupCity!,
                     style: TextStyle(
                       fontFamily: "Cabin",
                       fontSize: 20,
@@ -130,7 +138,7 @@ class StartupDetailScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "Software category",
+                      startup.startupCategory!,
                       style: TextStyle(
                         fontFamily: "Cabin",
                         fontSize: 20,
@@ -144,18 +152,21 @@ class StartupDetailScreen extends StatelessWidget {
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment:
+                  startup.coFounderImg == "" || startup.coFounderImg == null
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.spaceAround,
               children: [
                 Column(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(
-                        "assets/startup.png",
+                      backgroundImage: CachedNetworkImageProvider(
+                        startup.founderImg!,
                       ),
                       radius: 50,
                     ),
                     Text(
-                      "Sandeep",
+                      startup.userName!,
                       style: TextStyle(
                           fontFamily: "Cabin",
                           fontSize: 20,
@@ -168,36 +179,50 @@ class StartupDetailScreen extends StatelessWidget {
                           fontSize: 20,
                           color: Colors.grey),
                     ),
-                    Image(
-                      image: AssetImage("assets/linkedin-color.png"),
+                    InkWell(
+                      onTap: () {
+                        _launchURL(startup.linkedinUrl!);
+                      },
+                      child: Image(
+                        image: AssetImage("assets/linkedin-color.png"),
+                      ),
                     ),
                   ],
                 ),
-                Column(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage("assets/startup.png"),
-                      radius: 50,
-                    ),
-                    Text(
-                      "Vipul",
-                      style: TextStyle(
-                          fontFamily: "Cabin",
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Co-Founder",
-                      style: TextStyle(
-                          fontFamily: "Cabin",
-                          fontSize: 20,
-                          color: Colors.grey),
-                    ),
-                    Image(
-                      image: AssetImage("assets/linkedin-color.png"),
-                    ),
-                  ],
-                ),
+                startup.coFounderImg == "" || startup.coFounderImg == null
+                    ? Container()
+                    : Column(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            backgroundImage: CachedNetworkImageProvider(
+                                startup.coFounderImg!),
+                            radius: 50,
+                          ),
+                          Text(
+                            startup.secondFounderName!,
+                            style: TextStyle(
+                                fontFamily: "Cabin",
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Co-Founder",
+                            style: TextStyle(
+                                fontFamily: "Cabin",
+                                fontSize: 20,
+                                color: Colors.grey),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _launchURL(startup.secondFounderLinkedinUrl!);
+                            },
+                            child: Image(
+                              image: AssetImage("assets/linkedin-color.png"),
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             ),
             SizedBox(
@@ -206,7 +231,7 @@ class StartupDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                "About Google",
+                "About ${startup.startupName}",
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontFamily: "Cabin",
@@ -217,7 +242,7 @@ class StartupDetailScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed eleifend velit, quis tristique orci. Ut mollis lacus ac dolor scelerisque consequat. Vivamus faucibus venenatis felis faucibus faucibus. Sed finibus vehicula arcu, vel tristique lorem rhoncus sed. Morbi at magna eu nisi semper finibus vitae eu libero. Aliquam sit amet mi aliquet, rhoncus purus at, eleifend purus. Suspendisse molestie eleifend tincidunt",
+                startup.startupDescription!,
                 style: TextStyle(fontFamily: "Cabin", fontSize: 18),
               ),
             ),
@@ -250,7 +275,7 @@ class StartupDetailScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "Beta Launched",
+                      startup.startupStage!,
                       style: TextStyle(
                         fontFamily: "Cabin",
                         fontSize: 20,
@@ -285,9 +310,15 @@ class StartupDetailScreen extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              trailing: Icon(Icons.download, size: 30,color: Colors.black,),
+              trailing: Icon(
+                Icons.download,
+                size: 30,
+                color: Colors.black,
+              ),
             ),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
           ],
         ),
       ),

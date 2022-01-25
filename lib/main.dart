@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/global.dart';
 import 'package:startupfunding/screens/auth_screen.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_investment_profile_screen.dart';
@@ -25,7 +26,7 @@ void main() async {
 }
 
 int flag = 0;
-String? userType;
+
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);

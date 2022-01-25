@@ -14,7 +14,7 @@ class InvestorDataBase {
     await firestore.collection("Investors").doc(user!.uid).update({
       "firstName": firstName,
       "lastName": lastName,
-      "likedinUrl": linkedinUrl,
+      "linkedinUrl": linkedinUrl,
       "cityName": cityName
     });
   }
