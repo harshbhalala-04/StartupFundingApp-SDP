@@ -66,7 +66,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("----------------------------------"),
+                    Text("---------------------"),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: InkWell(
@@ -75,7 +75,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                             fit: BoxFit.cover, height: 35, width: 35),
                       ),
                     ),
-                    Text("---------------------------------"),
+                    Text("--------------------"),
                   ],
                 ),
               ),
@@ -387,7 +387,6 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           ),
                         ),
                         child: Container(
-                         
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(

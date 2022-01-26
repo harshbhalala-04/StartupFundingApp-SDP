@@ -9,6 +9,7 @@ import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/startup_chat_screen.dart';
 import 'package:startupfunding/screens/startup/startup_investors_screen.dart';
 import 'package:startupfunding/screens/startup/startup_notification_screen.dart';
+import 'package:startupfunding/screens/startup/startup_profile_screen.dart';
 import 'package:startupfunding/screens/startup/startup_request_screen.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
@@ -20,12 +21,12 @@ class StartupHomeScreen extends StatefulWidget {
 }
 
 class _StartupHomeScreenState extends State<StartupHomeScreen> {
-  int currentIndex = 1;
+  int currentIndex = 0;
   final List<Widget> screens = [
-    StartupChatScreen(),
     StartupInvestorsScreen(),
     StartupRequestScreen(),
     StartupNotificationScreen(),
+    StartupProfileScreen(),
   ];
   void onTappedBar(int index) {
     setState(() {
@@ -40,27 +41,36 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
         title: OnBoardingAppBarTitle(),
         centerTitle: true,
         leading: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: CircleAvatar(
-            radius: 25,
-            backgroundImage: AssetImage("assets/test_image.png"),
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+              Get.off(StartScreen());
+            },
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: 20,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: IconButton(
+                onPressed: () {},
+                icon: ImageIcon(
+                  AssetImage("assets/chat_icon.png"),
+                  color: Theme.of(context).primaryColor,
+                ),
+              )),
+        ],
       ),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-       
         currentIndex: currentIndex,
         onTap: onTappedBar,
         items: [
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage("assets/chat_icon.png"),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            label: "Chat",
-          ),
           BottomNavigationBarItem(
             icon: ImageIcon(
               AssetImage("assets/investor_detail_icon.png"),
@@ -81,6 +91,13 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
             ),
             backgroundColor: Theme.of(context).primaryColor,
             label: "Notification",
+          ),
+          BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage("assets/test_image.png"),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
+            label: "Profile",
           ),
         ],
       ),

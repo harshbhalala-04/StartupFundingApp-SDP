@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class StartupChatScreen extends StatelessWidget {
+class StartupProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text("chat"),
+      child: Text("Profile"),
     );
   }
 }
