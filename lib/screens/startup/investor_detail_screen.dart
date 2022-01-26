@@ -1,37 +1,38 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/models/investor_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InvestorDetailScreen extends StatefulWidget {
-  const InvestorDetailScreen({Key? key}) : super(key: key);
+  final InvestorModel investor;
+
+  InvestorDetailScreen({required this.investor});
 
   @override
   _InvestorDetailScreenState createState() => _InvestorDetailScreenState();
 }
 
 class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
+  void _launchURL(String url) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: Image.asset(
-                  "assets/test_image.png",
-                  fit: BoxFit.cover,
-                  height: 43,
-                ),
-              ),
-            ),
-            Container(
-                padding: const EdgeInsets.all(52.0),
-                child: Text('Startup Funding'))
-          ],
+        iconTheme: IconThemeData(color: Colors.black),
+        title: Text(
+          "Investor Profile",
+          style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontFamily: "Cabin",
+              fontSize: 20),
         ),
       ),
       body: Center(
@@ -45,78 +46,124 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 padding: const EdgeInsets.all(20.0),
                 child: CircleAvatar(
                   radius: 75.0,
-                  child: ClipRRect(
-                    child: Image.asset('assets/test_image.png'),
-                    borderRadius: BorderRadius.circular(75.0),
+                  backgroundImage: CachedNetworkImageProvider(
+                    widget.investor.investorImg!,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    "ABC DEF \n CEO xyz \n City",
-                    style: TextStyle(fontSize: 20),
+              Center(
+                child: Text(
+                  "${widget.investor.firstName} ${widget.investor.lastName}",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: "Cabin",
+                    fontSize: 20,
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("---------------------"),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Image.asset('assets/test_image.png',
-                            fit: BoxFit.cover, height: 35, width: 35),
-                      ),
-                    ),
-                    Text("--------------------"),
-                  ],
-                ),
+              SizedBox(
+                height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: SizedBox(
-                        width: 85,
-                        child: ElevatedButton(
-                          child: Text("Skip"),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25)),
-                          ),
-                          onPressed: () {},
-                        ),
+              Center(
+                child: Text("CEO of XYZ",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontFamily: "Cabin",
+                      fontSize: 18,
+                    )),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Center(
+                child: Text(widget.investor.cityName!,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontFamily: "Cabin",
+                      fontSize: 18,
+                    )),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Divider(
+                      indent: 30.0,
+                      endIndent: 10.0,
+                      thickness: 1,
+                      color: Colors.black,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      _launchURL(widget.investor.linkedinUrl!);
+                    },
+                    child: Image(
+                      image: AssetImage("assets/linkedin-color.png"),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(
+                      indent: 10.0,
+                      endIndent: 30.0,
+                      thickness: 1,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
+                      child: Text(
+                        "Skip",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontFamily: "Cabin",
+                            fontSize: 18),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-                      child: SizedBox(
-                        width: 85,
-                        child: ElevatedButton(
-                          child: Text("Invite"),
-                          style: TextButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40),
                           ),
-                          onPressed: () {},
                         ),
+                        primary: Colors.white),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
+                      child: Text(
+                        "Invite",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Cabin",
+                            fontSize: 18),
                       ),
                     ),
-                  ],
-                ),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40),
+                          ),
+                        ),
+                        primary: Theme.of(context).primaryColor),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
@@ -125,7 +172,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "About ABC",
+                        "About ${widget.investor.firstName}",
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).primaryColor),
@@ -149,7 +196,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Category Abc invests in",
+                        "Category ${widget.investor.firstName} invests in",
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).primaryColor),
@@ -270,7 +317,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Best Describe you",
+                            widget.investor.category!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -310,7 +357,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Yes",
+                            widget.investor.investedBefore!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -350,7 +397,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Co-invest with a group",
+                            widget.investor.preferInvestment!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,
@@ -390,7 +437,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                           padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "Yes",
+                            widget.investor.mentorStartup!,
                             style: TextStyle(fontSize: 18),
                           ),
                           width: 300,

@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/global.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_personal_info_screen.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/user_name_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 
 class AuthController extends GetxController {
@@ -15,7 +17,7 @@ class AuthController extends GetxController {
   final isLogin = true.obs;
   final userEmailId = ''.obs;
   final loginState = false.obs;
-  
+
   final resetPass = false.obs;
   final isConfirm = false.obs;
 
@@ -68,6 +70,7 @@ class AuthController extends GetxController {
           await SharedPreferences.getInstance();
       sharedPreferences.setBool('answers', false);
       sharedPreferences.setString('title', title);
+      userType = title;
 
       if (title == "Startup") {
         await FirebaseFirestore.instance
@@ -79,7 +82,7 @@ class AuthController extends GetxController {
           'createdAt': Timestamp.now(),
           'uid': userCredential.user!.uid,
         });
-        Get.to(VerifyPhoneScreen(phoneNo: phoneNo!));
+        Get.to(UserNameScreen());
       } else {
         await FirebaseFirestore.instance
             .collection('Investors')
@@ -103,24 +106,24 @@ class AuthController extends GetxController {
   void login(String? email, String? password, String title) async {
     isLoading.toggle();
     try {
+      userType = title;
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      // sharedPreferences.setBool('answers', false);
+      sharedPreferences.setString('title', title);
+
       await _auth.signInWithEmailAndPassword(
           email: email!, password: password!);
 
       userEmailId.value = email;
 
       loginState.value = true;
-       
 
       if (title == "Startup") {
         Get.to(StartupHomeScreen());
       } else {
         Get.to(InvestorHomeScreen());
       }
-
-      final SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      // sharedPreferences.setBool('answers', false);
-      sharedPreferences.setString('title', title);
     } on FirebaseAuthException catch (error) {
       print(error);
       Get.snackbar("Error Logging in ", error.message!,

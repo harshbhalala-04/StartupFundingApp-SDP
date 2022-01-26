@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_label
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/startup_chat_screen.dart';
 import 'package:startupfunding/screens/startup/startup_investors_screen.dart';
@@ -21,18 +22,21 @@ class StartupHomeScreen extends StatefulWidget {
 }
 
 class _StartupHomeScreenState extends State<StartupHomeScreen> {
-  int currentIndex = 0;
   final List<Widget> screens = [
     StartupInvestorsScreen(),
     StartupRequestScreen(),
     StartupNotificationScreen(),
     StartupProfileScreen(),
   ];
-  void onTappedBar(int index) {
-    setState(() {
-      currentIndex = index;
-    });
+
+  removeSharedPreferences() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    sharedPreferences.remove('title');
   }
+
+  final StartupGlobalController startupGlobalController =
+      Get.put(StartupGlobalController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +45,17 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
         title: OnBoardingAppBarTitle(),
         centerTitle: true,
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: InkWell(
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              Get.off(StartScreen());
-            },
-            child: CircleAvatar(
-              backgroundColor: Colors.grey,
-              radius: 20,
-            ),
-          ),
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Get.off(StartScreen());
+                removeSharedPreferences();
+              },
+              child: CircleAvatar(
+                radius: 25,
+                backgroundImage: AssetImage("assets/test_image.png"),
+              )),
         ),
         backgroundColor: Colors.white,
         actions: [
@@ -66,10 +70,22 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
               )),
         ],
       ),
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: onTappedBar,
+     body: Obx(
+          () => startupGlobalController.isLoading.value
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : IndexedStack(
+                  index: startupGlobalController.currentIndex.value,
+                  children: screens,
+                ),
+        ),
+      bottomNavigationBar: Obx(() => 
+BottomNavigationBar(
+        currentIndex: Get.find<StartupGlobalController>().currentIndex.value,
+        onTap: (index) {
+          Get.find<StartupGlobalController>().currentIndex.value = index;
+        },
         items: [
           BottomNavigationBarItem(
             icon: ImageIcon(
@@ -101,6 +117,8 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
           ),
         ],
       ),
+      ),
     );
+    
   }
 }
