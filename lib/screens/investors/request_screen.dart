@@ -21,10 +21,22 @@ class RequestScreen extends StatelessWidget {
             unselectedLabelColor: Colors.black,
             tabs: [
               Tab(
-                child: Text("Recieved"),
+                child: Text("Recieved", 
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor, 
+                  fontFamily: "Cabin", 
+                  fontSize: 18, 
+                  ),
+                ),
               ),
               Tab(
-                child: Text("Sent"),
+                child: Text("Sent",
+                 style: TextStyle(
+                   color: Theme.of(context).primaryColor, 
+                   fontFamily: "Cabin", 
+                   fontSize: 18, 
+                   ),
+                ),
               ),
             ],
           ),

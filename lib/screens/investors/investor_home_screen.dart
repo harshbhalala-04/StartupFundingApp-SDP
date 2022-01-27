@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,14 +40,11 @@ class InvestorHomeScreen extends StatelessWidget {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              Get.off(StartScreen());
-              removeSharedPreferences();
-            },
+            onTap: () {},
             child: CircleAvatar(
-              backgroundColor: Colors.grey,
               radius: 20,
+              backgroundColor: Colors.grey,
+              backgroundImage: AssetImage("assets/appbar_logo.png"),
             ),
           ),
         ),
@@ -101,8 +99,23 @@ class InvestorHomeScreen extends StatelessWidget {
                 label: 'Notification',
                 backgroundColor: Theme.of(context).primaryColor),
             BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/test_image.png"),
+                icon: Obx(
+                  () => investorGlobalController.isLoading.value ||
+                          investorGlobalController
+                                  .currentInvestor.investorImg ==
+                              null
+                      ? CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.grey,
+                        )
+                      : CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: CachedNetworkImageProvider(
+                              Get.find<InvestorGlobalController>()
+                                  .currentInvestor
+                                  .investorImg!),
+                        ),
                 ),
                 label: 'Profile',
                 backgroundColor: Theme.of(context).primaryColor)
