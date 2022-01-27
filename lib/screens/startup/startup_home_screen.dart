@@ -100,7 +100,7 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
                       ),
                     ],
                   )
-                : TabBar(tabs: [],)),
+                : PreferredSize(child: Container(), preferredSize: Size.fromHeight(0))),
         body: Obx(
           () => startupGlobalController.isLoading.value
               ? Center(
