@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 class StartupRequestScreen extends StatelessWidget {
+  var n;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +12,17 @@ class StartupRequestScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Text("hihi"),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(30,0,0,0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Pending ($n)",
+                    style: TextStyle(
+                        fontSize: 20, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
