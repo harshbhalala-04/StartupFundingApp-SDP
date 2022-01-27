@@ -62,7 +62,9 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(StartupChatScreen());
+                },
                 icon: ImageIcon(
                   AssetImage("assets/chat_icon.png"),
                   color: Theme.of(context).primaryColor,
@@ -70,55 +72,54 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
               )),
         ],
       ),
-     body: Obx(
-          () => startupGlobalController.isLoading.value
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              : IndexedStack(
-                  index: startupGlobalController.currentIndex.value,
-                  children: screens,
-                ),
-        ),
-      bottomNavigationBar: Obx(() => 
-BottomNavigationBar(
-        currentIndex: Get.find<StartupGlobalController>().currentIndex.value,
-        onTap: (index) {
-          Get.find<StartupGlobalController>().currentIndex.value = index;
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage("assets/investor_detail_icon.png"),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            label: 'Investors',
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage("assets/connection_request_icon.png"),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            label: "Request",
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage("assets/notification_icon.png"),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            label: "Notification",
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(
-              AssetImage("assets/test_image.png"),
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            label: "Profile",
-          ),
-        ],
+      body: Obx(
+        () => startupGlobalController.isLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : IndexedStack(
+                index: startupGlobalController.currentIndex.value,
+                children: screens,
+              ),
       ),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: Get.find<StartupGlobalController>().currentIndex.value,
+          onTap: (index) {
+            Get.find<StartupGlobalController>().currentIndex.value = index;
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("assets/investor_detail_icon.png"),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              label: 'Investors',
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("assets/connection_request_icon.png"),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              label: "Request",
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("assets/notification_icon.png"),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              label: "Notification",
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(
+                AssetImage("assets/test_image.png"),
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+              label: "Profile",
+            ),
+          ],
+        ),
       ),
     );
-    
   }
 }

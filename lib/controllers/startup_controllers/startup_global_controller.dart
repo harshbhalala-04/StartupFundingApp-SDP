@@ -10,7 +10,7 @@ class StartupGlobalController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final isLoading = false.obs;
   StartupModel currentStartup = StartupModel();
-  final currentIndex = 1.obs;
+  final currentIndex = 0.obs;
 
   DocumentSnapshot? lastUser;
   bool isLoadingMoreData = false;
@@ -22,6 +22,10 @@ class StartupGlobalController extends GetxController {
   int fnTerminate = 0;
   final endUser = false.obs;
   final AutoScrollController scrollController = AutoScrollController();
+
+  removeInvestorFromFeed(String uid) {
+    investersList.removeWhere((element) => element.uid == uid);
+  }
 
   void scrollListener() {
     if (scrollController.offset >=

@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/database/investor_database.dart';
 import 'package:startupfunding/models/startup_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:open_file/open_file.dart';
@@ -108,7 +110,19 @@ class StartupDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                  
+                    // 1. Remove Startup from feed
+                    Get.find<InvestorGlobalController>()
+                        .removeStartupFromFeed(startup.uid!);
+
+                    // 2. Go back to prev route
+                    Get.back();
+
+                    // 3. Add startup to exclude list
+                    InvestorDataBase()
+                        .addStartupToExcludeList(startup.uid!, false);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10),
@@ -129,7 +143,38 @@ class StartupDetailScreen extends StatelessWidget {
                       primary: Colors.white),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                   
+                    // 1. Remove Startup from feed
+                    Get.find<InvestorGlobalController>()
+                        .removeStartupFromFeed(startup.uid!);
+
+                    // 2. Go back to prev route
+                    Get.back();
+
+                    // 3. Add startup to exclude list
+                    InvestorDataBase()
+                        .addStartupToExcludeList(startup.uid!, false);
+
+                    // 4. Add Startup to invite list
+                    InvestorDataBase().addStartupToInviteList(
+                        startup.uid!,
+                        startup.startupLogoUrl!,
+                        startup.startupName!,
+                        Get.find<InvestorGlobalController>()
+                            .currentInvestor
+                            .uid!,
+                        Get.find<InvestorGlobalController>()
+                            .currentInvestor
+                            .investorImg!,
+                        Get.find<InvestorGlobalController>()
+                                .currentInvestor
+                                .firstName! +
+                            " " +
+                            Get.find<InvestorGlobalController>()
+                                .currentInvestor
+                                .lastName!);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10),
