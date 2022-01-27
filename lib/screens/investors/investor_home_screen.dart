@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/screens/investors/chat_screen.dart';
 import 'package:startupfunding/screens/investors/investor_feed_screen.dart';
+import 'package:startupfunding/screens/investors/investor_profile_screen.dart';
 import 'package:startupfunding/screens/investors/notification_screen.dart';
 import 'package:startupfunding/screens/investors/request_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
@@ -22,10 +23,10 @@ class InvestorHomeScreen extends StatelessWidget {
   final InvestorGlobalController investorGlobalController =
       Get.put(InvestorGlobalController());
   final screens = [
-    ChatScreen(),
     InvestorFeedScreen(),
     RequestScreen(),
-    NotificationScreen()
+    NotificationScreen(),
+    InvestorProfileScreen(),
   ];
 
   @override
@@ -48,6 +49,19 @@ class InvestorHomeScreen extends StatelessWidget {
               ),
             ),
           ),
+          actions: [
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: IconButton(
+                  onPressed: () {
+                    Get.to(ChatScreen());
+                  },
+                  icon: ImageIcon(
+                    AssetImage("assets/chat_icon.png"),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )),
+          ],
           backgroundColor: Colors.white,
         ),
         body: Obx(
@@ -69,12 +83,6 @@ class InvestorHomeScreen extends StatelessWidget {
             items: [
               BottomNavigationBarItem(
                   icon: ImageIcon(
-                    AssetImage("assets/chat.png"),
-                  ),
-                  label: "Chats",
-                  backgroundColor: Theme.of(context).primaryColor),
-              BottomNavigationBarItem(
-                  icon: ImageIcon(
                     AssetImage("assets/startup-bottom.png"),
                   ),
                   label: 'Startups',
@@ -91,6 +99,13 @@ class InvestorHomeScreen extends StatelessWidget {
                   ),
                   label: 'Notification',
                   backgroundColor: Theme.of(context).primaryColor),
+              BottomNavigationBarItem(
+                  icon: ImageIcon(
+                    AssetImage("assets/test_image.png"),
+                    
+                  ),
+                  label: 'Profile',
+                  backgroundColor: Theme.of(context).primaryColor)
             ],
           ),
         ));

@@ -3,6 +3,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/models/investor_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -122,7 +124,13 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.find<StartupGlobalController>()
+                          .removeInvestorFromFeed(widget.investor.uid!);
+                      Get.back();
+                      StartupDataBase().addInvestorToExcludeList(
+                          widget.investor.uid!, false);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10),
@@ -143,7 +151,28 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                         primary: Colors.white),
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.find<StartupGlobalController>()
+                          .removeInvestorFromFeed(widget.investor.uid!);
+                      Get.back();
+                      StartupDataBase()
+                          .addInvestorToExcludeList(widget.investor.uid!, true);
+                      StartupDataBase().addInviteMethod(
+                          Get.find<StartupGlobalController>()
+                              .currentStartup
+                              .startupName!,
+                          Get.find<StartupGlobalController>()
+                              .currentStartup
+                              .startupLogoUrl!,
+                          Get.find<StartupGlobalController>()
+                              .currentStartup
+                              .uid!,
+                          widget.investor.firstName! +
+                              " " +
+                              widget.investor.lastName!,
+                          widget.investor.investorImg!,
+                          widget.investor.uid!);
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10),

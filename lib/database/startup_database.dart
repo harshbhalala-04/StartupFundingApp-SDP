@@ -150,4 +150,78 @@ class StartupDataBase {
       }
     }
   }
+
+  ///Add investor to exclude list
+  void addInvestorToExcludeList(String otherUid, bool fromInvite) async {
+    List<String> uidList = [];
+    uidList.add(otherUid);
+    try {
+      await firestore.collection("Startups").doc(user!.uid).update({
+        "excludeInvestor": FieldValue.arrayUnion(uidList),
+      });
+
+      if (fromInvite) {
+        List<String> myUidList = [];
+        myUidList.add(user!.uid);
+        await firestore
+            .collection("Investors")
+            .doc(otherUid)
+            .update({"excludeStartup": FieldValue.arrayUnion(myUidList)});
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ///Add Investor to request
+  void addInviteMethod(
+    String startupUserName,
+    String startupImgUrl,
+    String startupUid,
+    String investorName,
+    String investorImgUrl,
+    String investorUid,
+  ) async {
+    DateTime time = DateTime.now();
+
+    List<dynamic> myInviteList = [];
+    List<dynamic> otherInviteList = [];
+
+    await firestore.collection("Startups").doc(user!.uid).get().then((val) {
+      myInviteList = val.data()!['inviteList'];
+    });
+    await firestore.collection("Investors").doc(investorUid).get().then((val) {
+      otherInviteList = val.data()!['inviteList'];
+    });
+
+    List<Map<String, dynamic>> myMap = [
+      {
+        "time": time,
+        "recieved": "",
+        "sent": investorName,
+        "image": investorImgUrl,
+        "id": investorUid
+      }
+    ];
+
+    List<Map<String, dynamic>> otherMap = [
+      {
+        "time": time,
+        "recieved": startupUserName,
+        "sent": "",
+        "image": startupImgUrl,
+        "id": startupUid
+      }
+    ];
+
+    await firestore.collection("Startups").doc(user!.uid).update({
+      'inviteList': FieldValue.arrayUnion(myMap),
+      'latestConnectionSentUid': investorUid,
+    });
+
+    await firestore
+        .collection("Investors")
+        .doc(investorUid)
+        .update({'inviteList': FieldValue.arrayUnion(otherMap)});
+  }
 }

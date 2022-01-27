@@ -24,8 +24,12 @@ class InvestorGlobalController extends GetxController {
   int fnTerminate = 0;
   final endUser = false.obs;
   final AutoScrollController scrollController = AutoScrollController();
+  final currentIndex = 0.obs;
 
-  final currentIndex = 1.obs;
+  void removeStartupFromFeed(String uid) {
+    startupsList.removeWhere((element) => element.uid == uid);
+  }
+
   void scrollListener() {
     if (scrollController.offset >=
             scrollController.position.maxScrollExtent - 100 &&

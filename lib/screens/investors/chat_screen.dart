@@ -7,8 +7,18 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text("Chat"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Chat",
+          style: TextStyle(
+            fontFamily: "Cabin",
+            fontSize: 24,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ),
+      body: Text("Chat"),
     );
   }
 }
