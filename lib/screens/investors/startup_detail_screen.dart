@@ -144,7 +144,6 @@ class StartupDetailScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                   
                     // 1. Remove Startup from feed
                     Get.find<InvestorGlobalController>()
                         .removeStartupFromFeed(startup.uid!);
