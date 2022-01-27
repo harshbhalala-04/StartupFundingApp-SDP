@@ -44,66 +44,34 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-              title: OnBoardingAppBarTitle(),
-              centerTitle: true,
-              leading: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InkWell(
-                    onTap: () {
-                      FirebaseAuth.instance.signOut();
-                      Get.off(StartScreen());
-                      removeSharedPreferences();
-                    },
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage("assets/test_image.png"),
-                    )),
-              ),
-              backgroundColor: Colors.white,
-              actions: [
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: ImageIcon(
-                        AssetImage("assets/chat_icon.png"),
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    )),
-              ],
-              bottom:
-                  Get.find<StartupGlobalController>().currentIndex.value == 1
-                      ? TabBar(
-                          tabs: [
-                            Tab(
-                              child: Text(
-                                "Sent",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                  fontFamily: 'Cabin',
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                            Tab(
-                              child: Text(
-                                "Received",
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 20,
-                                  fontFamily: 'Cabin',
-                                  letterSpacing: 1,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : PreferredSize(
-                          child: Container(),
-                          preferredSize: Size.fromHeight(0))),
+            title: OnBoardingAppBarTitle(),
+            centerTitle: true,
+            leading: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InkWell(
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    Get.off(StartScreen());
+                    removeSharedPreferences();
+                  },
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: AssetImage("assets/test_image.png"),
+                  )),
+            ),
+            backgroundColor: Colors.white,
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: ImageIcon(
+                      AssetImage("assets/chat_icon.png"),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  )),
+            ],
+          ),
           body: Obx(
             () => startupGlobalController.isLoading.value
                 ? Center(
