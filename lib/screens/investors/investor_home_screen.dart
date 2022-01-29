@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_request_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/screens/investors/chat_screen.dart';
 import 'package:startupfunding/screens/investors/investor_feed_screen.dart';
 import 'package:startupfunding/screens/investors/investor_profile_screen.dart';
 import 'package:startupfunding/screens/investors/notification_screen.dart';
-import 'package:startupfunding/screens/investors/request_screen.dart';
+import 'package:startupfunding/screens/investors/investor_request_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
@@ -24,9 +25,11 @@ class InvestorHomeScreen extends StatelessWidget {
 
   final InvestorGlobalController investorGlobalController =
       Get.put(InvestorGlobalController());
+
+ 
   final screens = [
     InvestorFeedScreen(),
-    RequestScreen(),
+    InvestorRequestScreen(),
     NotificationScreen(),
     InvestorProfileScreen(),
   ];

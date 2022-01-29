@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_request_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/startup_chat_screen.dart';
 import 'package:startupfunding/screens/startup/startup_investors_screen.dart';
@@ -30,14 +31,9 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
     StartupProfileScreen(),
   ];
 
-  removeSharedPreferences() async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
-    sharedPreferences.remove('title');
-  }
-
+  
   final StartupGlobalController startupGlobalController =
-      Get.put(StartupGlobalController());
+      Get.put(StartupGlobalController()); 
 
   @override
   Widget build(BuildContext context) {

@@ -103,7 +103,7 @@ flutter:
     - assets/view_profile_icon.png
     - assets/edit_profile_icon.png
     - assets/view_balance_icon.png
-    - assets/share_icon.png
+    - assets/share_icon.png 
     - assets/logout_icon.png
 
     

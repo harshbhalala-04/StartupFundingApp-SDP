@@ -68,13 +68,13 @@ class _MyAppState extends State<MyApp> {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {
-          print("Here val: $userType");
+         
           if (userSnapshot.hasData) {
             if (flag == 0) {
               return CircularProgressIndicator();
             } else {
               if (userType == 'Startup') {
-                print("Here condition true");
+               
                 return StartupHomeScreen();
               } else {
                 return InvestorHomeScreen();

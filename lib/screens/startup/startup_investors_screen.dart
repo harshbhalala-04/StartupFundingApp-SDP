@@ -32,6 +32,7 @@ class StartupInvestorsScreen extends StatelessWidget {
                           Get.to(InvestorDetailScreen(
                             investor: Get.find<StartupGlobalController>()
                                 .investersList[index],
+                            fromReq: false,
                           ));
                         },
                         child: Column(

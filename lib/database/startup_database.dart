@@ -224,4 +224,73 @@ class StartupDataBase {
         .doc(investorUid)
         .update({'inviteList': FieldValue.arrayUnion(otherMap)});
   }
+
+  ///Remove Investor from pending list
+  void removeInvestorFromPending(String investorUid) async {
+    try {
+      await firestore.collection("Startups").doc(user!.uid).get().then((value) {
+        Map<String, dynamic> myMap = value.data()!;
+        List<dynamic> inviteList = myMap['inviteList'];
+        inviteList.removeWhere((element) => element['id'] == investorUid);
+
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"inviteList": inviteList});
+      });
+
+      await firestore
+          .collection("Investors")
+          .doc(investorUid)
+          .get()
+          .then((value) {
+        Map<String, dynamic> myMap = value.data()!;
+        List<dynamic> inviteList = myMap['inviteList'];
+        inviteList.removeWhere((element) => element['id'] == user!.uid);
+
+        firestore
+            .collection("Investors")
+            .doc(investorUid)
+            .update({"inviteList": inviteList});
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ///Accept offer of investor
+  void acceptOffer(String startupName, String startupLogo, String investorName,
+      String investorImg, String investorUid) async {
+    DateTime time = DateTime.now();
+
+    List<Map<String, dynamic>> myMatchMap = [
+      {
+        "friendname": investorName,
+        "friendImage": investorImg,
+        "friendUid": investorUid
+      }
+    ];
+
+    List<Map<String, dynamic>> otherMatchMap = [
+      {
+        "friendname": startupName,
+        "friendImage": startupLogo,
+        "friendUid": user!.uid
+      }
+    ];
+
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({'matchUsers': FieldValue.arrayUnion(myMatchMap)});
+
+      firestore
+          .collection("Investors")
+          .doc(investorUid)
+          .update({'matchUsers': FieldValue.arrayUnion(otherMatchMap)});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

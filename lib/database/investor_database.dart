@@ -70,7 +70,7 @@ class InvestorDataBase {
       if (fromInvite) {
         List<String> investorUidList = [];
         investorUidList.add(user!.uid);
-        await firestore.collection("Startups").doc(user!.uid).update(
+        await firestore.collection("Startups").doc(startupUid).update(
             {"excludeInvestor": FieldValue.arrayUnion(investorUidList)});
       }
     } catch (e) {
@@ -132,6 +132,75 @@ class InvestorDataBase {
     } catch (e) {
       print("Error info");
       print(e);
+    }
+  }
+
+   ///Remove Startup from pending list
+  void removeStartupFromPending(String startupUid) async {
+    try {
+      await firestore.collection("Investors").doc(user!.uid).get().then((value) {
+        Map<String, dynamic> myMap = value.data()!;
+        List<dynamic> inviteList = myMap['inviteList'];
+        inviteList.removeWhere((element) => element['id'] == startupUid);
+
+        firestore
+            .collection("Investors")
+            .doc(user!.uid)
+            .update({"inviteList": inviteList});
+      });
+
+      await firestore
+          .collection("Startups")
+          .doc(startupUid)
+          .get()
+          .then((value) {
+        Map<String, dynamic> myMap = value.data()!;
+        List<dynamic> inviteList = myMap['inviteList'];
+        inviteList.removeWhere((element) => element['id'] == user!.uid);
+
+        firestore
+            .collection("Startups")
+            .doc(startupUid)
+            .update({"inviteList": inviteList});
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  ///Accept offer of Startup
+  void acceptOffer(String investorName, String investorImg, String startupName,
+      String startupLogo, String startupUid) async {
+    DateTime time = DateTime.now();
+
+    List<Map<String, dynamic>> myMatchMap = [
+      {
+        "friendname": startupName,
+        "friendImage": startupLogo,
+        "friendUid": startupUid
+      }
+    ];
+
+    List<Map<String, dynamic>> otherMatchMap = [
+      {
+        "friendname": investorName,
+        "friendImage": investorImg,
+        "friendUid": user!.uid
+      }
+    ];
+
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({'matchUsers': FieldValue.arrayUnion(myMatchMap)});
+
+      firestore
+          .collection("Startups")
+          .doc(startupUid)
+          .update({'matchUsers': FieldValue.arrayUnion(otherMatchMap)});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }
