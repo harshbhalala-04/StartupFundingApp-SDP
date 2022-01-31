@@ -20,7 +20,9 @@ class StartupDetailScreen extends StatefulWidget {
   StartupModel? startup;
   String? uid;
   final bool fromReq;
-  StartupDetailScreen({this.startup, this.uid, required this.fromReq});
+  var viewProfile;
+  StartupDetailScreen(
+      {this.startup, this.uid, required this.fromReq, bool? viewProfile});
 
   @override
   State<StartupDetailScreen> createState() => _StartupDetailScreenState();
@@ -150,139 +152,162 @@ class _StartupDetailScreenState extends State<StartupDetailScreen> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          if (widget.fromReq) {
-                            final InvestorRequestController
-                                investorRequestController =
-                                Get.put(InvestorRequestController());
-                            // 1. Remove from pending list
-                            investorRequestController
-                                .removeRecievedStartup(widget.startup!.uid!);
+                  widget.viewProfile
+                      ? Container()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (widget.fromReq) {
+                                  final InvestorRequestController
+                                      investorRequestController =
+                                      Get.put(InvestorRequestController());
+                                  // 1. Remove from pending list
+                                  investorRequestController
+                                      .removeRecievedStartup(
+                                          widget.startup!.uid!);
 
-                            // 2. Back to pending page
-                            Get.back();
+                                  // 2. Back to pending page
+                                  Get.back();
 
-                            // 3. Remove from database
-                            InvestorDataBase()
-                                .removeStartupFromPending(widget.startup!.uid!);
-                          } else {
-                            // 1. Remove Startup from feed
-                            Get.find<InvestorGlobalController>()
-                                .removeStartupFromFeed(widget.startup!.uid!);
+                                  // 3. Remove from database
+                                  InvestorDataBase().removeStartupFromPending(
+                                      widget.startup!.uid!);
+                                } else {
+                                  // 1. Remove Startup from feed
+                                  Get.find<InvestorGlobalController>()
+                                      .removeStartupFromFeed(
+                                          widget.startup!.uid!);
 
-                            // 2. Go back to prev route
-                            Get.back();
+                                  // 2. Go back to prev route
+                                  Get.back();
 
-                            // 3. Add startup to exclude list
-                            InvestorDataBase().addStartupToExcludeList(
-                                widget.startup!.uid!, false);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10),
-                          child: Text(
-                            widget.fromReq ? "Reject" : "Skip",
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontFamily: "Cabin",
-                                fontSize: 18),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40),
-                              ),
-                            ),
-                            primary: Colors.white),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (widget.fromReq) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return ConfirmDialogue(
-                                  userType: "Investor",
-                                  startupLogoUrl:
-                                      widget.startup!.startupLogoUrl!,
-                                  startupName: widget.startup!.startupName,
-                                  startupUid: widget.startup!.uid,
-                                );
+                                  // 3. Add startup to exclude list
+                                  InvestorDataBase().addStartupToExcludeList(
+                                      widget.startup!.uid!, false);
+                                }
                               },
-                            );
-                           
-                          } else {
-                            // 1. Remove Startup from feed
-                            Get.find<InvestorGlobalController>()
-                                .removeStartupFromFeed(widget.startup!.uid!);
-
-                            // 2. Go back to prev route
-                            Get.back();
-
-                            Timestamp time = Timestamp.now();
-                            Get.find<InvestorRequestController>()
-                                .inviteSentList
-                                .add({
-                              "sent": widget.startup!.startupName,
-                              "id": widget.startup!.uid,
-                              "image": widget.startup!.startupLogoUrl,
-                              "time": time,
-                            });
-                            Get.find<InvestorRequestController>()
-                                .inviteSentList
-                                .sort((a, b) => b["time"].compareTo(a["time"]));
-
-                            // 3. Add startup to exclude list
-                            InvestorDataBase().addStartupToExcludeList(
-                                widget.startup!.uid!, true);
-
-                            // 4. Add Startup to invite list
-                            InvestorDataBase().addStartupToInviteList(
-                                widget.startup!.uid!,
-                                widget.startup!.startupLogoUrl!,
-                                widget.startup!.startupName!,
-                                Get.find<InvestorGlobalController>()
-                                    .currentInvestor
-                                    .uid!,
-                                Get.find<InvestorGlobalController>()
-                                    .currentInvestor
-                                    .investorImg!,
-                                Get.find<InvestorGlobalController>()
-                                        .currentInvestor
-                                        .firstName! +
-                                    " " +
-                                    Get.find<InvestorGlobalController>()
-                                        .currentInvestor
-                                        .lastName!);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10),
-                          child: Text(
-                            widget.fromReq ? "Accept" : "Invite",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Cabin",
-                                fontSize: 18),
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(40),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 10),
+                                child: Text(
+                                  widget.fromReq ? "Reject" : "Skip",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontFamily: "Cabin",
+                                      fontSize: 18),
+                                ),
                               ),
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(40),
+                                    ),
+                                  ),
+                                  primary: Colors.white),
                             ),
-                            primary: Theme.of(context).primaryColor),
-                      ),
-                    ],
-                  ),
+                            ElevatedButton(
+                              onPressed: () {
+                                if (widget.fromReq) {
+                                  final InvestorRequestController
+                                      investorRequestController =
+                                      Get.put(InvestorRequestController());
+                                  // 1. Remove from pending list
+                                  investorRequestController
+                                      .removeRecievedStartup(
+                                          widget.startup!.uid!);
+
+                                  // 2. Back to pending page
+                                  Get.back();
+
+                                  // 3. Remove from database
+                                  InvestorDataBase().removeStartupFromPending(
+                                      widget.startup!.uid!);
+
+                                  // 4. Add User to MatchUsers
+                                  InvestorDataBase().acceptOffer(
+                                      Get.find<InvestorGlobalController>()
+                                              .currentInvestor
+                                              .firstName! +
+                                          " " +
+                                          Get.find<InvestorGlobalController>()
+                                              .currentInvestor
+                                              .lastName!,
+                                      Get.find<InvestorGlobalController>()
+                                          .currentInvestor
+                                          .investorImg!,
+                                      widget.startup!.startupName!,
+                                      widget.startup!.startupLogoUrl!,
+                                      widget.startup!.uid!);
+                                } else {
+                                  // 1. Remove Startup from feed
+                                  Get.find<InvestorGlobalController>()
+                                      .removeStartupFromFeed(
+                                          widget.startup!.uid!);
+
+                                  // 2. Go back to prev route
+                                  Get.back();
+
+                                  Timestamp time = Timestamp.now();
+                                  Get.find<InvestorRequestController>()
+                                      .inviteSentList
+                                      .add({
+                                    "sent": widget.startup!.startupName,
+                                    "id": widget.startup!.uid,
+                                    "image": widget.startup!.startupLogoUrl,
+                                    "time": time,
+                                  });
+                                  Get.find<InvestorRequestController>()
+                                      .inviteSentList
+                                      .sort((a, b) =>
+                                          b["time"].compareTo(a["time"]));
+
+                                  // 3. Add startup to exclude list
+                                  InvestorDataBase().addStartupToExcludeList(
+                                      widget.startup!.uid!, true);
+
+                                  // 4. Add Startup to invite list
+                                  InvestorDataBase().addStartupToInviteList(
+                                      widget.startup!.uid!,
+                                      widget.startup!.startupLogoUrl!,
+                                      widget.startup!.startupName!,
+                                      Get.find<InvestorGlobalController>()
+                                          .currentInvestor
+                                          .uid!,
+                                      Get.find<InvestorGlobalController>()
+                                          .currentInvestor
+                                          .investorImg!,
+                                      Get.find<InvestorGlobalController>()
+                                              .currentInvestor
+                                              .firstName! +
+                                          " " +
+                                          Get.find<InvestorGlobalController>()
+                                              .currentInvestor
+                                              .lastName!);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 10),
+                                child: Text(
+                                  widget.fromReq ? "Accept" : "Invite",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: "Cabin",
+                                      fontSize: 18),
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(40),
+                                    ),
+                                  ),
+                                  primary: Theme.of(context).primaryColor),
+                            ),
+                          ],
+                        ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
