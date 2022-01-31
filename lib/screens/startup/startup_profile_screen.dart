@@ -4,7 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/screens/investors/startup_detail_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
+import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_edit_profile_screen.dart';
+import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_view_balance_screen.dart';
+import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_view_profile_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
@@ -26,18 +32,27 @@ class StartupProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          SizedBox(height: 30),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(StartupDetailScreen(
+                  fromReq: false,startup: Get.find<StartupGlobalController>().currentStartup
+                ));
+              },
               child: CustomCard(
                   iconImage: "assets/view_profile_icon.png",
                   title: "View Profile")),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(StartupEditProfileScreen());
+              },
               child: CustomCard(
                   iconImage: "assets/edit_profile_icon.png",
                   title: "Edit Profile")),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(StartupViewBalanceScreen());
+              },
               child: CustomCard(
                   iconImage: "assets/view_balance_icon.png",
                   title: "View Balance")),
