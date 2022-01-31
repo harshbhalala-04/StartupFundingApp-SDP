@@ -8,6 +8,7 @@ import 'package:startupfunding/controllers/startup_controllers/startup_global_co
 import 'package:startupfunding/controllers/startup_controllers/startup_request_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/models/investor_model.dart';
+import 'package:startupfunding/widgets/confirm_dialogue.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvestorDetailScreen extends StatefulWidget {
@@ -206,33 +207,18 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                         ElevatedButton(
                           onPressed: () {
                             if (widget.fromReq) {
-                              final StartupRequestController
-                                  startupRequestController =
-                                  Get.put(StartupRequestController());
-                              // 1. Remove from pending list
-                              startupRequestController.removeRecievedInvestor(
-                                  widget.investor!.uid!);
-
-                              // 2. Back to pending page
-                              Get.back();
-
-                              // 3. Remove from database
-                              StartupDataBase().removeInvestorFromPending(
-                                  widget.investor!.uid!);
-
-                              // 4. Add User to MatchUsers
-                              StartupDataBase().acceptOffer(
-                                  Get.find<StartupGlobalController>()
-                                      .currentStartup
-                                      .startupName!,
-                                  Get.find<StartupGlobalController>()
-                                      .currentStartup
-                                      .startupLogoUrl!,
-                                  widget.investor!.firstName! +
-                                      " " +
-                                      widget.investor!.lastName!,
-                                  widget.investor!.investorImg!,
-                                  widget.investor!.uid!);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ConfirmDialogue(
+                                    userType: "Startup",
+                                    investorUid: widget.investor!.uid!,
+                                    investorFname: widget.investor!.firstName!,
+                                    investorLname: widget.investor!.lastName!,
+                                    investorImg: widget.investor!.investorImg!,
+                                  );
+                                },
+                              );
                             } else {
                               Get.find<StartupGlobalController>()
                                   .removeInvestorFromFeed(
@@ -249,7 +235,10 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                 "image": widget.investor!.investorImg,
                                 "time": time,
                               });
-                              Get.find<StartupRequestController>().inviteSentList.sort((a, b) => b["time"].compareTo(a["time"]));
+                              Get.find<StartupRequestController>()
+                                  .inviteSentList
+                                  .sort(
+                                      (a, b) => b["time"].compareTo(a["time"]));
                               StartupDataBase().addInvestorToExcludeList(
                                   widget.investor!.uid!, true);
                               StartupDataBase().addInviteMethod(

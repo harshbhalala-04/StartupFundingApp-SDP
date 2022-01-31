@@ -12,6 +12,7 @@ import 'package:startupfunding/controllers/investor_controllers/investor_global_
 import 'package:startupfunding/controllers/investor_controllers/investor_request_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
 import 'package:startupfunding/models/startup_model.dart';
+import 'package:startupfunding/widgets/confirm_dialogue.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:open_file/open_file.dart';
 
@@ -203,35 +204,19 @@ class _StartupDetailScreenState extends State<StartupDetailScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (widget.fromReq) {
-                            final InvestorRequestController
-                                investorRequestController =
-                                Get.put(InvestorRequestController());
-                            // 1. Remove from pending list
-                            investorRequestController
-                                .removeRecievedStartup(widget.startup!.uid!);
-
-                            // 2. Back to pending page
-                            Get.back();
-
-                            // 3. Remove from database
-                            InvestorDataBase()
-                                .removeStartupFromPending(widget.startup!.uid!);
-
-                            // 4. Add User to MatchUsers
-                            InvestorDataBase().acceptOffer(
-                                Get.find<InvestorGlobalController>()
-                                        .currentInvestor
-                                        .firstName! +
-                                    " " +
-                                    Get.find<InvestorGlobalController>()
-                                        .currentInvestor
-                                        .lastName!,
-                                Get.find<InvestorGlobalController>()
-                                    .currentInvestor
-                                    .investorImg!,
-                                widget.startup!.startupName!,
-                                widget.startup!.startupLogoUrl!,
-                                widget.startup!.uid!);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ConfirmDialogue(
+                                  userType: "Investor",
+                                  startupLogoUrl:
+                                      widget.startup!.startupLogoUrl!,
+                                  startupName: widget.startup!.startupName,
+                                  startupUid: widget.startup!.uid,
+                                );
+                              },
+                            );
+                           
                           } else {
                             // 1. Remove Startup from feed
                             Get.find<InvestorGlobalController>()

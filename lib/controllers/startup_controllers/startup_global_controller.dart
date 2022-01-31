@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_is_empty
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -60,7 +62,12 @@ class StartupGlobalController extends GetxController {
         await query.get().then((snapshot) {
           if (snapshot.docs.isNotEmpty) {
             snapshot.docs.forEach((element) {
-              tmpUsersList.add(InvestorModel.fromJson(element.data()));
+              if (currentStartup.excludeInvestor == null ||
+                  currentStartup.excludeInvestor!.length == 0 ||
+                  !currentStartup.excludeInvestor!
+                      .contains(element.data()['uid'])) {
+                tmpUsersList.add(InvestorModel.fromJson(element.data()));
+              }
             });
             lastUser = snapshot.docs[snapshot.docs.length - 1];
 
@@ -91,10 +98,6 @@ class StartupGlobalController extends GetxController {
         return;
       }
 
-      for (int i = 0; i < investersList.length; i++) {
-        print(investersList[i].firstName);
-        print(investersList[i].lastName);
-      }
       isLoadingMoreData = false;
       fnTerminate = 1;
       update();
@@ -109,10 +112,10 @@ class StartupGlobalController extends GetxController {
     isLoading.toggle();
     await firestore.collection("Startups").doc(user!.uid).get().then((val) {
       currentStartup = StartupModel.fromJson(val.data()!);
-      print(currentStartup.uid);
-      print(currentStartup.email);
+      
     });
     isLoading.toggle();
+    getInvestorsForFeed();
   }
 
   @override
@@ -120,7 +123,7 @@ class StartupGlobalController extends GetxController {
     // TODO: implement onInit
     scrollController.addListener(scrollListener);
     getCurrentUser();
-    getInvestorsForFeed();
+
     super.onInit();
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_is_empty, avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,6 +44,10 @@ class InvestorGlobalController extends GetxController {
   getStartupsForFeed() async {
     isLoading.toggle();
     try {
+      print("Get Startups for feed");
+      for (int i = 0; i < currentInvestor.excludedStartup!.length; i++) {
+        print(currentInvestor.excludedStartup![i]);
+      }
       final stopWatch = Stopwatch()..start();
       List<StartupModel> tmpUsersList = <StartupModel>[];
       Query<Map<String, dynamic>> query;
@@ -63,7 +67,12 @@ class InvestorGlobalController extends GetxController {
         await query.get().then((snapshot) {
           if (snapshot.docs.isNotEmpty) {
             snapshot.docs.forEach((element) {
-              tmpUsersList.add(StartupModel.fromJson(element.data()));
+              if (currentInvestor.excludedStartup == null ||
+                  currentInvestor.excludedStartup!.length == 0 ||
+                  !currentInvestor.excludedStartup!
+                      .contains(element.data()['uid'])) {
+                tmpUsersList.add(StartupModel.fromJson(element.data()));
+              }
             });
             lastUser = snapshot.docs[snapshot.docs.length - 1];
 
@@ -108,11 +117,16 @@ class InvestorGlobalController extends GetxController {
     isLoading.toggle();
     await firestore.collection("Investors").doc(user!.uid).get().then((val) {
       currentInvestor = InvestorModel.fromJson(val.data()!);
+      print("Here is the exclude list: ${val.data()!['excludeStartup']}");
       print(currentInvestor.uid);
       print(currentInvestor.email);
+      for (int i = 0; i < currentInvestor.excludedStartup!.length; i++) {
+        print(currentInvestor.excludedStartup![i]);
+      }
     });
 
     isLoading.toggle();
+    getStartupsForFeed();
   }
 
   @override
@@ -120,7 +134,6 @@ class InvestorGlobalController extends GetxController {
     // TODO: implement onInit
     scrollController.addListener(scrollListener);
     getCurrentUser();
-    getStartupsForFeed();
 
     super.onInit();
   }
