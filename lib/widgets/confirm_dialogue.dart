@@ -6,8 +6,12 @@ import 'package:startupfunding/controllers/investor_controllers/investor_global_
 import 'package:startupfunding/controllers/investor_controllers/investor_request_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_request_controller.dart';
+import 'package:startupfunding/controllers/workstream_section_controller/investor_workstream_controller.dart';
+import 'package:startupfunding/controllers/workstream_section_controller/startup_workstream_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/models/investor_model.dart';
+import 'package:startupfunding/models/startup_model.dart';
 
 class ConfirmDialogue extends StatelessWidget {
   ConfirmDialogue(
@@ -18,7 +22,9 @@ class ConfirmDialogue extends StatelessWidget {
       this.investorFname,
       this.investorLname,
       this.investorImg,
-      this.investorUid});
+      this.investorUid,
+      this.startupModel,
+      this.investorModel});
   final String userType;
   String? startupUid;
   String? startupLogoUrl;
@@ -27,6 +33,8 @@ class ConfirmDialogue extends StatelessWidget {
   String? investorLname;
   String? investorUid;
   String? investorImg;
+  StartupModel? startupModel;
+  InvestorModel? investorModel;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,8 @@ class ConfirmDialogue extends StatelessWidget {
                     if (userType == "Startup") {
                       final StartupRequestController startupRequestController =
                           Get.put(StartupRequestController());
+                      final StartupWorkStreamController startupWorkStreamController =
+                          Get.put(StartupWorkStreamController());
                       // 1. Remove from pending list
                       startupRequestController
                           .removeRecievedInvestor(investorUid!);
@@ -71,6 +81,20 @@ class ConfirmDialogue extends StatelessWidget {
                       // 2. Back to pending page
                       Get.back();
                       Get.back();
+
+                      // Change from here############
+                      Get.find<StartupWorkStreamController>()
+                          .getInvestor(investorModel!);
+
+                      // Create workstream
+                      Get.find<StartupWorkStreamController>()
+                          .createWorkStream();
+
+                      // Send Informational Message
+                      Get.find<StartupWorkStreamController>()
+                          .addMessage("Workstream has been created", true);
+
+                      // To here#################
 
                       // 3. Remove from database
                       StartupDataBase().removeInvestorFromPending(investorUid!);
@@ -90,6 +114,9 @@ class ConfirmDialogue extends StatelessWidget {
                       final InvestorRequestController
                           investorRequestController =
                           Get.put(InvestorRequestController());
+                      final InvestorWorkStreamController
+                          investorWorkStreamController =
+                          Get.put(InvestorWorkStreamController());
                       // 1. Remove from pending list
                       investorRequestController
                           .removeRecievedStartup(startupUid!);
@@ -97,6 +124,16 @@ class ConfirmDialogue extends StatelessWidget {
                       // 2. Back to pending page
                       Get.back();
                       Get.back();
+
+                      Get.find<InvestorWorkStreamController>()
+                          .getStartup(startupModel!);
+                      // Create workstream
+                      Get.find<InvestorWorkStreamController>()
+                          .createWorkStream();
+
+                      // Send Informational Message
+                      Get.find<InvestorWorkStreamController>()
+                          .addMessage("Workstream has been created", true);
 
                       // 3. Remove from database
                       InvestorDataBase().removeStartupFromPending(startupUid!);

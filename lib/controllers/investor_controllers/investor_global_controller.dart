@@ -72,6 +72,7 @@ class InvestorGlobalController extends GetxController {
                   !currentInvestor.excludedStartup!
                       .contains(element.data()['uid'])) {
                 tmpUsersList.add(StartupModel.fromJson(element.data()));
+                print(tmpUsersList);
               }
             });
             lastUser = snapshot.docs[snapshot.docs.length - 1];
@@ -80,6 +81,7 @@ class InvestorGlobalController extends GetxController {
 
             if (snapshot.docs.length < itemLimit) {
               hasMoreData = false;
+              fnTerminate = 1;
             }
           } else {
             hasMoreData = false;
@@ -88,18 +90,25 @@ class InvestorGlobalController extends GetxController {
       }
 
       startupsList.addAll(tmpUsersList);
-
+      print("This is startups list");
+      print("##################");
+      print("Has more data : $hasMoreData");
+      for (int i = 0; i < startupsList.length; i++) {
+        print(startupsList[i].uid);
+      }
       if (startupsList.length < 5 && hasMoreData) {
         getStartupsForFeed();
       }
 
       if (startupsList.length == 0 && fnTerminate == 1 && !hasMoreData) {
         endUser.value = true;
+        isLoading.toggle();
         return;
       }
 
       if (startupsList.length == 0 && fnTerminate == 0 && !hasMoreData) {
         endUser.value = true;
+        isLoading.toggle();
         return;
       }
 

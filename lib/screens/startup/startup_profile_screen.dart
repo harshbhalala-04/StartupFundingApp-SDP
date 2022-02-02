@@ -14,11 +14,7 @@ import 'package:startupfunding/screens/startup/startup_profile_management_screen
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
-// 1. assets/view_profile_icon.png
-// 2. assets/view_balance_icon.png
-// 3. assets/edit_profile_icon.png
-// 4. assets/share_icon.png
-// 5. assets/logout_icon.png
+
 
 class StartupProfileScreen extends StatelessWidget {
   removeSharedPreferences() async {
@@ -32,7 +28,7 @@ class StartupProfileScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           InkWell(
               onTap: () {
                 Get.to(StartupDetailScreen(
