@@ -293,4 +293,59 @@ class StartupDataBase {
       print(e.toString());
     }
   }
+
+  addMessageMethod(
+    String workStreamId,
+    String messageId,
+    Map<String, dynamic> messageInfo,
+  ) async {
+    try {
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("chats")
+          .doc(messageId)
+          .set(messageInfo);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  updateLastMessageSend(
+      String workStreamId, Map<String, dynamic> lastMessageInfoMap) {
+    try {
+      return firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .update(lastMessageInfoMap);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  ///Create workstream if not exists.
+  createWorkstream(String workStreamId, workStreamMap) async {
+    try {
+      final snapshot =
+          await firestore.collection("workstream").doc(workStreamId).get();
+
+      //work stream Exists.
+      if (snapshot.exists) {
+        return true;
+      }
+
+      //workstream doesn't exists so create workstream.
+      else {
+        return firestore
+            .collection("workstream")
+            .doc(workStreamId)
+            .set(workStreamMap)
+            .catchError((e) {
+          print(e.toString());
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

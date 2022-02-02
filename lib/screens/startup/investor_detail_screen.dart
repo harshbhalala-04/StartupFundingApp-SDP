@@ -216,6 +216,7 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                                     investorFname: widget.investor!.firstName!,
                                     investorLname: widget.investor!.lastName!,
                                     investorImg: widget.investor!.investorImg!,
+                                    investorModel: widget.investor,
                                   );
                                 },
                               );

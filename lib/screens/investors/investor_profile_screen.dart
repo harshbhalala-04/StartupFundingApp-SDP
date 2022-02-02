@@ -1,9 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
@@ -22,13 +24,16 @@ class InvestorProfileScreen extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 151,
+            height: 180,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: <Color>[Colors.blue, Colors.purple]),
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Color.fromRGBO(10, 102, 194, 0.9),
+                      Color.fromRGBO(117, 104, 184, 1)
+                    ]),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30)),
@@ -39,19 +44,46 @@ class InvestorProfileScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
                   child: CircleAvatar(
-                    radius: 40.0,
-                    backgroundImage: AssetImage("assets/test_image.png"),
+                    radius: 50.0,
+                    backgroundImage: CachedNetworkImageProvider(
+                        Get.find<InvestorGlobalController>()
+                            .currentInvestor
+                            .investorImg!),
+                    backgroundColor: Colors.grey,
                   ),
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  "Fname Lname",
-                  style: TextStyle(
-                    fontFamily: "Cabin",
-                    fontSize: 25,
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      Get.find<InvestorGlobalController>()
+                              .currentInvestor
+                              .firstName! +
+                          " " +
+                          Get.find<InvestorGlobalController>()
+                              .currentInvestor
+                              .lastName!,
+                      style: TextStyle(
+                          fontFamily: "Cabin",
+                          fontSize: 25,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "CEO of XYZ",
+                      style: TextStyle(
+                        fontFamily: "Cabin",
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),

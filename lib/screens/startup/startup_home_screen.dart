@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_request_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
-import 'package:startupfunding/screens/startup/startup_chat_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/startup_chat_screen.dart';
 import 'package:startupfunding/screens/startup/startup_investors_screen.dart';
 import 'package:startupfunding/screens/startup/startup_notification_screen.dart';
 import 'package:startupfunding/screens/startup/startup_profile_screen.dart';
@@ -31,9 +31,8 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
     StartupProfileScreen(),
   ];
 
-  
   final StartupGlobalController startupGlobalController =
-      Get.put(StartupGlobalController()); 
+      Get.put(StartupGlobalController());
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +56,9 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(StartupChatScreen());
+                },
                 icon: ImageIcon(
                   AssetImage("assets/chat_icon.png"),
                   color: Theme.of(context).primaryColor,
