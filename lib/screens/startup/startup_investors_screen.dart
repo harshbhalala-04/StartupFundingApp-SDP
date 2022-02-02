@@ -33,6 +33,7 @@ class StartupInvestorsScreen extends StatelessWidget {
                             investor: Get.find<StartupGlobalController>()
                                 .investersList[index],
                             fromReq: false,
+                            viewProfile: false,
                           ));
                         },
                         child: Column(

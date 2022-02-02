@@ -36,7 +36,9 @@ class StartupProfileScreen extends StatelessWidget {
           InkWell(
               onTap: () {
                 Get.to(StartupDetailScreen(
-                  fromReq: false,startup: Get.find<StartupGlobalController>().currentStartup
+                  fromReq: false,
+                  startup: Get.find<StartupGlobalController>().currentStartup,
+                  viewProfile: true,
                 ));
               },
               child: CustomCard(

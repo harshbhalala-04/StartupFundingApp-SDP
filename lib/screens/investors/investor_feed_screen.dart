@@ -32,6 +32,7 @@ class InvestorFeedScreen extends StatelessWidget {
                         onTap: () {
                           Get.to(StartupDetailScreen(
                             startup:  Get.find<InvestorGlobalController>().startupsList[index],
+                            viewProfile: false,
                             fromReq: false,
                           ));
                         },

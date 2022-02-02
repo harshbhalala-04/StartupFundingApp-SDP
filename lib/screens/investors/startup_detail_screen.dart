@@ -22,7 +22,7 @@ class StartupDetailScreen extends StatefulWidget {
   final bool fromReq;
   var viewProfile;
   StartupDetailScreen(
-      {this.startup, this.uid, required this.fromReq, bool? viewProfile});
+      {this.startup, this.uid, required this.fromReq, required this.viewProfile});
 
   @override
   State<StartupDetailScreen> createState() => _StartupDetailScreenState();
