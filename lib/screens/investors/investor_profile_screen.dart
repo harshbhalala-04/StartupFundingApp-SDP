@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
+import 'package:startupfunding/screens/startup/investor_detail_screen.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
 class InvestorProfileScreen extends StatelessWidget {
@@ -90,7 +91,14 @@ class InvestorProfileScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(InvestorDetailScreen(
+                  fromReq: false,
+                  investor:
+                      Get.find<InvestorGlobalController>().currentInvestor,
+                  viewProfile: true,
+                ));
+              },
               child: CustomCard(
                   iconImage: "assets/view_profile_icon.png",
                   title: "View Profile")),

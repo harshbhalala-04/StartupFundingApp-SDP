@@ -14,9 +14,14 @@ import 'package:url_launcher/url_launcher.dart';
 class InvestorDetailScreen extends StatefulWidget {
   InvestorModel? investor;
   final bool fromReq;
+  var viewProfile;
   String? uid;
 
-  InvestorDetailScreen({this.investor, required this.fromReq, this.uid});
+  InvestorDetailScreen(
+      {this.investor,
+      required this.fromReq,
+      this.uid,
+      required this.viewProfile});
 
   @override
   _InvestorDetailScreenState createState() => _InvestorDetailScreenState();
@@ -157,129 +162,134 @@ class _InvestorDetailScreenState extends State<InvestorDetailScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            if (widget.fromReq) {
-                              final StartupRequestController
-                                  startupRequestController =
-                                  Get.put(StartupRequestController());
-                              // 1. Remove from pending list
-                              startupRequestController.removeRecievedInvestor(
-                                  widget.investor!.uid!);
+                    widget.viewProfile
+                        ? Container()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (widget.fromReq) {
+                                    final StartupRequestController
+                                        startupRequestController =
+                                        Get.put(StartupRequestController());
+                                    // 1. Remove from pending list
+                                    startupRequestController
+                                        .removeRecievedInvestor(
+                                            widget.investor!.uid!);
 
-                              // 2. Back to pending page
-                              Get.back();
+                                    // 2. Back to pending page
+                                    Get.back();
 
-                              // 3. Remove from database
-                              StartupDataBase().removeInvestorFromPending(
-                                  widget.investor!.uid!);
-                            } else {
-                              Get.find<StartupGlobalController>()
-                                  .removeInvestorFromFeed(
-                                      widget.investor!.uid!);
-                              Get.back();
-                              StartupDataBase().addInvestorToExcludeList(
-                                  widget.investor!.uid!, false);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10),
-                            child: Text(
-                              widget.fromReq ? "Reject" : "Skip",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontFamily: "Cabin",
-                                  fontSize: 18),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40),
-                                ),
-                              ),
-                              primary: Colors.white),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (widget.fromReq) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ConfirmDialogue(
-                                    userType: "Startup",
-                                    investorUid: widget.investor!.uid!,
-                                    investorFname: widget.investor!.firstName!,
-                                    investorLname: widget.investor!.lastName!,
-                                    investorImg: widget.investor!.investorImg!,
-                                    investorModel: widget.investor,
-                                  );
+                                    // 3. Remove from database
+                                    StartupDataBase().removeInvestorFromPending(
+                                        widget.investor!.uid!);
+                                  } else {
+                                    Get.find<StartupGlobalController>()
+                                        .removeInvestorFromFeed(
+                                            widget.investor!.uid!);
+                                    Get.back();
+                                    StartupDataBase().addInvestorToExcludeList(
+                                        widget.investor!.uid!, false);
+                                  }
                                 },
-                              );
-                            } else {
-                              Get.find<StartupGlobalController>()
-                                  .removeInvestorFromFeed(
-                                      widget.investor!.uid!);
-                              Get.back();
-                              Timestamp time = Timestamp.now();
-                              Get.find<StartupRequestController>()
-                                  .inviteSentList
-                                  .add({
-                                "sent": widget.investor!.firstName! +
-                                    " " +
-                                    widget.investor!.lastName!,
-                                "id": widget.investor!.uid,
-                                "image": widget.investor!.investorImg,
-                                "time": time,
-                              });
-                              Get.find<StartupRequestController>()
-                                  .inviteSentList
-                                  .sort(
-                                      (a, b) => b["time"].compareTo(a["time"]));
-                              StartupDataBase().addInvestorToExcludeList(
-                                  widget.investor!.uid!, true);
-                              StartupDataBase().addInviteMethod(
-                                  Get.find<StartupGlobalController>()
-                                      .currentStartup
-                                      .startupName!,
-                                  Get.find<StartupGlobalController>()
-                                      .currentStartup
-                                      .startupLogoUrl!,
-                                  Get.find<StartupGlobalController>()
-                                      .currentStartup
-                                      .uid!,
-                                  widget.investor!.firstName! +
-                                      " " +
-                                      widget.investor!.lastName!,
-                                  widget.investor!.investorImg!,
-                                  widget.investor!.uid!);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10),
-                            child: Text(
-                              widget.fromReq ? "Accept" : "Invite",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Cabin",
-                                  fontSize: 18),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(40),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10),
+                                  child: Text(
+                                    widget.fromReq ? "Reject" : "Skip",
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontFamily: "Cabin",
+                                        fontSize: 18),
+                                  ),
                                 ),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(40),
+                                      ),
+                                    ),
+                                    primary: Colors.white),
                               ),
-                              primary: Theme.of(context).primaryColor),
-                        ),
-                      ],
-                    ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (widget.fromReq) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ConfirmDialogue(
+                                          userType: "Startup",
+                                          investorUid: widget.investor!.uid!,
+                                          investorFname:
+                                              widget.investor!.firstName!,
+                                          investorLname:
+                                              widget.investor!.lastName!,
+                                          investorImg:
+                                              widget.investor!.investorImg!,
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    Get.find<StartupGlobalController>()
+                                        .removeInvestorFromFeed(
+                                            widget.investor!.uid!);
+                                    Get.back();
+                                    Timestamp time = Timestamp.now();
+                                    Get.find<StartupRequestController>()
+                                        .inviteSentList
+                                        .add({
+                                      "sent": widget.investor!.firstName! +
+                                          " " +
+                                          widget.investor!.lastName!,
+                                      "id": widget.investor!.uid,
+                                      "image": widget.investor!.investorImg,
+                                      "time": time,
+                                    });
+                                    Get.find<StartupRequestController>()
+                                        .inviteSentList
+                                        .sort((a, b) =>
+                                            b["time"].compareTo(a["time"]));
+                                    StartupDataBase().addInvestorToExcludeList(
+                                        widget.investor!.uid!, true);
+                                    StartupDataBase().addInviteMethod(
+                                        Get.find<StartupGlobalController>()
+                                            .currentStartup
+                                            .startupName!,
+                                        Get.find<StartupGlobalController>()
+                                            .currentStartup
+                                            .startupLogoUrl!,
+                                        Get.find<StartupGlobalController>()
+                                            .currentStartup
+                                            .uid!,
+                                        widget.investor!.firstName! +
+                                            " " +
+                                            widget.investor!.lastName!,
+                                        widget.investor!.investorImg!,
+                                        widget.investor!.uid!);
+                                  }
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10),
+                                  child: Text(
+                                    widget.fromReq ? "Accept" : "Invite",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Cabin",
+                                        fontSize: 18),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(40),
+                                      ),
+                                    ),
+                                    primary: Theme.of(context).primaryColor),
+                              ),
+                            ],
+                          ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                       child: Column(

@@ -50,6 +50,7 @@ class InvestorRequestRecieveScreen extends StatelessWidget {
             return InkWell(
                 onTap: () {
                   Get.to(StartupDetailScreen(
+                      viewProfile: false,
                       fromReq: true,
                       uid: Get.find<InvestorRequestController>()
                           .inviteRecievedList[index]["id"]));

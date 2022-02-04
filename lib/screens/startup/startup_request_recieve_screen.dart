@@ -54,6 +54,7 @@ class StartupRequestRecieveScreen extends StatelessWidget {
                     uid: Get.find<StartupRequestController>()
                         .inviteRecievedList[index]["id"],
                     fromReq: true,
+                    viewProfile: false,
                   ));
                 },
                 child: UserCard(
