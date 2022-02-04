@@ -10,6 +10,7 @@ import 'investor_detail_screen.dart';
 class StartupInvestorsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("Here widget starts building");
     return Obx(() => Get.find<StartupGlobalController>().isLoading.value
         ? Center(
             child: CircularProgressIndicator(),

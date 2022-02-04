@@ -348,4 +348,18 @@ class StartupDataBase {
       print(e.toString());
     }
   }
+
+  ///Get message of whole workstream
+  getWorkStreamMessages(workStreamId) async {
+    try {
+      return firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("chats")
+          .orderBy("ts", descending: true)
+          .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

@@ -105,6 +105,8 @@ flutter:
     - assets/view_balance_icon.png
     - assets/share_icon.png 
     - assets/logout_icon.png
+    - assets/chat_bg.jpg
+    - assets/filter.png
 
     
 
