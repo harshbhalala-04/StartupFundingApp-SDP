@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-class StartupViewProfileScreen extends StatelessWidget {
+class InvestorViewBalanceScreen extends StatelessWidget {
   @override
    Widget build(BuildContext context) {
     return Center(
-      child: Text("Startup View Profile Screen"),
+      child: Text("Investor View Balance Screen"),
     );
   }
 }
