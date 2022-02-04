@@ -129,9 +129,7 @@ class InvestorGlobalController extends GetxController {
       print("Here is the exclude list: ${val.data()!['excludeStartup']}");
       print(currentInvestor.uid);
       print(currentInvestor.email);
-      for (int i = 0; i < currentInvestor.excludedStartup!.length; i++) {
-        print(currentInvestor.excludedStartup![i]);
-      }
+      
     });
 
     isLoading.toggle();
