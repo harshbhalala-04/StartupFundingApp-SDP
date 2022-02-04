@@ -10,7 +10,6 @@ import 'package:startupfunding/screens/investors/startup_detail_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_edit_profile_screen.dart';
 import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_view_balance_screen.dart';
-import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_view_profile_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 

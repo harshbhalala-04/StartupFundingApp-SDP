@@ -10,6 +10,9 @@ import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/investor_detail_screen.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
+import 'investor_profile_management/investor_edit_profile_screen.dart';
+import 'investor_profile_management/investor_view_balance_screen.dart';
+
 class InvestorProfileScreen extends StatelessWidget {
   const InvestorProfileScreen({Key? key}) : super(key: key);
 
@@ -103,12 +106,16 @@ class InvestorProfileScreen extends StatelessWidget {
                   iconImage: "assets/view_profile_icon.png",
                   title: "View Profile")),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(InvestorEditProfileScreen());
+              },
               child: CustomCard(
                   iconImage: "assets/edit_profile_icon.png",
                   title: "Edit Profile")),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(InvestorViewBalanceScreen());
+              },
               child: CustomCard(
                   iconImage: "assets/view_balance_icon.png",
                   title: "View Balance")),
