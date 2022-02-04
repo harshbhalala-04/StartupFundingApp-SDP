@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_filter_controller.dart';
 import 'package:startupfunding/models/investor_model.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:startupfunding/models/startup_model.dart';
@@ -26,6 +27,9 @@ class InvestorGlobalController extends GetxController {
   final AutoScrollController scrollController = AutoScrollController();
   final currentIndex = 0.obs;
 
+  final InvestorFilterController investorFilterController =
+      Get.put(InvestorFilterController());
+
   void removeStartupFromFeed(String uid) {
     startupsList.removeWhere((element) => element.uid == uid);
   }
@@ -44,17 +48,25 @@ class InvestorGlobalController extends GetxController {
   getStartupsForFeed() async {
     isLoading.toggle();
     try {
-      print("Get Startups for feed");
-      for (int i = 0; i < currentInvestor.excludedStartup!.length; i++) {
-        print(currentInvestor.excludedStartup![i]);
-      }
       final stopWatch = Stopwatch()..start();
       List<StartupModel> tmpUsersList = <StartupModel>[];
       Query<Map<String, dynamic>> query;
+     
+      if (investorFilterController.isFilterApplied.value) {
+        print("Inside filter query");
+        query = firestore
+            .collection("Startups")
+            .where("startupCategory",
+                whereIn:
+                    investorFilterController.selectedFilters)
+            .orderBy("createdAt", descending: true);
+      } else {
+        query = firestore
+            .collection("Startups")
+            .orderBy("createdAt", descending: true);
+      }
 
-      query = firestore
-          .collection("Startups")
-          .orderBy("createdAt", descending: true);
+     
 
       if (lastUser != null) {
         isLoadingMoreData = true;
@@ -66,7 +78,9 @@ class InvestorGlobalController extends GetxController {
       if (hasMoreData) {
         await query.get().then((snapshot) {
           if (snapshot.docs.isNotEmpty) {
+            print("Inside for each loop initialization");
             snapshot.docs.forEach((element) {
+              print(element.data());
               if (currentInvestor.excludedStartup == null ||
                   currentInvestor.excludedStartup!.length == 0 ||
                   !currentInvestor.excludedStartup!
@@ -90,12 +104,7 @@ class InvestorGlobalController extends GetxController {
       }
 
       startupsList.addAll(tmpUsersList);
-      print("This is startups list");
-      print("##################");
-      print("Has more data : $hasMoreData");
-      for (int i = 0; i < startupsList.length; i++) {
-        print(startupsList[i].uid);
-      }
+
       if (startupsList.length < 5 && hasMoreData) {
         getStartupsForFeed();
       }
@@ -126,10 +135,6 @@ class InvestorGlobalController extends GetxController {
     isLoading.toggle();
     await firestore.collection("Investors").doc(user!.uid).get().then((val) {
       currentInvestor = InvestorModel.fromJson(val.data()!);
-      print("Here is the exclude list: ${val.data()!['excludeStartup']}");
-      print(currentInvestor.uid);
-      print(currentInvestor.email);
-      
     });
 
     isLoading.toggle();

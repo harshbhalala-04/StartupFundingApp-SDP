@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_is_empty
+// ignore_for_file: prefer_is_empty, avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,19 +45,17 @@ class StartupGlobalController extends GetxController {
   }
 
   getInvestorsForFeed() async {
-    print("Init status for startups");
     isLoading.toggle();
     try {
       final stopWatch = Stopwatch()..start();
       List<InvestorModel> tmpUsersList = <InvestorModel>[];
       Query<Map<String, dynamic>> query;
-
+      
       if (startupFilterController.isFilterApplied.value) {
         query = firestore
             .collection("Investors")
             .where("expertise", arrayContains: currentStartup.startupCategory)
             .orderBy("createdAt", descending: true);
-        print("Here filter query runs");
       } else {
         query = firestore
             .collection("Investors")
@@ -73,6 +71,7 @@ class StartupGlobalController extends GetxController {
 
       if (hasMoreData) {
         await query.get().then((snapshot) {
+          print(snapshot.docs.isNotEmpty);
           if (snapshot.docs.isNotEmpty) {
             snapshot.docs.forEach((element) {
               if (currentStartup.excludeInvestor == null ||
@@ -80,12 +79,6 @@ class StartupGlobalController extends GetxController {
                   !currentStartup.excludeInvestor!
                       .contains(element.data()['uid'])) {
                 tmpUsersList.add(InvestorModel.fromJson(element.data()));
-                print("Inside if condition");
-                print(element.data()['firstName']);
-                for (int i = 0; i < tmpUsersList.length; i++) {
-                  print(tmpUsersList[i].firstName);
-                }
-                print("IF conndition is over");
               }
             });
             lastUser = snapshot.docs[snapshot.docs.length - 1];
@@ -102,10 +95,6 @@ class StartupGlobalController extends GetxController {
         });
       }
 
-      print("This is temp users list");
-      for (int i = 0; i < tmpUsersList.length; i++) {
-        print(tmpUsersList[i].firstName);
-      }
       investersList.addAll(tmpUsersList);
 
       if (investersList.length < 5 && hasMoreData) {

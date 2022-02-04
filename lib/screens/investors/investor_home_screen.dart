@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_request_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/screens/investors/investor_filter_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/chat_screen.dart';
 import 'package:startupfunding/screens/investors/investor_feed_screen.dart';
 import 'package:startupfunding/screens/investors/investor_profile_screen.dart';
@@ -35,6 +36,7 @@ class InvestorHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Investor Home screen starts building");
     return Scaffold(
       appBar: AppBar(
         title: OnBoardingAppBarTitle(),
@@ -53,17 +55,24 @@ class InvestorHomeScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-              child: IconButton(
-                onPressed: () {
-                  Get.to(ChatScreen());
-                },
-                icon: ImageIcon(
-                  AssetImage("assets/chat_icon.png"),
-                  color: Theme.of(context).primaryColor,
-                ),
-              )),
+          IconButton(
+            onPressed: () {
+              Get.to(InvestorFilterScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/filter.png"),
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.to(ChatScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/chat_icon.png"),
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
         ],
         backgroundColor: Colors.white,
       ),
