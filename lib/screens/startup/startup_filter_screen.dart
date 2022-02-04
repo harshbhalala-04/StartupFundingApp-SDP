@@ -69,6 +69,7 @@ class _StartupFilterScreenState extends State<StartupFilterScreen> {
                   onPressed: () {
                     Get.find<StartupGlobalController>().investersList = [];
                     Get.find<StartupGlobalController>().hasMoreData = true;
+                    Get.find<StartupGlobalController>().lastUser = null;
                     Get.find<StartupGlobalController>().getInvestorsForFeed();
                     Get.to(StartupHomeScreen());
                   },
