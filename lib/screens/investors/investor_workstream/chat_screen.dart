@@ -43,12 +43,13 @@ class ChatScreen extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
+          print(snapshot.data.docs.length);
           if (snapshot.data.docs.length == 0) {
             return Container(
               margin: EdgeInsets.only(top: 300),
               child: Center(
                 child: Text(
-                  'Your workstreams appear Here.',
+                  'Your workstreams appear Here.???',
                   style: TextStyle(fontSize: 20),
                 ),
               ),

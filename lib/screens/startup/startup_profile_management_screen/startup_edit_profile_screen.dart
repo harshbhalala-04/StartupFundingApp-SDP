@@ -1,12 +1,75 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/widgets/custom_textformfield.dart';
 
 class StartupEditProfileScreen extends StatelessWidget {
-  const StartupEditProfileScreen({Key? key}) : super(key: key);
+  StartupEditProfileScreen({Key? key}) : super(key: key);
 
+  List<String> startupCategories = [
+    "Advertising",
+    "Aerospace",
+    "Agriculture",
+    "AI",
+    "Analytics",
+    "Animation",
+    "AR/VR",
+    "Architecture",
+    "Art & Photography",
+    "Automative",
+    "Beauty",
+    "Big Data",
+    "Blockchain",
+    "Careers",
+    "Communication",
+    "Computer Vision",
+    "Construction",
+    "Consumer Goods",
+    "Dating/Matrimonial",
+    "Defence",
+    "Design",
+    "Education",
+    "Energy & Sustainability",
+    "Enterprise Software",
+    "Events",
+    "Fashion",
+    "FinTech",
+    "Food & Beverages",
+    "Gaming",
+    "Gifting",
+    "Grocery",
+    "Hardware",
+    "Healthcare",
+    "Human Resources",
+    "Information/Tech",
+    "Internet of Things",
+    "IT Services",
+    "Legal",
+    "Logistics",
+    "Manufacturing",
+    "Marketing",
+    "Media & Entertainment",
+    "Nanotechnology",
+    "Networking",
+    "Pets & Animals",
+    "Printing",
+    "Real Estate",
+    "Retail",
+    "Robotics",
+    "Safety",
+    "Security",
+    "Services",
+    "Social Impact",
+    "Social Network",
+    "Sports",
+    "Storage",
+    "Transportation",
+    "Travel & Tourism"
+  ];
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -54,8 +117,10 @@ class StartupEditProfileScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 23, 0, 0),
                           child: CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/test_image.png"),
+                            backgroundImage: NetworkImage(
+                                Get.find<StartupGlobalController>()
+                                    .currentStartup
+                                    .founderImg!),
                             radius: 50.0,
                             backgroundColor: Colors.grey,
                           ),
@@ -82,8 +147,10 @@ class StartupEditProfileScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(0, 23, 0, 0),
                           child: CircleAvatar(
-                            backgroundImage:
-                                AssetImage("assets/test_image.png"),
+                            backgroundImage: NetworkImage(
+                                Get.find<StartupGlobalController>()
+                                    .currentStartup
+                                    .startupLogoUrl!),
                             radius: 50.0,
                             backgroundColor: Colors.grey,
                           ),
@@ -110,59 +177,114 @@ class StartupEditProfileScreen extends StatelessWidget {
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Name",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .userName
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Startup Name",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .startupName
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Startup Registered Name",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .regStartupName
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Phone No",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .phoneNo
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Email",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .email
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Website/App Url",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: "",
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Linkedin Url",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .linkedinUrl
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "City",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<StartupGlobalController>()
+                      .currentStartup
+                      .startupCity
+                      .toString(),
                 )),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Select category for your project',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: DropdownSearch<String>(
+                      mode: Mode.MENU,
+                      showSearchBox: true,
+                      showSelectedItems: true,
+                      items: startupCategories,
+                      // ignore: deprecated_member_use
+                      label: Get.find<StartupGlobalController>()
+                          .currentStartup
+                          .startupCategory,
+                      onChanged: (val) {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
             InkWell(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
                 child: Container(
                   height: 120,
                   child: TextFormField(
                     maxLines: 10,
-                    initialValue:
-                        "kaik to hash ggofd df af afaf af df sdg gs gs fsa e fe gegggggg g gsg sssssssssss e j ne",
+                    initialValue: Get.find<StartupGlobalController>()
+                        .currentStartup
+                        .startupDescription
+                        .toString(),
                     decoration: InputDecoration(
                       labelText: "Discription",
                       border: OutlineInputBorder(),
@@ -172,9 +294,34 @@ class StartupEditProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-
             
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 50,
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      primary: Theme.of(context).primaryColor),
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                      fontFamily: "Cabin",
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
           ],
         ),
       ),
