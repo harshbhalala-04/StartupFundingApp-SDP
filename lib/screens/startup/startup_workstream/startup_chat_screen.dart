@@ -33,11 +33,14 @@ class StartupChatScreen extends StatelessWidget {
                     Get.find<StartupGlobalController>().currentStartup.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+      
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
+
+         
           if (snapshot.data.docs.length == 0) {
             return Container(
               margin: EdgeInsets.only(top: 300),

@@ -82,7 +82,7 @@ class ConfirmDialogue extends StatelessWidget {
                       Get.back();
                       Get.back();
 
-                      // Change from here############
+                    
                       Get.find<StartupWorkStreamController>()
                           .getInvestor(investorModel!);
 
@@ -94,7 +94,7 @@ class ConfirmDialogue extends StatelessWidget {
                       Get.find<StartupWorkStreamController>()
                           .addMessage("Workstream has been created", true);
 
-                      // To here#################
+                      
 
                       // 3. Remove from database
                       StartupDataBase().removeInvestorFromPending(investorUid!);
