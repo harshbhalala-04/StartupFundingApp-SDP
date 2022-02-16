@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/widgets/custom_textformfield.dart';
 
 class InvestorEditProfileScreen extends StatelessWidget {
@@ -52,7 +54,10 @@ class InvestorEditProfileScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 23, 0, 0),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage("assets/test_image.png"),
+                        backgroundImage: NetworkImage(
+                            Get.find<InvestorGlobalController>()
+                                .currentInvestor
+                                .investorImg!),
                         radius: 50.0,
                         backgroundColor: Colors.grey,
                       ),
@@ -76,39 +81,85 @@ class InvestorEditProfileScreen extends StatelessWidget {
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
-                  labelText: " First Name",
-                  initialValue: "Gopal",
+                  labelText: "First Name",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .firstName
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Last Name",
-                  initialValue: "Malaviya",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .lastName
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Phone No",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .phoneNo
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Email",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .email
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "Linkedin Url",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .linkedinUrl
+                      .toString(),
                 )),
             InkWell(
                 onTap: () {},
                 child: CustomTextFormField(
                   labelText: "City",
-                  initialValue: "Gopal Malaviya",
+                  initialValue: Get.find<InvestorGlobalController>()
+                      .currentInvestor
+                      .cityName
+                      .toString(),
                 )),
+                
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 50,
+                width: 250,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      primary: Theme.of(context).primaryColor),
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                      fontFamily: "Cabin",
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
           ],
         ),
       ),

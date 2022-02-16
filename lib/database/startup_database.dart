@@ -394,5 +394,121 @@ class StartupDataBase {
     } catch (e) {
       print(e.toString());
     }
+
+    
+    void updateStartupName(String startupName) {
+      Get.find<StartupGlobalController>().currentStartup.startupName =
+          startupName;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupName": startupName});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupRegisteredName(String regStartupName) {
+      Get.find<StartupGlobalController>().currentStartup.regStartupName =
+          regStartupName;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"regStartupName": regStartupName});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupPhoneNo(String phoneNo) {
+      Get.find<StartupGlobalController>().currentStartup.phoneNo = phoneNo;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"phoneNo": phoneNo});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupEmail(String email) {
+      Get.find<StartupGlobalController>().currentStartup.email = email;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"email": email});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupLinkedinUrl(String linkedinUrl) {
+      Get.find<StartupGlobalController>().currentStartup.linkedinUrl =
+          linkedinUrl;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"linkedinUrl": linkedinUrl});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupCity(String startupCity) {
+      Get.find<StartupGlobalController>().currentStartup.startupCity =
+          startupCity;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupCity": startupCity});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupDescription(String startupDescription) {
+      Get.find<StartupGlobalController>().currentStartup.startupDescription =
+          startupDescription;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupDescription": startupDescription});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupFounderImg(String founderImg) {
+      Get.find<StartupGlobalController>().currentStartup.founderImg =
+          founderImg;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"founderImg": founderImg});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupLogoUrl(String startupLogoUrl) {
+      Get.find<StartupGlobalController>().currentStartup.startupLogoUrl =
+          startupLogoUrl;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupLogoUrl": startupLogoUrl});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
   }
 }

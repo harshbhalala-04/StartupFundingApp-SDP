@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 
 class InvestorDataBase {
   final User? user = FirebaseAuth.instance.currentUser;
@@ -225,7 +227,7 @@ class InvestorDataBase {
     }
   }
 
-   updateLastMessageSend(
+  updateLastMessageSend(
       String workStreamId, Map<String, dynamic> lastMessageInfoMap) {
     try {
       return firestore
@@ -272,6 +274,76 @@ class InvestorDataBase {
           .collection("chats")
           .orderBy("ts", descending: true)
           .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorFirstName(String firstName) {
+    Get.find<InvestorGlobalController>().currentInvestor.firstName = firstName;
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({"firstName": firstName});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorLastName(String lastName) {
+    Get.find<InvestorGlobalController>().currentInvestor.lastName = lastName;
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({"lastName": lastName});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorPhoneNo(String phoneNo) {
+    Get.find<InvestorGlobalController>().currentInvestor.phoneNo = phoneNo;
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({"phoneNo": phoneNo});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorEmail(String email) {
+    Get.find<InvestorGlobalController>().currentInvestor.email = email;
+    try {
+      firestore.collection("Investors").doc(user!.uid).update({"email": email});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorLinkedinUrl(String linkedinUrl) {
+    Get.find<InvestorGlobalController>().currentInvestor.linkedinUrl =
+        linkedinUrl;
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({"linkedinUrl": linkedinUrl});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateInvestorCityName(String cityName) {
+    Get.find<InvestorGlobalController>().currentInvestor.cityName = cityName;
+    try {
+      firestore
+          .collection("Investors")
+          .doc(user!.uid)
+          .update({"cityName": cityName});
     } catch (e) {
       print(e.toString());
     }
