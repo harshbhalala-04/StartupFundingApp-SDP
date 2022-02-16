@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 
 class StartupDataBase {
   final FirebaseAuth? auth = FirebaseAuth.instance;
@@ -358,6 +360,37 @@ class StartupDataBase {
           .collection("chats")
           .orderBy("ts", descending: true)
           .snapshots();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addStageDetails(Map<String, dynamic> stage) {
+    List<Map<String, dynamic>> tmpStage = [];
+    tmpStage.add(stage);
+    print(tmpStage);
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"Stage": FieldValue.arrayUnion(tmpStage)});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void editStageDetails(Map<String, dynamic> stage, int index) async {
+    try {
+      await firestore.collection("Startups").doc(user!.uid).get().then((value) {
+        List<dynamic> tmpList = value.data()!['Stage'];
+
+        tmpList[index] = stage;
+
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"Stage": tmpList});
+      });
     } catch (e) {
       print(e.toString());
     }
