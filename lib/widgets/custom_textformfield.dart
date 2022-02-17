@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:startupfunding/database/startup_database.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String initialValue;
@@ -13,6 +14,10 @@ class CustomTextFormField extends StatelessWidget {
       child: Container(
         height: 80,
         child: TextFormField(
+          // controller: nameController,
+          onEditingComplete: (){
+            // StartupDataBase().updateStartupUserName(nameContoller.text=get.contoller valu...);
+          },
           initialValue: initialValue,
           decoration: InputDecoration(
             labelText: labelText,

@@ -365,7 +365,7 @@ class StartupDataBase {
     }
   }
 
-  void updateSrtartupUserName(String name) {
+  void updateStartupUserName(String name) {
     Get.find<StartupGlobalController>().currentStartup.userName = name;
     try {
       firestore

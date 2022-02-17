@@ -4,10 +4,52 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/database/investor_database.dart';
 import 'package:startupfunding/widgets/custom_textformfield.dart';
 
-class InvestorEditProfileScreen extends StatelessWidget {
+class InvestorEditProfileScreen extends StatefulWidget {
   const InvestorEditProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<InvestorEditProfileScreen> createState() =>
+      _InvestorEditProfileScreenState();
+}
+
+class _InvestorEditProfileScreenState extends State<InvestorEditProfileScreen> {
+  TextEditingController investorFirstNameController =
+      new TextEditingController();
+
+  TextEditingController investorLastNameController =
+      new TextEditingController();
+
+  TextEditingController investorPhoneNoController = new TextEditingController();
+
+  TextEditingController investorEmailController = new TextEditingController();
+
+  TextEditingController investorLinkedinUrlController =
+      new TextEditingController();
+
+  TextEditingController investorCityController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    investorFirstNameController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.firstName!;
+    investorLastNameController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.lastName!;
+
+    investorPhoneNoController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.phoneNo!;
+    investorEmailController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.email!;
+
+    investorLinkedinUrlController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.linkedinUrl!;
+    investorCityController.text =
+        Get.find<InvestorGlobalController>().currentInvestor.cityName!;
+  }
 
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
@@ -78,68 +120,123 @@ class InvestorEditProfileScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "First Name",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .firstName
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Last Name",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .lastName
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Phone No",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .phoneNo
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Email",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .email
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Linkedin Url",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .linkedinUrl
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "City",
-                  initialValue: Get.find<InvestorGlobalController>()
-                      .currentInvestor
-                      .cityName
-                      .toString(),
-                )),
-                
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorFirstNameController,
+                  onEditingComplete: () {
+                    InvestorDataBase().updateInvestorFirstName(
+                        investorFirstNameController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "First Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorLastNameController,
+                  onEditingComplete: () {
+                    InvestorDataBase().updateInvestorLastName(
+                        investorLastNameController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Last Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorPhoneNoController,
+                  onEditingComplete: () {
+                    InvestorDataBase()
+                        .updateInvestorPhoneNo(investorPhoneNoController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Phone No",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorEmailController,
+                  onEditingComplete: () {
+                    InvestorDataBase()
+                        .updateInvestorEmail(investorEmailController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorLinkedinUrlController,
+                  onEditingComplete: () {
+                    InvestorDataBase().updateInvestorLinkedinUrl(
+                        investorLinkedinUrlController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Linkedin Url",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: investorCityController,
+                  onEditingComplete: () {
+                    InvestorDataBase()
+                        .updateInvestorCityName(investorCityController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "City",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 height: 50,
                 width: 250,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    InvestorDataBase().updateInvestorFirstName(investorFirstNameController.text);
+                    InvestorDataBase().updateInvestorLastName(investorLastNameController.text);
+                    InvestorDataBase().updateInvestorPhoneNo(investorPhoneNoController.text);
+                    InvestorDataBase().updateInvestorEmail(investorEmailController.text);
+                    InvestorDataBase().updateInvestorLinkedinUrl(investorLinkedinUrlController.text);
+                    InvestorDataBase().updateInvestorCityName(investorCityController.text);
+                    Get.back();
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
