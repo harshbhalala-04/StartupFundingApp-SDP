@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/startup_controllers/image_picker_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_investment_profile_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -44,7 +46,8 @@ class _InvestorPersonalInfoScreenState
       createAlertDialogue("Please upload your profile photo");
     } else {
       Get.to(InvestorInvestmentProfileScreen());
-      InvestorDataBase().uploadInvestorImg(imagePickerController.choosenImage.value);
+      InvestorDataBase()
+          .uploadInvestorImg(imagePickerController.choosenImage.value);
       InvestorDataBase().addInvestorPersonalInfo(
           firstName.text, lastName.text, linkedinUrl.text, cityName.text);
     }

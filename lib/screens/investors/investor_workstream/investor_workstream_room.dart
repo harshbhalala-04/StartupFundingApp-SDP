@@ -47,11 +47,135 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ))
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(
+              icon: Icon(Icons.more_vert),
+              color: Colors.white,
+              onPressed: () {
+                showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return Container(
+                        height: 350,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "View Current Status",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Verify stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                               Padding(
+                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Approve Requested Stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                               Padding(
+                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Provided Funding",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                               Padding(
+                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "View Submitted stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
+            ),
+          ),
         ],
         flexibleSpace: Container(
           margin: EdgeInsets.only(top: 28),
@@ -198,7 +322,7 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                               : Radius.circular(12),
                         ),
                       ),
-                      width: 160,
+                      width: 200,
                       padding: EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 16,

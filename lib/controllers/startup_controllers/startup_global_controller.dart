@@ -50,7 +50,7 @@ class StartupGlobalController extends GetxController {
       final stopWatch = Stopwatch()..start();
       List<InvestorModel> tmpUsersList = <InvestorModel>[];
       Query<Map<String, dynamic>> query;
-      
+
       if (startupFilterController.isFilterApplied.value) {
         query = firestore
             .collection("Investors")
@@ -128,6 +128,7 @@ class StartupGlobalController extends GetxController {
     isLoading.toggle();
     await firestore.collection("Startups").doc(user!.uid).get().then((val) {
       currentStartup = StartupModel.fromJson(val.data()!);
+      print(val.data()!['Stage']);
     });
     isLoading.toggle();
     getInvestorsForFeed();

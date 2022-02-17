@@ -365,13 +365,70 @@ class StartupDataBase {
     }
   }
 
-  void updateStartupUserName(String name) {
-    Get.find<StartupGlobalController>().currentStartup.userName = name;
+  void addStageDetails(Map<String, dynamic> stage) {
+    List<Map<String, dynamic>> tmpStage = [];
+    tmpStage.add(stage);
+    print(tmpStage);
     try {
       firestore
           .collection("Startups")
           .doc(user!.uid)
-          .update({"userName": name});
+          .update({"Stage": FieldValue.arrayUnion(tmpStage)});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void editStageDetails(Map<String, dynamic> stage, int index) async {
+    try {
+      await firestore.collection("Startups").doc(user!.uid).get().then((value) {
+        List<dynamic> tmpList = value.data()!['Stage'];
+
+        tmpList[index] = stage;
+
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"Stage": tmpList});
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+
+    void updateStartupFounderImg(String founderImg) {
+      Get.find<StartupGlobalController>().currentStartup.founderImg =
+          founderImg;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"founderImg": founderImg});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    void updateStartupLogoUrl(String startupLogoUrl) {
+      Get.find<StartupGlobalController>().currentStartup.startupLogoUrl =
+          startupLogoUrl;
+      try {
+        firestore
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({"startupLogoUrl": startupLogoUrl});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+  }
+
+  void updateStartupUserName(String userName) {
+    Get.find<StartupGlobalController>().currentStartup.userName = userName;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"userName": userName});
     } catch (e) {
       print(e.toString());
     }
@@ -458,31 +515,6 @@ class StartupDataBase {
           .collection("Startups")
           .doc(user!.uid)
           .update({"startupDescription": startupDescription});
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void updateStartupFounderImg(String founderImg) {
-    Get.find<StartupGlobalController>().currentStartup.founderImg = founderImg;
-    try {
-      firestore
-          .collection("Startups")
-          .doc(user!.uid)
-          .update({"founderImg": founderImg});
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void updateStartupLogoUrl(String startupLogoUrl) {
-    Get.find<StartupGlobalController>().currentStartup.startupLogoUrl =
-        startupLogoUrl;
-    try {
-      firestore
-          .collection("Startups")
-          .doc(user!.uid)
-          .update({"startupLogoUrl": startupLogoUrl});
     } catch (e) {
       print(e.toString());
     }

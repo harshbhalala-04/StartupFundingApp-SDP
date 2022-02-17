@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/startup_request_stage_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
 
@@ -47,11 +49,144 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ))
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(
+              icon: Icon(Icons.more_vert),
+              color: Colors.white,
+              onPressed: () {
+                showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  )),
+                  context: context,
+                  builder: (ctx) {
+                    return Container(
+                      height: 350,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextButton(
+                                child: Text(
+                                  "View Current Status",
+                                  style: TextStyle(
+                                    fontFamily: "Cabin",
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextButton(
+                                child: Text(
+                                  "Create/Edit Stage",
+                                  style: TextStyle(
+                                    fontFamily: "Cabin",
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.to(CreateEditStageScreen());
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextButton(
+                                child: Text(
+                                  "Request stage",
+                                  style: TextStyle(
+                                    fontFamily: "Cabin",
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.to(StartupRequestStageScreen());
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextButton(
+                                child: Text(
+                                  "View Funding",
+                                  style: TextStyle(
+                                    fontFamily: "Cabin",
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                endIndent: 5,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: TextButton(
+                                child: Text(
+                                  "Submit stage",
+                                  style: TextStyle(
+                                    fontFamily: "Cabin",
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ],
         flexibleSpace: Container(
           margin: EdgeInsets.only(top: 28),
