@@ -18,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
             labelText: labelText,
             border: OutlineInputBorder(),
           ),
+         
         ),
       ),
     );

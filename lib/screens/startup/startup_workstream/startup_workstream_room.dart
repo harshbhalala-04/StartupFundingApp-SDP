@@ -1,13 +1,15 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_if_null_operators
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/controllers/startup_controllers/create_edit_stage_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/startup_request_stage_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/view_status_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
 
@@ -29,10 +31,38 @@ class StartupWorkStreamRoom extends StatefulWidget {
 
 class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
   dynamic messageStream;
+  bool stageCreated = false;
+  bool isLoading = false;
+
+  final CreateEditStageController createEditStageController =
+      Get.put(CreateEditStageController());
   getAndSetMessages() async {
+    print("Here init state is occured");
+    setState(() {
+      isLoading = true;
+    });
     messageStream =
         await StartupDataBase().getWorkStreamMessages(widget.workStreamId);
-    setState(() {});
+    await FirebaseFirestore.instance
+        .collection("workstream")
+        .doc(widget.workStreamId)
+        .get()
+        .then((val) {
+      stageCreated = val.data()!['stageCreated'];
+      createEditStageController.isStageSubmitted.value =
+          val.data()!['submitStage'] == null
+              ? false
+              : val.data()!['submitStage'];
+    });
+
+    if (stageCreated) {
+      print(stageCreated);
+      print("Here stage fetches occures");
+      createEditStageController.fetchStages(widget.workStreamId);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -68,6 +98,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -79,7 +110,9 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                     fontSize: 18,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(ViewStatusScreen(workStreamId: widget.workStreamId,));
+                                },
                               ),
                             ),
                             Padding(
@@ -103,7 +136,8 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Get.to(CreateEditStageScreen());
+                                  Get.to(() => CreateEditStageScreen(
+                                      workStreamId: widget.workStreamId));
                                 },
                               ),
                             ),
@@ -225,7 +259,11 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: bodyWidget(),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : bodyWidget(),
     );
   }
 

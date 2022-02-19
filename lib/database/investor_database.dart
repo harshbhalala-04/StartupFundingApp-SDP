@@ -348,4 +348,58 @@ class InvestorDataBase {
       print(e.toString());
     }
   }
+
+  void approveStage(int stageIndex, String workStreamId) async {
+    try {
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc("stage " + stageIndex.toString())
+          .update({"approveStage": true});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void rejectStage(int stageIndex, String workStreamId, String feedBack) async {
+    try {
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc("stage " + stageIndex.toString())
+          .update({
+        "approveStage": false,
+        "feedBack": feedBack,
+      });
+      await firestore.collection("workstream").doc(workStreamId).update({
+       "submitStage": false
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addStageVerify(String workStreamId, String statusDes) async {
+    try {
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .update({"verifiedStage": true});
+
+      Map<String, dynamic> status = {};
+      status['timestamp'] = Timestamp.now();
+      status['statusDes'] = statusDes;
+
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("status")
+          .doc()
+          .set(status);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

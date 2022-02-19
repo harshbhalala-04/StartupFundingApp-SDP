@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:startupfunding/controllers/startup_controllers/create_edit_stage_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 
 class StartupDataBase {
@@ -365,150 +366,190 @@ class StartupDataBase {
     }
   }
 
-  void addStageDetails(Map<String, dynamic> stage) {
-    List<Map<String, dynamic>> tmpStage = [];
-    tmpStage.add(stage);
-    print(tmpStage);
+  void addStageDetails(
+      Map<String, dynamic> stage, String workStreamId, String stageIndex) {
+    stage['createdAt'] = Timestamp.now();
+
     try {
       firestore
-          .collection("Startups")
-          .doc(user!.uid)
-          .update({"Stage": FieldValue.arrayUnion(tmpStage)});
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc("stage " + stageIndex)
+          .set(stage);
+
+      if (stageIndex == "1") {
+        firestore
+            .collection("workstream")
+            .doc(workStreamId)
+            .update({"stageCreated": true});
+      }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  void editStageDetails(Map<String, dynamic> stage, int index) async {
+  void editStageDetails(Map<String, dynamic> stage, int index,
+      String stageIndex, String workStreamId) async {
     try {
-      await firestore.collection("Startups").doc(user!.uid).get().then((value) {
-        List<dynamic> tmpList = value.data()!['Stage'];
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc("stage " + stageIndex)
+          .update(stage);
 
-        tmpList[index] = stage;
-
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"Stage": tmpList});
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc("stage " + stageIndex)
+          .get()
+          .then((value) {
+        if (value.data()!.containsKey("approveStage")) {
+          firestore
+              .collection("workstream")
+              .doc(workStreamId)
+              .collection("stages")
+              .doc("stage " + stageIndex)
+              .update({"approveStage": FieldValue.delete()});
+        }
       });
     } catch (e) {
       print(e.toString());
     }
+  }
 
-    
-    void updateStartupName(String startupName) {
-      Get.find<StartupGlobalController>().currentStartup.startupName =
-          startupName;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"startupName": startupName});
-      } catch (e) {
-        print(e.toString());
-      }
+  void submitStage(String workStreamId) {
+    Get.find<CreateEditStageController>().isStageSubmitted.value = true;
+    try {
+      firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .update({"submitStage": true, "verifiedStage": false});
+
+      firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("status")
+          .doc()
+          .set({
+        "timestamp": Timestamp.now(),
+        "statusDes": "Stages have been submitted"
+      });
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupRegisteredName(String regStartupName) {
-      Get.find<StartupGlobalController>().currentStartup.regStartupName =
-          regStartupName;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"regStartupName": regStartupName});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupName(String startupName) {
+    Get.find<StartupGlobalController>().currentStartup.startupName =
+        startupName;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"startupName": startupName});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupPhoneNo(String phoneNo) {
-      Get.find<StartupGlobalController>().currentStartup.phoneNo = phoneNo;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"phoneNo": phoneNo});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupRegisteredName(String regStartupName) {
+    Get.find<StartupGlobalController>().currentStartup.regStartupName =
+        regStartupName;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"regStartupName": regStartupName});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupEmail(String email) {
-      Get.find<StartupGlobalController>().currentStartup.email = email;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"email": email});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupPhoneNo(String phoneNo) {
+    Get.find<StartupGlobalController>().currentStartup.phoneNo = phoneNo;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"phoneNo": phoneNo});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupLinkedinUrl(String linkedinUrl) {
-      Get.find<StartupGlobalController>().currentStartup.linkedinUrl =
-          linkedinUrl;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"linkedinUrl": linkedinUrl});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupEmail(String email) {
+    Get.find<StartupGlobalController>().currentStartup.email = email;
+    try {
+      firestore.collection("Startups").doc(user!.uid).update({"email": email});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupCity(String startupCity) {
-      Get.find<StartupGlobalController>().currentStartup.startupCity =
-          startupCity;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"startupCity": startupCity});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupLinkedinUrl(String linkedinUrl) {
+    Get.find<StartupGlobalController>().currentStartup.linkedinUrl =
+        linkedinUrl;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"linkedinUrl": linkedinUrl});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupDescription(String startupDescription) {
-      Get.find<StartupGlobalController>().currentStartup.startupDescription =
-          startupDescription;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"startupDescription": startupDescription});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupCity(String startupCity) {
+    Get.find<StartupGlobalController>().currentStartup.startupCity =
+        startupCity;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"startupCity": startupCity});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupFounderImg(String founderImg) {
-      Get.find<StartupGlobalController>().currentStartup.founderImg =
-          founderImg;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"founderImg": founderImg});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupDescription(String startupDescription) {
+    Get.find<StartupGlobalController>().currentStartup.startupDescription =
+        startupDescription;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"startupDescription": startupDescription});
+    } catch (e) {
+      print(e.toString());
     }
+  }
 
-    void updateStartupLogoUrl(String startupLogoUrl) {
-      Get.find<StartupGlobalController>().currentStartup.startupLogoUrl =
-          startupLogoUrl;
-      try {
-        firestore
-            .collection("Startups")
-            .doc(user!.uid)
-            .update({"startupLogoUrl": startupLogoUrl});
-      } catch (e) {
-        print(e.toString());
-      }
+  void updateStartupFounderImg(String founderImg) {
+    Get.find<StartupGlobalController>().currentStartup.founderImg = founderImg;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"founderImg": founderImg});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void updateStartupLogoUrl(String startupLogoUrl) {
+    Get.find<StartupGlobalController>().currentStartup.startupLogoUrl =
+        startupLogoUrl;
+    try {
+      firestore
+          .collection("Startups")
+          .doc(user!.uid)
+          .update({"startupLogoUrl": startupLogoUrl});
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

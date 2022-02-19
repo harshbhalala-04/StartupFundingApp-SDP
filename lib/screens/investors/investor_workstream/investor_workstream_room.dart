@@ -5,7 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/controllers/investor_controllers/verify_stage_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/verify_stage_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
 
@@ -27,16 +29,40 @@ class InvestorWorkStreamRoom extends StatefulWidget {
 
 class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
   dynamic messageStream;
+  bool isLoading = false;
+  bool stageCreated = false;
+
+  final VerifyStageController verifyStageController =
+      Get.put(VerifyStageController());
+
   getAndSetMessages() async {
+    setState(() {
+      isLoading = true;
+    });
     messageStream =
         await InvestorDataBase().getWorkStreamMessages(widget.workStreamId);
-    setState(() {});
+
+    await FirebaseFirestore.instance
+        .collection("workstream")
+        .doc(widget.workStreamId)
+        .get()
+        .then((val) {
+      stageCreated = val.data()!['stageCreated'];
+    });
+
+    if (stageCreated) {
+      verifyStageController.fetchStages(widget.workStreamId);
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     getAndSetMessages();
+
     super.initState();
   }
 
@@ -81,7 +107,8 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Divider(
                                   color: Colors.grey,
                                   height: 5,
@@ -99,11 +126,14 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.to(VerifyStageScreen(workStreamId: widget.workStreamId,));
+                                  },
                                 ),
                               ),
-                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Divider(
                                   color: Colors.grey,
                                   height: 5,
@@ -124,8 +154,9 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                   onPressed: () {},
                                 ),
                               ),
-                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Divider(
                                   color: Colors.grey,
                                   height: 5,
@@ -146,8 +177,9 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                   onPressed: () {},
                                 ),
                               ),
-                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:16.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Divider(
                                   color: Colors.grey,
                                   height: 5,
@@ -214,7 +246,11 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: bodyWidget(),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : bodyWidget(),
     );
   }
 

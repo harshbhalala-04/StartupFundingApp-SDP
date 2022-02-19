@@ -53,6 +53,7 @@ class StartupWorkStreamController extends GetxController {
       "secondUserImg": currentInvestor.value.investorImg,
       "firstUserUid": Get.find<StartupGlobalController>().currentStartup.uid,
       "secondUserUid": currentInvestor.value.uid,
+      "stageCreated": false
     };
 
     StartupDataBase().createWorkstream(workStreamId!, workStreamMap);

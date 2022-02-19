@@ -10,23 +10,27 @@ class StartupRequestStageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Request Stage",
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontFamily: "Cabin",
-              fontWeight: FontWeight.bold,
-            ),
+      appBar: AppBar(
+        title: Text(
+          "Request Stage",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontFamily: "Cabin",
+            fontWeight: FontWeight.bold,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
         ),
-        body: ListView.builder(
-          itemCount: Get.find<StartupGlobalController>().currentStartup.stage?.length,
-          itemBuilder: (ctx, index) {
-          return Container();
-        },),);
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
+      body: Container(),
+      // body: ListView.builder(
+      //   itemCount:
+      //       Get.find<StartupGlobalController>().currentStartup.stage?.length,
+      //   itemBuilder: (ctx, index) {
+      //     return Container();
+      //   },
+      // ),
+    );
   }
 }

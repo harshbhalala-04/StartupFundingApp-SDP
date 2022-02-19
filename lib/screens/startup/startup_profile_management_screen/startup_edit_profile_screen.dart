@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/widgets/custom_textformfield.dart';
 
 class StartupEditProfileScreen extends StatelessWidget {
@@ -283,8 +284,8 @@ class StartupEditProfileScreen extends StatelessWidget {
                     maxLines: 10,
                     initialValue: Get.find<StartupGlobalController>()
                         .currentStartup
-                        .startupDescription
-                        .toString(),
+                        .startupDescription,
+                    // .toString(),
                     decoration: InputDecoration(
                       labelText: "Discription",
                       border: OutlineInputBorder(),
@@ -294,7 +295,6 @@ class StartupEditProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(

@@ -19,9 +19,7 @@ class CustomCard extends StatelessWidget {
           child: Center(
             child: ListTile(
               leading: Image(
-               
                 image: AssetImage(iconImage),
-               
               ),
               title: Text(
                 title,

@@ -12,28 +12,28 @@ StartupModel startupModelFromJson(String str) =>
 String startupModelToJson(StartupModel data) => json.encode(data.toJson());
 
 class StartupModel {
-  StartupModel(
-      {this.coFounderImg,
-      this.email,
-      this.founderImg,
-      this.linkedinUrl,
-      this.phoneNo,
-      this.pitchDeckUrl,
-      this.regStartupName,
-      this.secondFounderEmail,
-      this.secondFounderLinkedinUrl,
-      this.secondFounderName,
-      this.singleUser,
-      this.startupCategory,
-      this.startupCity,
-      this.startupDescription,
-      this.startupLogoUrl,
-      this.startupName,
-      this.startupStage,
-      this.userName,
-      this.uid,
-      this.excludeInvestor,
-      this.stage});
+  StartupModel({
+    this.coFounderImg,
+    this.email,
+    this.founderImg,
+    this.linkedinUrl,
+    this.phoneNo,
+    this.pitchDeckUrl,
+    this.regStartupName,
+    this.secondFounderEmail,
+    this.secondFounderLinkedinUrl,
+    this.secondFounderName,
+    this.singleUser,
+    this.startupCategory,
+    this.startupCity,
+    this.startupDescription,
+    this.startupLogoUrl,
+    this.startupName,
+    this.startupStage,
+    this.userName,
+    this.uid,
+    this.excludeInvestor,
+  });
 
   String? coFounderImg;
   String? email;
@@ -55,7 +55,6 @@ class StartupModel {
   String? userName;
   String? uid;
   List<String>? excludeInvestor;
-  List<Stage>? stage;
 
   factory StartupModel.fromJson(Map<String, dynamic> json) => StartupModel(
         coFounderImg:
@@ -94,9 +93,6 @@ class StartupModel {
         excludeInvestor: json["excludeInvestor"] == null
             ? null
             : List<String>.from(json["excludeInvestor"].map((x) => x)),
-        stage: json["Stage"] == null
-            ? null
-            : List<Stage>.from(json["Stage"].map((x) => Stage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -126,57 +122,54 @@ class StartupModel {
         "excludeInvestor": excludeInvestor == null
             ? null
             : List<dynamic>.from(excludeInvestor!.map((x) => x)),
-        "Stage": stage == null
-            ? null
-            : List<dynamic>.from(stage!.map((x) => x.toJson())),
       };
 }
 
-class Stage {
-  Stage({
-    this.startDay,
-    this.startMonth,
-    this.startYear,
-    this.endDay,
-    this.endMonth,
-    this.endYear,
-    this.stageTitle,
-    this.stageDes,
-    this.stageFunding,
-  });
+// class Stage {
+//   Stage({
+//     this.startDay,
+//     this.startMonth,
+//     this.startYear,
+//     this.endDay,
+//     this.endMonth,
+//     this.endYear,
+//     this.stageTitle,
+//     this.stageDes,
+//     this.stageFunding,
+//   });
 
-  String? startDay;
-  String? startMonth;
-  String? startYear;
-  String? endDay;
-  String? endMonth;
-  String? endYear;
-  String? stageTitle;
-  String? stageDes;
-  String? stageFunding;
+//   String? startDay;
+//   String? startMonth;
+//   String? startYear;
+//   String? endDay;
+//   String? endMonth;
+//   String? endYear;
+//   String? stageTitle;
+//   String? stageDes;
+//   String? stageFunding;
 
-  factory Stage.fromJson(Map<String, dynamic> json) => Stage(
-        startDay: json["startDay"] == null ? null : json["startDay"],
-        startMonth: json["startMonth"] == null ? null : json["startMonth"],
-        startYear: json["startYear"] == null ? null : json["startYear"],
-        endDay: json["endDay"] == null ? null : json["endDay"],
-        endMonth: json["endMonth"] == null ? null : json["endMonth"],
-        endYear: json["endYear"] == null ? null : json["endYear"],
-        stageTitle: json["stageTitle"] == null ? null : json["stageTitle"],
-        stageDes: json["stageDes"] == null ? null : json["stageDes"],
-        stageFunding:
-            json["stageFunding"] == null ? null : json["stageFunding"],
-      );
+//   factory Stage.fromJson(Map<String, dynamic> json) => Stage(
+//         startDay: json["startDay"] == null ? null : json["startDay"],
+//         startMonth: json["startMonth"] == null ? null : json["startMonth"],
+//         startYear: json["startYear"] == null ? null : json["startYear"],
+//         endDay: json["endDay"] == null ? null : json["endDay"],
+//         endMonth: json["endMonth"] == null ? null : json["endMonth"],
+//         endYear: json["endYear"] == null ? null : json["endYear"],
+//         stageTitle: json["stageTitle"] == null ? null : json["stageTitle"],
+//         stageDes: json["stageDes"] == null ? null : json["stageDes"],
+//         stageFunding:
+//             json["stageFunding"] == null ? null : json["stageFunding"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "startDay": startDay == null ? null : startDay,
-        "startMonth": startMonth == null ? null : startMonth,
-        "startYear": startYear == null ? null : startYear,
-        "endDay": endDay == null ? null : endDay,
-        "endMonth": endMonth == null ? null : endMonth,
-        "endYear": endYear == null ? null : endYear,
-        "stageTitle": stageTitle == null ? null : stageTitle,
-        "stageDes": stageDes == null ? null : stageDes,
-        "stageFunding": stageFunding == null ? null : stageFunding,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "startDay": startDay == null ? null : startDay,
+//         "startMonth": startMonth == null ? null : startMonth,
+//         "startYear": startYear == null ? null : startYear,
+//         "endDay": endDay == null ? null : endDay,
+//         "endMonth": endMonth == null ? null : endMonth,
+//         "endYear": endYear == null ? null : endYear,
+//         "stageTitle": stageTitle == null ? null : stageTitle,
+//         "stageDes": stageDes == null ? null : stageDes,
+//         "stageFunding": stageFunding == null ? null : stageFunding,
+//       };
+// }

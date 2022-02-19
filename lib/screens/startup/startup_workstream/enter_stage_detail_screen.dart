@@ -6,6 +6,7 @@ import 'package:startupfunding/controllers/startup_controllers/create_edit_stage
 import 'package:startupfunding/controllers/startup_controllers/enter_stage_detail_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/models/stage_model.dart';
 import 'package:startupfunding/models/startup_model.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
@@ -14,8 +15,15 @@ class EnterStageDetailScreen extends StatefulWidget {
   final stage;
   final index;
   final bool fromEdit;
+  final String workStreamId;
+  final int stageIndex;
 
-  EnterStageDetailScreen({required this.fromEdit, this.stage, this.index});
+  EnterStageDetailScreen(
+      {required this.fromEdit,
+      this.stage,
+      this.index,
+      required this.workStreamId,
+      required this.stageIndex});
 
   @override
   State<EnterStageDetailScreen> createState() => _EnterStageDetailScreenState();
@@ -63,6 +71,45 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              widget.fromEdit &&
+                      Get.find<CreateEditStageController>().isApproved.length >=
+                          1
+                  ? Get.find<CreateEditStageController>()
+                          .isApproved[widget.index]
+                      ? Container()
+                      : Text(
+                          'Investor Feedback',
+                          style: TextStyle(
+                              fontFamily: "Cabin",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        )
+                  : Container(),
+              widget.fromEdit &&
+                      Get.find<CreateEditStageController>().isApproved.length >=
+                          1
+                  ? Get.find<CreateEditStageController>()
+                          .isApproved[widget.index]
+                      ? Container()
+                      : Text(
+                          Get.find<CreateEditStageController>()
+                              .feedBackList[widget.index],
+                          style: TextStyle(
+                            fontFamily: "Cabin",
+                            fontSize: 20,
+                          ),
+                        )
+                  : Container(),
+              widget.fromEdit &&
+                      Get.find<CreateEditStageController>().isApproved.length >=
+                          1
+                  ? Get.find<CreateEditStageController>()
+                          .isApproved[widget.index]
+                      ? Container()
+                      : SizedBox(
+                          height: 30,
+                        )
+                  : Container(),
               Text(
                 'Enter Stage Title',
                 style: TextStyle(
@@ -372,7 +419,9 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
             ),
             onPressed: () {
               Get.back();
-              Get.off(CreateEditStageScreen());
+              Get.off(CreateEditStageScreen(
+                workStreamId: widget.workStreamId,
+              ));
               Map<String, dynamic> stage = {
                 "stageTitle": stageTitleController.text,
                 "stageDes": stageDesController.text,
@@ -386,7 +435,7 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
               };
               if (widget.fromEdit) {
                 Get.find<CreateEditStageController>().stageList[widget.index] =
-                    Stage(
+                    StageModel(
                         stageDes: stageDesController.text,
                         endDay: enterStageDetailController.endDay.value,
                         endMonth: enterStageDetailController.endMonth.value,
@@ -397,7 +446,7 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
                         stageFunding: stageFundingController.text,
                         stageTitle: stageTitleController.text);
               } else {
-                Get.find<CreateEditStageController>().stageList.add(Stage(
+                Get.find<CreateEditStageController>().stageList.add(StageModel(
                     stageDes: stageDesController.text,
                     endDay: enterStageDetailController.endDay.value,
                     endMonth: enterStageDetailController.endMonth.value,
@@ -410,9 +459,11 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
               }
 
               if (widget.fromEdit) {
-                StartupDataBase().editStageDetails(stage, widget.index);
+                StartupDataBase().editStageDetails(stage, widget.index,
+                    widget.stageIndex.toString(), widget.workStreamId);
               } else {
-                StartupDataBase().addStageDetails(stage);
+                StartupDataBase().addStageDetails(
+                    stage, widget.workStreamId, widget.stageIndex.toString());
               }
             },
             style: ElevatedButton.styleFrom(
