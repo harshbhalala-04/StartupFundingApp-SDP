@@ -8,8 +8,51 @@ import 'package:startupfunding/controllers/startup_controllers/startup_global_co
 import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/widgets/custom_textformfield.dart';
 
-class StartupEditProfileScreen extends StatelessWidget {
+class StartupEditProfileScreen extends StatefulWidget {
   StartupEditProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StartupEditProfileScreen> createState() =>
+      _StartupEditProfileScreenState();
+}
+
+class _StartupEditProfileScreenState extends State<StartupEditProfileScreen> {
+  TextEditingController startupUserNameController = new TextEditingController();
+  TextEditingController startupNameController = new TextEditingController();
+  TextEditingController startupRegNameController = new TextEditingController();
+  TextEditingController startupPhoneNoController = new TextEditingController();
+  TextEditingController startupEmailController = new TextEditingController();
+  // TextEditingController startupWebAppUrlController =
+  //     new TextEditingController();
+  TextEditingController startupLinkedinUrlController =
+      new TextEditingController();
+  TextEditingController startupCityController = new TextEditingController();
+  TextEditingController startupDescriptionController =
+      new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    startupUserNameController.text =
+        Get.find<StartupGlobalController>().currentStartup.userName!;
+    startupNameController.text =
+        Get.find<StartupGlobalController>().currentStartup.startupName!;
+    startupRegNameController.text =
+        Get.find<StartupGlobalController>().currentStartup.regStartupName!;
+    startupPhoneNoController.text =
+        Get.find<StartupGlobalController>().currentStartup.phoneNo!;
+    startupEmailController.text =
+        Get.find<StartupGlobalController>().currentStartup.email!;
+    // startupWebAppUrlController.text =
+    //     Get.find<StartupGlobalController>().currentStartup.linkedinUrl!;
+    startupLinkedinUrlController.text =
+        Get.find<StartupGlobalController>().currentStartup.linkedinUrl!;
+    startupCityController.text =
+        Get.find<StartupGlobalController>().currentStartup.startupCity!;
+    startupDescriptionController.text =
+        Get.find<StartupGlobalController>().currentStartup.startupDescription!;
+  }
 
   List<String> startupCategories = [
     "Advertising",
@@ -71,6 +114,7 @@ class StartupEditProfileScreen extends StatelessWidget {
     "Transportation",
     "Travel & Tourism"
   ];
+
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -174,75 +218,142 @@ class StartupEditProfileScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Name",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .userName
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Startup Name",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .startupName
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Startup Registered Name",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .regStartupName
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Phone No",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .phoneNo
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Email",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .email
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Website/App Url",
-                  initialValue: "",
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "Linkedin Url",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .linkedinUrl
-                      .toString(),
-                )),
-            InkWell(
-                onTap: () {},
-                child: CustomTextFormField(
-                  labelText: "City",
-                  initialValue: Get.find<StartupGlobalController>()
-                      .currentStartup
-                      .startupCity
-                      .toString(),
-                )),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupUserNameController,
+                  onEditingComplete: () {
+                    StartupDataBase()
+                        .updateStartupUserName(startupUserNameController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupNameController,
+                  onEditingComplete: () {
+                    StartupDataBase()
+                        .updateStartupName(startupNameController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Startup Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupRegNameController,
+                  onEditingComplete: () {
+                    StartupDataBase().updateStartupRegisteredName(
+                        startupRegNameController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Startup Rregistered Name",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupPhoneNoController,
+                  onEditingComplete: () {
+                    StartupDataBase()
+                        .updateStartupPhoneNo(startupPhoneNoController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Phone No",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupEmailController,
+                  onEditingComplete: () {
+                    StartupDataBase()
+                        .updateStartupEmail(startupEmailController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  // controller: startupWebAppUrlController,
+                  // onEditingComplete: () {
+                  //   StartupDataBase()
+                  //       .updateStartupUserName(startupWebAppUrlController.text);
+                  // },
+                  decoration: InputDecoration(
+                    labelText: "Website/App Url",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupLinkedinUrlController,
+                  onEditingComplete: () {
+                    StartupDataBase().updateStartupLinkedinUrl(
+                        startupLinkedinUrlController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "Linkedin Url",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 7, 20, 0),
+              child: Container(
+                height: 80,
+                child: TextFormField(
+                  controller: startupCityController,
+                  onEditingComplete: () {
+                    StartupDataBase()
+                        .updateStartupCity(startupCityController.text);
+                  },
+                  decoration: InputDecoration(
+                    labelText: "City",
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 7),
               child: Column(
@@ -282,12 +393,13 @@ class StartupEditProfileScreen extends StatelessWidget {
                   height: 120,
                   child: TextFormField(
                     maxLines: 10,
-                    initialValue: Get.find<StartupGlobalController>()
-                        .currentStartup
-                        .startupDescription,
-                    // .toString(),
+                    controller: startupDescriptionController,
+                    onEditingComplete: () {
+                      StartupDataBase().updateStartupDescription(
+                          startupDescriptionController.text);
+                    },
                     decoration: InputDecoration(
-                      labelText: "Discription",
+                      labelText: "Description",
                       border: OutlineInputBorder(),
                     ),
                     maxLength: 100,
@@ -301,7 +413,24 @@ class StartupEditProfileScreen extends StatelessWidget {
                 height: 50,
                 width: 250,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    StartupDataBase()
+                        .updateStartupUserName(startupUserNameController.text);
+                    StartupDataBase()
+                        .updateStartupName(startupNameController.text);
+                    StartupDataBase().updateStartupRegisteredName(
+                        startupRegNameController.text);
+                    StartupDataBase()
+                        .updateStartupPhoneNo(startupPhoneNoController.text);
+                    StartupDataBase()
+                        .updateStartupEmail(startupEmailController.text);
+                    StartupDataBase().updateStartupLinkedinUrl(
+                        startupLinkedinUrlController.text);
+                    // StartupDataBase().updateStartupWebAppUrl(startupWebAppUrlController.text);
+                    StartupDataBase()
+                        .updateStartupCity(startupCityController.text);
+                    Get.back();
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
