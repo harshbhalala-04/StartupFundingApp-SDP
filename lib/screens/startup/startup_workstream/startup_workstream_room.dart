@@ -10,6 +10,7 @@ import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/startup_request_stage_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/view_status_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/work_proof.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
 
@@ -79,146 +80,153 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: IconButton(
-              icon: Icon(Icons.more_vert),
-              color: Colors.white,
-              onPressed: () {
-                showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  )),
-                  context: context,
-                  builder: (ctx) {
-                    return Container(
-                      height: 350,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: TextButton(
-                                child: Text(
-                                  "View Current Status",
-                                  style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 18,
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Container(
+              alignment: Alignment.center,
+              child: IconButton(
+                icon: Icon(Icons.more_vert),
+                color: Colors.white,
+                onPressed: () {
+                  showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    )),
+                    context: context,
+                    builder: (ctx) {
+                      return Container(
+                        height: 350,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "View Current Status",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
                                   ),
+                                  onPressed: () {
+                                    Get.to(ViewStatusScreen(
+                                      workStreamId: widget.workStreamId,
+                                    ));
+                                  },
                                 ),
-                                onPressed: () {
-                                  Get.to(ViewStatusScreen(workStreamId: widget.workStreamId,));
-                                },
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Divider(
-                                color: Colors.grey,
-                                height: 5,
-                                endIndent: 5,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: TextButton(
-                                child: Text(
-                                  "Create/Edit Stage",
-                                  style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 18,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Create/Edit Stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
                                   ),
+                                  onPressed: () {
+                                    Get.to(() => CreateEditStageScreen(
+                                        workStreamId: widget.workStreamId));
+                                  },
                                 ),
-                                onPressed: () {
-                                  Get.to(() => CreateEditStageScreen(
-                                      workStreamId: widget.workStreamId));
-                                },
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Divider(
-                                color: Colors.grey,
-                                height: 5,
-                                endIndent: 5,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: TextButton(
-                                child: Text(
-                                  "Request stage",
-                                  style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 18,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Request stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
                                   ),
+                                  onPressed: () {
+                                    Get.to(StartupRequestStageScreen());
+                                  },
                                 ),
-                                onPressed: () {
-                                  Get.to(StartupRequestStageScreen());
-                                },
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Divider(
-                                color: Colors.grey,
-                                height: 5,
-                                endIndent: 5,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: TextButton(
-                                child: Text(
-                                  "View Funding",
-                                  style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 18,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "View Funding",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
                                   ),
+                                  onPressed: () {},
                                 ),
-                                onPressed: () {},
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Divider(
-                                color: Colors.grey,
-                                height: 5,
-                                endIndent: 5,
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Divider(
+                                  color: Colors.grey,
+                                  height: 5,
+                                  endIndent: 5,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: TextButton(
-                                child: Text(
-                                  "Submit stage",
-                                  style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 18,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: TextButton(
+                                  child: Text(
+                                    "Submit stage",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 18,
+                                    ),
                                   ),
+                                  onPressed: () {
+                                    Get.to(() => WorkProofScreen(
+                                        workStreamId: widget.workStreamId));
+                                  },
                                 ),
-                                onPressed: () {},
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -227,32 +235,42 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
           child: Row(
             children: [
               InkWell(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 22,
-                      color: Colors.white,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 22,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
                   }),
               SizedBox(width: 10),
-              CircleAvatar(
-                backgroundColor: Color.fromRGBO(196, 196, 196, 1),
-                backgroundImage: CachedNetworkImageProvider(widget.otherImgUrl),
-                radius: 20,
+              Container(
+                alignment: Alignment.center,
+                child: CircleAvatar(
+                  backgroundColor: Color.fromRGBO(196, 196, 196, 1),
+                  backgroundImage:
+                      CachedNetworkImageProvider(widget.otherImgUrl),
+                  radius: 20,
+                ),
               ),
               SizedBox(
                 width: 10,
               ),
-              Text(
-                widget.otherUsername,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  widget.otherUsername,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -299,7 +317,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
             child: Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/chat_bg.jpg"),
+                      image: AssetImage("assets/startup_chatscreen_bg.jpg"),
                       fit: BoxFit.fill)),
               child: ListView.builder(
 

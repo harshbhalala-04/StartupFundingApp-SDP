@@ -107,6 +107,8 @@ flutter:
     - assets/logout_icon.png
     - assets/chat_bg.jpg
     - assets/filter.png
+    - assets/startup_chatscreen_bg.jpg
+    - assets/investor_chatscreen_bg.jpg
 
     
 

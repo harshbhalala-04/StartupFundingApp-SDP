@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/controllers/investor_controllers/verify_stage_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/investor_view_status_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/verify_stage_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
@@ -73,139 +74,148 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
         automaticallyImplyLeading: false,
         actions: [
           Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: IconButton(
-              icon: Icon(Icons.more_vert),
-              color: Colors.white,
-              onPressed: () {
-                showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    )),
-                    context: context,
-                    builder: (ctx) {
-                      return Container(
-                        height: 350,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: TextButton(
-                                  child: Text(
-                                    "View Current Status",
-                                    style: TextStyle(
-                                      fontFamily: "Cabin",
-                                      fontSize: 18,
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Container(
+              alignment: Alignment.center,
+              child: IconButton(
+                icon: Icon(Icons.more_vert),
+                color: Colors.white,
+                onPressed: () {
+                  showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      )),
+                      context: context,
+                      builder: (ctx) {
+                        return Container(
+                          height: 350,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      "View Current Status",
+                                      style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 18,
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      Get.to(InvestorViewStatusScreen(
+                                        workStreamId: widget.workStreamId,
+                                      ));
+                                    },
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 5,
-                                  endIndent: 5,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    height: 5,
+                                    endIndent: 5,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: TextButton(
-                                  child: Text(
-                                    "Verify stage",
-                                    style: TextStyle(
-                                      fontFamily: "Cabin",
-                                      fontSize: 18,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      "Verify stage",
+                                      style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 18,
+                                      ),
                                     ),
+                                    onPressed: () {
+                                      Get.to(VerifyStageScreen(
+                                        workStreamId: widget.workStreamId,
+                                      ));
+                                    },
                                   ),
-                                  onPressed: () {
-                                    Get.to(VerifyStageScreen(workStreamId: widget.workStreamId,));
-                                  },
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 5,
-                                  endIndent: 5,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    height: 5,
+                                    endIndent: 5,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: TextButton(
-                                  child: Text(
-                                    "Approve Requested Stage",
-                                    style: TextStyle(
-                                      fontFamily: "Cabin",
-                                      fontSize: 18,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      "Approve Requested Stage",
+                                      style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 18,
+                                      ),
                                     ),
+                                    onPressed: () {},
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 5,
-                                  endIndent: 5,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    height: 5,
+                                    endIndent: 5,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: TextButton(
-                                  child: Text(
-                                    "Provided Funding",
-                                    style: TextStyle(
-                                      fontFamily: "Cabin",
-                                      fontSize: 18,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      "Provided Funding",
+                                      style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 18,
+                                      ),
                                     ),
+                                    onPressed: () {},
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 5,
-                                  endIndent: 5,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Divider(
+                                    color: Colors.grey,
+                                    height: 5,
+                                    endIndent: 5,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: TextButton(
-                                  child: Text(
-                                    "View Submitted stage",
-                                    style: TextStyle(
-                                      fontFamily: "Cabin",
-                                      fontSize: 18,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: TextButton(
+                                    child: Text(
+                                      "View Submitted stage",
+                                      style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 18,
+                                      ),
                                     ),
+                                    onPressed: () {},
                                   ),
-                                  onPressed: () {},
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    });
-              },
+                        );
+                      });
+                },
+              ),
             ),
           ),
         ],
@@ -215,31 +225,41 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
             children: [
               InkWell(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 22,
-                      color: Colors.white,
+                    padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 22,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   onTap: () {
                     Navigator.pop(context);
                   }),
               SizedBox(width: 10),
-              CircleAvatar(
-                backgroundColor: Color.fromRGBO(196, 196, 196, 1),
-                backgroundImage: CachedNetworkImageProvider(widget.otherImgUrl),
-                radius: 20,
+              Container(
+                alignment: Alignment.center,
+                child: CircleAvatar(
+                  backgroundColor: Color.fromRGBO(196, 196, 196, 1),
+                  backgroundImage:
+                      CachedNetworkImageProvider(widget.otherImgUrl),
+                  radius: 20,
+                ),
               ),
               SizedBox(
                 width: 10,
               ),
-              Text(
-                widget.otherUsername,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+              Container(
+                alignment: Alignment.center,
+                child: Text(
+                  widget.otherUsername,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -289,7 +309,7 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/chat_bg.jpg"),
+                  image: AssetImage("assets/investor_chatscreen_bg.jpg"),
                   fit: BoxFit.fill,
                 ),
               ),

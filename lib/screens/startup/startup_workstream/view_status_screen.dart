@@ -25,7 +25,6 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
         appBar: AppBar(
           title: Text(
