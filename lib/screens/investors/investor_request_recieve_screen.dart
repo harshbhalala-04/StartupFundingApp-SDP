@@ -52,6 +52,7 @@ class InvestorRequestRecieveScreen extends StatelessWidget {
                   Get.to(StartupDetailScreen(
                       viewProfile: false,
                       fromReq: true,
+                      fromDynamic: false,
                       uid: Get.find<InvestorRequestController>()
                           .inviteRecievedList[index]["id"]));
                 },

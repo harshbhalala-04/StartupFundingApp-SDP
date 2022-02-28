@@ -9,6 +9,9 @@ class CreateEditStageController extends GetxController {
   final isApproved = [].obs;
   final feedBackList = [].obs;
 
+  final pendingRequest = [].obs;
+  final approvedRequest = [].obs;
+
   final isVerified = false.obs;
 
   fetchStages(String workStreamId) async {
@@ -34,6 +37,7 @@ class CreateEditStageController extends GetxController {
       print("Here length: ${value.docs.length}");
       for (int i = 0; i < value.docs.length; i++) {
         stageList.add(StageModel.fromJson(value.docs[i].data()));
+
         if (value.docs[i].data().containsKey("approveStage")) {
           if (value.docs[i].data()['approveStage']) {
             isApproved.add(value.docs[i].data()['approveStage']);
@@ -43,10 +47,18 @@ class CreateEditStageController extends GetxController {
             feedBackList.add(value.docs[i].data()['feedBack']);
           }
         }
-      }
-      print("Feedback");
-      for (int i = 0; i < feedBackList.length; i++) {
-        print(feedBackList[i]);
+
+        if (value.docs[i].data().containsKey("pendingRequest")) {
+          pendingRequest.add(value.docs[i].data()['pendingRequest']);
+        } else {
+          pendingRequest.add(false);
+        }
+
+        if (value.docs[i].data().containsKey("approvedRequest")) {
+          approvedRequest.add(value.docs[i].data()['approvedRequest']);
+        } else {
+          approvedRequest.add(false);
+        }
       }
     });
   }

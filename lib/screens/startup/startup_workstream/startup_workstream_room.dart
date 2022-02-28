@@ -162,7 +162,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  Get.to(StartupRequestStageScreen());
+                                  Get.to(StartupRequestStageScreen(workStreamId: widget.workStreamId,));
                                 },
                               ),
                             ),

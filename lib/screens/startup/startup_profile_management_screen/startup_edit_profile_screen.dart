@@ -156,7 +156,9 @@ class _StartupEditProfileScreenState extends State<StartupEditProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      
+                    },
                     child: Column(
                       children: <Widget>[
                         Padding(

@@ -20,10 +20,12 @@ class StartupDetailScreen extends StatefulWidget {
   StartupModel? startup;
   String? uid;
   final bool fromReq;
+  final bool fromDynamic;
   var viewProfile;
   StartupDetailScreen(
       {this.startup,
       this.uid,
+      required this.fromDynamic,
       required this.fromReq,
       required this.viewProfile});
 

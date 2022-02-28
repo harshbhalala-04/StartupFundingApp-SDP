@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/controllers/investor_controllers/verify_stage_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/investor_stage_request_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/verify_stage_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
@@ -127,7 +128,9 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Get.to(VerifyStageScreen(workStreamId: widget.workStreamId,));
+                                    Get.to(VerifyStageScreen(
+                                      workStreamId: widget.workStreamId,
+                                    ));
                                   },
                                 ),
                               ),
@@ -151,7 +154,11 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.to(InvestorStageRequestScreen(
+                                      workStreamId: widget.workStreamId,
+                                    ));
+                                  },
                                 ),
                               ),
                               Padding(

@@ -9,6 +9,8 @@ class VerifyStageController extends GetxController {
 
   final isValidated = [].obs;
   final isApproved = [].obs;
+  final isPendingRequest = [].obs;
+  final isApprovedRequest = [].obs;
 
   final isSubmitApplyable = true.obs;
 
@@ -28,6 +30,18 @@ class VerifyStageController extends GetxController {
         } else {
           isValidated.add(false);
           isApproved.add(false);
+        }
+
+        if (value.docs[i].data().containsKey("pendingRequest")) {
+          isPendingRequest.add(value.docs[i].data()['pendingRequest']);
+        } else {
+          isPendingRequest.add(false);
+        }
+
+        if (value.docs[i].data().containsKey("approvedRequest")) {
+          isApprovedRequest.add(value.docs[i].data()['approvedRequest']);
+        } else {
+          isApprovedRequest.add(false);
         }
       }
       if (isValidated.length == 0) {

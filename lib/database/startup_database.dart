@@ -524,19 +524,6 @@ class StartupDataBase {
     }
   }
 
-  // void updateStartupName(String startupName) {
-  //   Get.find<StartupGlobalController>().currentStartup.startupName =
-  //       startupName;
-  //   try {
-  //     firestore
-  //         .collection("Startups")
-  //         .doc(user!.uid)
-  //         .update({"startupName": startupName});
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
   void updateStartupLinkedinUrl(String linkedinUrl) {
     Get.find<StartupGlobalController>().currentStartup.linkedinUrl =
         linkedinUrl;
@@ -576,5 +563,24 @@ class StartupDataBase {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void addRequestStage(int stageIndex, String workStreamId) async {
+    await FirebaseFirestore.instance
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc("stage " + stageIndex.toString())
+        .update({"pendingRequest": true});
+
+    await FirebaseFirestore.instance
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("status")
+        .doc()
+        .set({
+      "stageDes": "Stage ${stageIndex} is requested for funding.",
+      "timestamp": Timestamp.now()
+    });
   }
 }

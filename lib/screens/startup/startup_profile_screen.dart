@@ -12,14 +12,38 @@ import 'package:startupfunding/screens/startup/startup_profile_management_screen
 import 'package:startupfunding/screens/startup/startup_profile_management_screen/startup_view_balance_screen.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
-
-
+import 'package:share_plus/share_plus.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class StartupProfileScreen extends StatelessWidget {
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     sharedPreferences.remove('title');
+  }
+
+  Future<void> createDynamicLink() async {
+    Uri imageUri = Uri.parse(
+        Get.find<StartupGlobalController>().currentStartup.startupLogoUrl!);
+    String userName =
+        Get.find<StartupGlobalController>().currentStartup.startupName!;
+    String userId = Get.find<StartupGlobalController>().currentStartup.uid!;
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: "https://startupfunding.page.link",
+      link: Uri.parse("https://startupfunding.page.link/$userId"),
+      androidParameters: AndroidParameters(
+          packageName: "com.example.startupfunding", minimumVersion: 0),
+      socialMetaTagParameters: SocialMetaTagParameters(
+        title: userName,
+        imageUrl: imageUri,
+      ),
+    );
+
+    final ShortDynamicLink shortLink = await parameters.buildShortLink();
+
+    Uri url = shortLink.shortUrl;
+
+    await Share.share(url.toString(), subject: userName);
   }
 
   @override
@@ -34,6 +58,7 @@ class StartupProfileScreen extends StatelessWidget {
                   fromReq: false,
                   startup: Get.find<StartupGlobalController>().currentStartup,
                   viewProfile: true,
+                  fromDynamic: false,
                 ));
               },
               child: CustomCard(
@@ -46,6 +71,12 @@ class StartupProfileScreen extends StatelessWidget {
               child: CustomCard(
                   iconImage: "assets/edit_profile_icon.png",
                   title: "Edit Profile")),
+          InkWell(
+            onTap: () {
+              createDynamicLink();
+            },
+            child: Text("Share Startup"),
+          ),
           InkWell(
               onTap: () {
                 Get.to(StartupViewBalanceScreen());

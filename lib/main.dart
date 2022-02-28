@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +17,7 @@ import 'package:startupfunding/screens/startup/startup_onboarding_screen/pitch_d
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/single_founder_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/user_name_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
+import 'package:startupfunding/screens/user_profile_screen.dart';
 import 'controllers/bindings/authBinding.dart';
 import 'screens/start_screen.dart';
 
@@ -26,7 +28,6 @@ void main() async {
 }
 
 int flag = 0;
-
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -39,8 +40,40 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
+    initDynamicLinks();
     getUserType();
     super.initState();
+  }
+
+  void initDynamicLinks() async {
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    final Uri? deepLink = data?.link;
+    var uid;
+
+    if (deepLink != null) {
+      uid = deepLink.path.substring(1);
+      if (FirebaseAuth.instance.currentUser != null) {
+        Get.to(UserProfileScreen(uid: uid, ));
+      }
+    }
+
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+      final Uri? deepLink = dynamicLink?.link;
+
+      if (deepLink != null) {
+        uid = deepLink.path.substring(1);
+        if (FirebaseAuth.instance.currentUser != null) {
+          Get.to(UserProfileScreen(
+            uid: uid,
+            
+          ));
+        }
+      }
+    }, onError: (OnLinkErrorException e) async {
+      print(e.message);
+    });
   }
 
   getUserType() async {
@@ -68,13 +101,11 @@ class _MyAppState extends State<MyApp> {
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {
-         
           if (userSnapshot.hasData) {
             if (flag == 0) {
               return CircularProgressIndicator();
             } else {
               if (userType == 'Startup') {
-               
                 return StartupHomeScreen();
               } else {
                 return InvestorHomeScreen();

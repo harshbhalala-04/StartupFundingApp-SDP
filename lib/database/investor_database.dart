@@ -373,9 +373,10 @@ class InvestorDataBase {
         "approveStage": false,
         "feedBack": feedBack,
       });
-      await firestore.collection("workstream").doc(workStreamId).update({
-       "submitStage": false
-      });
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .update({"submitStage": false});
     } catch (e) {
       print(e.toString());
     }
@@ -401,5 +402,27 @@ class InvestorDataBase {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void rejectStageFunding(String workStreamId, String stageTitle) async {
+    print(stageTitle);
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .where("stageTitle", isEqualTo: stageTitle)
+        .get()
+        .then((val) {
+      Map<String, dynamic> tmpMap = val.docs[0].data();
+      tmpMap['pendingRequest'] = false;
+      tmpMap['approvedRequest'] = false;
+      print(tmpMap['stageId']);
+      firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc(tmpMap['stageId'])
+          .update(tmpMap);
+    });
   }
 }
