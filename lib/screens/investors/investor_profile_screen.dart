@@ -10,6 +10,7 @@ import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/investor_detail_screen.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
+import 'investor_profile_management/investor_delete_account_screen.dart';
 import 'investor_profile_management/investor_edit_profile_screen.dart';
 import 'investor_profile_management/investor_view_balance_screen.dart';
 
@@ -133,7 +134,9 @@ class InvestorProfileScreen extends StatelessWidget {
               height: 50,
               width: 250,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(InvestorDeleteAccScreen());
+                },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
