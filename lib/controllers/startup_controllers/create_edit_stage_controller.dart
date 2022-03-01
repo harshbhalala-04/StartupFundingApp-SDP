@@ -34,7 +34,6 @@ class CreateEditStageController extends GetxController {
         .orderBy("createdAt", descending: false)
         .get()
         .then((value) {
-      print("Here length: ${value.docs.length}");
       for (int i = 0; i < value.docs.length; i++) {
         stageList.add(StageModel.fromJson(value.docs[i].data()));
 

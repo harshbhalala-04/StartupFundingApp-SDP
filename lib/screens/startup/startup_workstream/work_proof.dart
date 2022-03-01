@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/upload_work_doc.dart';
@@ -34,6 +36,7 @@ class WorkProofScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       InkWell(
                         onTap: () {
@@ -74,7 +77,6 @@ class WorkProofScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 25),
                       InkWell(
                         onTap: () {
                           Get.to(UploadWorkVideoScreen());
@@ -121,6 +123,7 @@ class WorkProofScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       InkWell(
                         onTap: () {
@@ -161,7 +164,6 @@ class WorkProofScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 25),
                       InkWell(
                         onTap: () {
                           Get.to(UploadWorkLinkScreen());

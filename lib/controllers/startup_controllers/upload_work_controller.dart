@@ -7,13 +7,11 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImagePickerController extends GetxController {
+class UploadWorkController extends GetxController {
+  final uploadWorkImg = [File(""), File(""), File(""), File("")].obs;
+  List<File> choosenWorkImg = [File(""), File(""), File(""), File("")].obs;
+  List<bool> isUploadedImage = [false, false, false, false].obs;
   final isLoading = false.obs;
-  String? imgUrl = "";
-  File? pickedImageVar;
-  final choosenImage = File("").obs;
-  final isUploadedImage = false.obs;
-
 
   Future cropImage(File pickedImage) async {
     try {
@@ -55,9 +53,7 @@ class ImagePickerController extends GetxController {
     }
   }
 
-  void pickImage(
-    BuildContext context,
-  ) async {
+  void pickImage(BuildContext context, int index) async {
     ImageSource? imageSource = await showDialog<ImageSource>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -93,12 +89,14 @@ class ImagePickerController extends GetxController {
         isLoading.toggle();
       } else {
         File file = File(pickedImageFile.path);
-        print(file);
 
-        choosenImage.value = file;
-        isUploadedImage.value = true;
+        choosenWorkImg[index] = file;
+
+        isUploadedImage[index] = true;
         isLoading.toggle();
       }
     }
   }
+
+  
 }

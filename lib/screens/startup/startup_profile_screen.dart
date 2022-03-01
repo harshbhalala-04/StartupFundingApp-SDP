@@ -138,12 +138,6 @@ class StartupProfileScreen extends StatelessWidget {
                   iconImage: "assets/edit_profile_icon.png",
                   title: "Edit Profile")),
           InkWell(
-            onTap: () {
-              createDynamicLink();
-            },
-            child: Text("Share Startup"),
-          ),
-          InkWell(
               onTap: () {
                 Get.to(StartupViewBalanceScreen());
               },
@@ -151,7 +145,9 @@ class StartupProfileScreen extends StatelessWidget {
                   iconImage: "assets/view_balance_icon.png",
                   title: "View Balance")),
           InkWell(
-              onTap: () {},
+              onTap: () {
+                createDynamicLink();
+              },
               child: CustomCard(
                   iconImage: "assets/share_icon.png", title: "Share Startup")),
           InkWell(
