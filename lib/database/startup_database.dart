@@ -635,4 +635,29 @@ class StartupDataBase {
       "timestamp": Timestamp.now()
     });
   }
+
+  void uploadWorkImg(List<File> choosenImg) async {
+    List<String> urlList = [];
+    for (int i = 0; i < choosenImg.length; i++) {
+      if (choosenImg[i].path != '') {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('startup_img')
+            .child('work_img')
+            .child(user!.uid + 'folder' + i.toString())
+            .child(user!.uid + i.toString() + '.jpg');
+
+        await ref
+            .putFile(choosenImg[i])
+            .whenComplete(() => print('Image Upload'));
+
+        String url = await ref.getDownloadURL();
+        urlList.add(url);
+      }
+    }
+     await FirebaseFirestore.instance
+        .collection("Startups")
+        .doc(user!.uid)
+        .update({'workImgs': FieldValue.arrayUnion(urlList)});
+  }
 }

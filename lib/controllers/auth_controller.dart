@@ -1,6 +1,8 @@
+// ignore_for_file: must_call_super
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/global.dart';
@@ -8,7 +10,6 @@ import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_personal_info_screen.dart';
 import 'package:startupfunding/screens/startup/startup_home_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/user_name_screen.dart';
-import 'package:startupfunding/screens/startup/startup_onboarding_screen/verify_phone_screen.dart';
 
 class AuthController extends GetxController {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -28,7 +29,6 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
-    print("Here onInit call for bindStream");
     firebaseUser.bindStream(_auth.authStateChanges());
   }
 
