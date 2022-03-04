@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/startup_controllers/upload_work_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
 
 class UploadWorkImagesScreen extends StatefulWidget {
   @override
@@ -15,15 +17,18 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
   final UploadWorkController uploadWorkController =
       Get.put(UploadWorkController());
 
+ 
+
   @override
   void initState() {
     // TODO: implement initState
-    uploadWorkController.fetchWorkImages();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -84,7 +89,7 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                        Padding(
+                                         Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 0, 37.5, 0, 0),
                                             child: Icon(
@@ -254,3 +259,5 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
     );
   }
 }
+
+
