@@ -1,6 +1,19 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
+import 'package:startupfunding/controllers/startup_controllers/proof_video_picker_controller.dart';
 import 'package:flutter/material.dart';
 
-class UploadWorkVideoScreen extends StatelessWidget {
+class UploadProofVideoScreen extends StatefulWidget {
+  const UploadProofVideoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UploadProofVideoScreen> createState() => _UploadProofVideoScreenState();
+}
+
+class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
+  // final ProofVideoPickerController proofVideoPickerController =
+  //     Get.put(ProofVideoPickerController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +47,9 @@ class UploadWorkVideoScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      // proofVideoPickerController.pickVideo(context);
+                    },
                     child: Container(
                       height: 150,
                       width: 150,
@@ -72,7 +87,9 @@ class UploadWorkVideoScreen extends StatelessWidget {
                     height: 50,
                     width: 150,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // proofVideoPickerController.pickVideo(context);
+                      },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(

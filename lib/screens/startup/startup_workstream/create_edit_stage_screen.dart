@@ -266,7 +266,6 @@ class _CreateEditStageScreenState extends State<CreateEditStageScreen> {
                         onPressed: () {
                           Get.to(EnterStageDetailScreen(
                               fromEdit: false,
-                              
                               workStreamId: widget.workStreamId,
                               stageIndex: createEditStageController.stageList ==
                                       null
