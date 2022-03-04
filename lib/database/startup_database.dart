@@ -50,6 +50,27 @@ class StartupDataBase {
         .update({"linkedinUrl": url});
   }
 
+  void addProofUrl(String url, String workStreamId, String stageUid) async {
+    Map<String, dynamic> tmpMap = {};
+
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .get()
+        .then((val) {
+      tmpMap = val.data()!['proof_of_work'];
+      tmpMap['proofUrl'] = url;
+    });
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .update(tmpMap);
+  }
+
   void addFounderInfo(String reply, String secondFounderName,
       String secondFounderEmail, String secondFounderLinkedinUrl) async {
     print("reply value");
@@ -154,6 +175,36 @@ class StartupDataBase {
             .update({"coFounderImg": url});
       }
     }
+  }
+
+  uploadProofImages(List<File> uploadImages, String folderTitle,
+      String stageUid, String workStreamId) async {
+    List<String> urlList = [];
+    for (int i = 0; i < uploadImages.length; i++) {
+      if (uploadImages[i].path != '') {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('proof_of_work')
+            .child(folderTitle)
+            .child(user!.uid + folderTitle + '.jpg');
+
+        await ref
+            .putFile(uploadImages[i])
+            .whenComplete(() => print('Image Upload'));
+
+        String url = await ref.getDownloadURL();
+        urlList.add(url);
+      }
+    }
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .update({
+      "proof_of_work": {"photos": FieldValue.arrayUnion(urlList)},
+      "uploadedProofImg": true,
+    });
   }
 
   ///Add investor to exclude list
@@ -371,6 +422,7 @@ class StartupDataBase {
   void addStageDetails(
       Map<String, dynamic> stage, String workStreamId, String stageIndex) {
     stage['createdAt'] = Timestamp.now();
+    stage['stageUid'] = "stage " + stageIndex;
 
     try {
       firestore

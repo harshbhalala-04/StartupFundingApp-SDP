@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/widgets/alert_dialogue.dart';
 
-class UploadWorkLinkScreen extends StatelessWidget {
+class UploadProofLinkScreen extends StatefulWidget {
+  final String stageUid;
+  final String workStreamId;
+
+  UploadProofLinkScreen({required this.stageUid, required this.workStreamId});
+  @override
+  State<UploadProofLinkScreen> createState() => _UploadProofLinkScreenState();
+}
+
+class _UploadProofLinkScreenState extends State<UploadProofLinkScreen> {
+  final TextEditingController _proofLinkController = TextEditingController();
+
+  checkData() {
+    if (_proofLinkController.text == "") {
+      createAlertDialogue("Please enter your proof url.");
+    } else {
+      Get.back();
+      StartupDataBase().addProofUrl(
+          _proofLinkController.text, widget.workStreamId, widget.stageUid);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +64,7 @@ class UploadWorkLinkScreen extends StatelessWidget {
               child: Container(
                 height: 80,
                 child: TextFormField(
+                  controller: _proofLinkController,
                   decoration: InputDecoration(
                     // labelText: "Enter URL",
                     border: OutlineInputBorder(),
@@ -54,7 +79,9 @@ class UploadWorkLinkScreen extends StatelessWidget {
                 height: 50,
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    checkData();
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(

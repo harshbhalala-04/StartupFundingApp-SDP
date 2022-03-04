@@ -8,6 +8,7 @@ import 'package:startupfunding/controllers/startup_controllers/create_edit_stage
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/stage_proof_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/startup_request_stage_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/view_status_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/work_proof.dart';
@@ -69,6 +70,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
   @override
   void initState() {
     // TODO: implement initState
+    StageProofScreen(workStreamId: widget.workStreamId);
     getAndSetMessages();
     super.initState();
   }
@@ -166,7 +168,8 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Get.to(StartupRequestStageScreen(workStreamId: widget.workStreamId));
+                                    Get.to(StartupRequestStageScreen(
+                                        workStreamId: widget.workStreamId));
                                   },
                                 ),
                               ),
@@ -214,7 +217,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Get.to(() => WorkProofScreen(
+                                    Get.to(() => StageProofScreen(
                                         workStreamId: widget.workStreamId));
                                   },
                                 ),

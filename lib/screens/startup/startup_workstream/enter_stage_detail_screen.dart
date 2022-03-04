@@ -431,7 +431,8 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
                 "endDay": enterStageDetailController.endDay.value,
                 "endMonth": enterStageDetailController.endMonth.value,
                 "endYear": enterStageDetailController.endYear.value,
-                "stageFunding": stageFundingController.text
+                "stageFunding": stageFundingController.text,
+                
               };
               if (widget.fromEdit) {
                 Get.find<CreateEditStageController>().stageList[widget.index] =

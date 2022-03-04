@@ -8,12 +8,12 @@ import 'package:startupfunding/database/startup_database.dart';
 import 'package:http/http.dart';
 import 'package:web3dart/web3dart.dart';
 
-class UploadWorkImagesScreen extends StatefulWidget {
+class UploadProofDocScreen extends StatefulWidget {
   @override
-  State<UploadWorkImagesScreen> createState() => _UploadWorkImagesScreenState();
+  State<UploadProofDocScreen> createState() => _UploadProofDocScreenState();
 }
 
-class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
+class _UploadProofDocScreenState extends State<UploadProofDocScreen> {
   final UploadWorkController uploadWorkController =
       Get.put(UploadWorkController());
 
@@ -23,6 +23,7 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
   void initState() {
     // TODO: implement initState
 
+    // uploadWorkController.fetchWorkImages();
     super.initState();
   }
 
@@ -32,7 +33,7 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Upload Images",
+          "Upload Documents",
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontFamily: "Cabin",
@@ -48,12 +49,12 @@ class _UploadWorkImagesScreenState extends State<UploadWorkImagesScreen> {
           padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Column(
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 120),
               Container(
                 padding: EdgeInsets.fromLTRB(25, 25, 0, 0),
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "Upload Your Photos Here...",
+                  "Upload Your Documents Here...",
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontFamily: "Cabin",
