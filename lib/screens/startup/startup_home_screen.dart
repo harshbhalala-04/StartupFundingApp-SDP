@@ -55,24 +55,23 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              onPressed: () {
-                Get.to(StartupFilterScreen());
-              },
-              icon: ImageIcon(
-                AssetImage("assets/filter.png"),
-                color: Theme.of(context).primaryColor,
-              ),
+            onPressed: () {
+              Get.to(StartupFilterScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/filter.png"),
+              color: Theme.of(context).primaryColor,
             ),
-          
-         IconButton(
-                onPressed: () {
-                  Get.to(StartupChatScreen());
-                },
-                icon: ImageIcon(
-                  AssetImage("assets/chat_icon.png"),
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.to(StartupChatScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/chat_icon.png"),
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
         ],
       ),
       body: Obx(

@@ -39,11 +39,11 @@ class StartupRequestScreen extends StatelessWidget {
                   )
                 : TabBarView(
                     children: [
-                      Obx(() => startupRequestController.isLoading.value
-                          ? Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : StartupRequestRecieveScreen()),
+                        Obx(() => startupRequestController.isLoading.value
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : StartupRequestRecieveScreen()),
                       Obx(() => startupRequestController.isLoading.value
                           ? Center(
                               child: CircularProgressIndicator(),

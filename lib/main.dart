@@ -54,7 +54,9 @@ class _MyAppState extends State<MyApp> {
     if (deepLink != null) {
       uid = deepLink.path.substring(1);
       if (FirebaseAuth.instance.currentUser != null) {
-        Get.to(UserProfileScreen(uid: uid, ));
+        Get.to(UserProfileScreen(
+          uid: uid,
+        ));
       }
     }
 
@@ -67,7 +69,6 @@ class _MyAppState extends State<MyApp> {
         if (FirebaseAuth.instance.currentUser != null) {
           Get.to(UserProfileScreen(
             uid: uid,
-            
           ));
         }
       }
