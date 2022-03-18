@@ -2,101 +2,41 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadWorkController extends GetxController {
-  final uploadWorkImg = [File(""), File(""), File(""), File("")].obs;
-  List<File> choosenWorkImg = [File(""), File(""), File(""), File("")].obs;
-  List<bool> isUploadedImage = [false, false, false, false].obs;
+  final isImgUploaded = false.obs;
+  final isVideoUploaded = false.obs;
+  final isDocUploaded = false.obs;
+  final isUrlUploaded = false.obs;
   final isLoading = false.obs;
 
-  Future cropImage(File pickedImage) async {
-    try {
-      File? croppedFile = await ImageCropper.cropImage(
-          sourcePath: pickedImage.path,
-          aspectRatioPresets: Platform.isAndroid
-              ? [
-                  CropAspectRatioPreset.square,
-                  CropAspectRatioPreset.ratio3x2,
-                  CropAspectRatioPreset.original,
-                  CropAspectRatioPreset.ratio4x3,
-                  CropAspectRatioPreset.ratio16x9
-                ]
-              : [
-                  CropAspectRatioPreset.original,
-                  CropAspectRatioPreset.square,
-                  CropAspectRatioPreset.ratio3x2,
-                  CropAspectRatioPreset.ratio4x3,
-                  CropAspectRatioPreset.ratio5x3,
-                  CropAspectRatioPreset.ratio5x4,
-                  CropAspectRatioPreset.ratio7x5,
-                  CropAspectRatioPreset.ratio16x9
-                ],
-          androidUiSettings: AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: Colors.deepOrange,
-              toolbarWidgetColor: Colors.white,
-              lockAspectRatio: false),
-          compressQuality: 50,
-          iosUiSettings: IOSUiSettings(
-            title: 'Crop Image',
-          ));
-      if (croppedFile != null) {
-        pickedImage = croppedFile;
+  fetchUploadedInfo(String workStreamId, String stageId) async {
+    isLoading.toggle();
+    await FirebaseFirestore.instance
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageId)
+        .get()
+        .then((val) {
+      if (val.data()!.containsKey("uploadedProofImg")) {
+        isImgUploaded.value = val.data()!['uploadedProofImg'];
       }
-      return pickedImage;
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void pickImage(BuildContext context, int index) async {
-    ImageSource? imageSource = await showDialog<ImageSource>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Upload Your Image'),
-        actions: [
-          MaterialButton(
-            child: Text('Camera'),
-            onPressed: () => Navigator.pop(context, ImageSource.camera),
-            textColor: Theme.of(context).primaryColor,
-          ),
-          MaterialButton(
-            child: Text('Gallery'),
-            onPressed: () => Navigator.pop(context, ImageSource.gallery),
-            textColor: Theme.of(context).primaryColor,
-          ),
-        ],
-      ),
-    );
-
-    if (imageSource != null) {
-      isLoading.toggle();
-
-      final _picker = ImagePicker();
-
-      final XFile? pickedImageFile = await _picker.pickImage(
-        source: imageSource,
-        imageQuality: 50,
-        maxWidth: 1400,
-        maxHeight: 1400,
-      );
-
-      if (pickedImageFile == null) {
-        isLoading.toggle();
-      } else {
-        File file = File(pickedImageFile.path);
-
-        choosenWorkImg[index] = file;
-
-        isUploadedImage[index] = true;
-        isLoading.toggle();
+      if (val.data()!.containsKey("uploadedProofDoc")) {
+        isDocUploaded.value = val.data()!['uploadedProofDoc'];
       }
-    }
+      if (val.data()!.containsKey("uploadedProofVideo")) {
+        isVideoUploaded.value = val.data()!['uploadedProofVideo'];
+      }
+      if (val.data()!.containsKey("uploadedProofUrl")) {
+        isUrlUploaded.value = val.data()!['uploadedProofUrl'];
+      }
+    });
+    isLoading.toggle();
   }
-
-  
 }

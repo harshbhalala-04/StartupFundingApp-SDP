@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:startupfunding/controllers/startup_controllers/upload_work_controller.dart';
 
 class ProofImagePickerController extends GetxController {
   final isLoading = false.obs;

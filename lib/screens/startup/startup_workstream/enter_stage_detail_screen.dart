@@ -379,7 +379,7 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
                 ),
               ),
               Text(
-                'Enter Required Funding amount (in Lakhs)',
+                'Enter Required Funding amount (in Ether)',
                 style: TextStyle(
                     fontFamily: "Cabin",
                     fontSize: 20,
@@ -432,7 +432,13 @@ class _EnterStageDetailScreenState extends State<EnterStageDetailScreen> {
                 "endMonth": enterStageDetailController.endMonth.value,
                 "endYear": enterStageDetailController.endYear.value,
                 "stageFunding": stageFundingController.text,
-                
+                "verificationPending": true,
+                "verificationApproved": false,
+                "verificationRejected": false,
+                "uploadedProofImg": false,
+                "uploadedProofDoc": false,
+                "uploadedProofVideo": false,
+                "uploadedProofUrl": false
               };
               if (widget.fromEdit) {
                 Get.find<CreateEditStageController>().stageList[widget.index] =

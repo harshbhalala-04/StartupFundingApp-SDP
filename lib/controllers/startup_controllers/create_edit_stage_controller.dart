@@ -12,6 +12,8 @@ class CreateEditStageController extends GetxController {
   final pendingRequest = [].obs;
   final approvedRequest = [].obs;
 
+  final verificationApproved = [].obs;
+
   final isVerified = false.obs;
 
   fetchStages(String workStreamId) async {
@@ -36,7 +38,7 @@ class CreateEditStageController extends GetxController {
         .then((value) {
       for (int i = 0; i < value.docs.length; i++) {
         stageList.add(StageModel.fromJson(value.docs[i].data()));
-
+        verificationApproved.add(value.docs[i].data()['verificationApproved']);
         if (value.docs[i].data().containsKey("approveStage")) {
           if (value.docs[i].data()['approveStage']) {
             isApproved.add(value.docs[i].data()['approveStage']);

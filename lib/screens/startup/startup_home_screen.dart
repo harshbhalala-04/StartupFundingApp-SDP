@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_request_controller.dart';
+import 'package:startupfunding/screens/pending_status_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/startup_filter_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/startup_chat_screen.dart';
@@ -16,6 +17,8 @@ import 'package:startupfunding/screens/startup/startup_notification_screen.dart'
 import 'package:startupfunding/screens/startup/startup_profile_screen.dart';
 import 'package:startupfunding/screens/startup/startup_request_screen.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
+
+import '../rejected_status_screen.dart';
 
 class StartupHomeScreen extends StatefulWidget {
   const StartupHomeScreen({Key? key}) : super(key: key);
@@ -55,24 +58,23 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              onPressed: () {
-                Get.to(StartupFilterScreen());
-              },
-              icon: ImageIcon(
-                AssetImage("assets/filter.png"),
-                color: Theme.of(context).primaryColor,
-              ),
+            onPressed: () {
+              Get.to(StartupFilterScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/filter.png"),
+              color: Theme.of(context).primaryColor,
             ),
-          
-         IconButton(
-                onPressed: () {
-                  Get.to(StartupChatScreen());
-                },
-                icon: ImageIcon(
-                  AssetImage("assets/chat_icon.png"),
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.to(StartupChatScreen());
+            },
+            icon: ImageIcon(
+              AssetImage("assets/chat_icon.png"),
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
         ],
       ),
       body: Obx(
@@ -80,10 +82,14 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : IndexedStack(
-                index: startupGlobalController.currentIndex.value,
-                children: screens,
-              ),
+            : startupGlobalController.approvedStartup.value
+                ? IndexedStack(
+                    index: startupGlobalController.currentIndex.value,
+                    children: screens,
+                  )
+                : (startupGlobalController.pendingStartup.value
+                    ? PendingStatusScreen()
+                    : RejectedStatusScreen()),
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

@@ -40,6 +40,7 @@ class _WorkStreamTileState extends State<WorkStreamTile> {
       lastMsg += '...';
       count = 1;
     }
+    
     String? time = DateFormat('hh:mm a').format(widget.lastMessageTs.toDate());
 
     return InkWell(

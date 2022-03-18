@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_filter_controller.dart';
 import 'package:startupfunding/models/investor_model.dart';
@@ -27,6 +28,9 @@ class InvestorGlobalController extends GetxController {
   final AutoScrollController scrollController = AutoScrollController();
   final currentIndex = 0.obs;
 
+  String newNotificationToken = "";
+  List<String>? notificationTokens;
+
   final InvestorFilterController investorFilterController =
       Get.put(InvestorFilterController());
 
@@ -51,22 +55,21 @@ class InvestorGlobalController extends GetxController {
       final stopWatch = Stopwatch()..start();
       List<StartupModel> tmpUsersList = <StartupModel>[];
       Query<Map<String, dynamic>> query;
-     
+
       if (investorFilterController.isFilterApplied.value) {
         print("Inside filter query");
         query = firestore
             .collection("Startups")
+            .where("isVerified", isEqualTo: true)
             .where("startupCategory",
-                whereIn:
-                    investorFilterController.selectedFilters)
+                whereIn: investorFilterController.selectedFilters)
             .orderBy("createdAt", descending: true);
       } else {
         query = firestore
             .collection("Startups")
+            .where("isVerified", isEqualTo: true)
             .orderBy("createdAt", descending: true);
       }
-
-     
 
       if (lastUser != null) {
         isLoadingMoreData = true;
@@ -137,6 +140,29 @@ class InvestorGlobalController extends GetxController {
       currentInvestor = InvestorModel.fromJson(val.data()!);
     });
 
+    await FirebaseMessaging.instance.getToken().then((token) {
+      newNotificationToken = token!;
+    });
+
+    if (currentInvestor.notificationTokens == null ||
+        currentInvestor.notificationTokens == [] ||
+        !currentInvestor.notificationTokens!.contains(newNotificationToken)) {
+      if (currentInvestor.notificationTokens == null) {
+        notificationTokens = [];
+      } else {
+        notificationTokens = currentInvestor.notificationTokens;
+      }
+
+      notificationTokens?.add(newNotificationToken);
+
+      if (newNotificationToken != '') {
+        await FirebaseFirestore.instance
+            .collection("Investors")
+            .doc(user!.uid)
+            .update({'notificationTokens': notificationTokens});
+      }
+    }
+
     isLoading.toggle();
     getStartupsForFeed();
   }
@@ -146,7 +172,6 @@ class InvestorGlobalController extends GetxController {
     // TODO: implement onInit
     scrollController.addListener(scrollListener);
     getCurrentUser();
-
     super.onInit();
   }
 }

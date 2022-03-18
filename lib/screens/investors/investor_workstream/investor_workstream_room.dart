@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/controllers/investor_controllers/verify_stage_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/investor_provided_funding_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/investor_stage_request_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/investor_view_status_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/verify_stage_screen.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/verify_submitted_stage_screen.dart';
 import 'package:startupfunding/widgets/new_message.dart';
 import 'package:intl/intl.dart';
 
@@ -49,7 +51,7 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
         .doc(widget.workStreamId)
         .get()
         .then((val) {
-      stageCreated = val.data()!['stageCreated'];
+      stageCreated = val.data()!['stageCreated'] ?? false;
     });
 
     if (stageCreated) {
@@ -162,12 +164,11 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                       ),
                                     ),
                                     onPressed: () {
-                                       Get.to(InvestorStageRequestScreen(
-                                      workStreamId: widget.workStreamId,
-                                    ));
+                                      Get.to(InvestorStageRequestScreen(
+                                        workStreamId: widget.workStreamId,
+                                      ));
                                     },
                                   ),
-                                  
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -189,7 +190,9 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                         fontSize: 18,
                                       ),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.to(InvestorProvidedFundingScreen(workStreamId: widget.workStreamId));
+                                    },
                                   ),
                                 ),
                                 Padding(
@@ -206,13 +209,17 @@ class _InvestorWorkStreamRoomState extends State<InvestorWorkStreamRoom> {
                                       horizontal: 8.0),
                                   child: TextButton(
                                     child: Text(
-                                      "View Submitted stage",
+                                      "Verify Submitted stage",
                                       style: TextStyle(
                                         fontFamily: "Cabin",
                                         fontSize: 18,
                                       ),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.to(VerifySubmittedStageScreen(
+                                        workStreamId: widget.workStreamId,
+                                      ));
+                                    },
                                   ),
                                 ),
                               ],

@@ -17,7 +17,7 @@ class ImagePickerController extends GetxController {
 
   Future cropImage(File pickedImage) async {
     try {
-      File? croppedFile = await ImageCropper.cropImage(
+      File? croppedFile = await ImageCropper().cropImage(
           sourcePath: pickedImage.path,
           aspectRatioPresets: Platform.isAndroid
               ? [
