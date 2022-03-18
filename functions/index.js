@@ -14,12 +14,12 @@ exports.onStartupUpdate = functions.firestore
             const newStartupData = snapshot.after.data();
 
             if(oldStartupData["latestConnectionSentUid"] != newStartupData["latestConnectionSentUid"]) {
-                const startupRef = db.collection("Startups").doc(newStartupData["latestConnectionSentUid"]);
-                const startupData = await startupRef.get();
+                const investorRef = db.collection("Investors").doc(newStartupData["latestConnectionSentUid"]);
+                const investorData = await investorRef.get();
                 const tokens = [];
 
-                if(startupData.data()["notificationTokens"] != undefined && startupData.data()["notificationTokens"].length != 0) {
-                    startupData.data()["notificationTokens"].forEach((token) => {
+                if(investorData.data()["notificationTokens"] != undefined && investorData.data()["notificationTokens"].length != 0) {
+                    investorData.data()["notificationTokens"].forEach((token) => {
                         tokens.push(token);
                     });
                 }
@@ -58,12 +58,12 @@ exports.onStartupUpdate = functions.firestore
             const newInvestorData = snapshot.after.data();
 
             if(oldInvestorData["latestConnectionSentUid"] != newInvestorData["latestConnectionSentUid"]) {
-                const investorRef = db.collection("Investors").doc(newInvestorData["latestConnectionSentUid"]);
-                const investorData = await investorRef.get();
+                const startupRef = db.collection("Startups").doc(newInvestorData["latestConnectionSentUid"]);
+                const startupData = await startupRef.get();
                 const tokens = [];
 
-                if(investorData.data()["notificationTokens"] != undefined && investorData.data()["notificationTokens"].length != 0) {
-                    investorData.data()["notificationTokens"].forEach((token) => {
+                if(startupData.data()["notificationTokens"] != undefined && startupData.data()["notificationTokens"].length != 0) {
+                    startupData.data()["notificationTokens"].forEach((token) => {
                         tokens.push(token);
                     });
                 }
