@@ -80,7 +80,13 @@ class AuthController extends GetxController {
           'phoneNo': phoneNo,
           'createdAt': Timestamp.now(),
           'uid': userCredential.user!.uid,
+          'isVerified': false,
+          'accountProvided': false,
+          'isRejected': false,
+          'isFieldAnswered': false
         });
+
+        
         Get.to(UserNameScreen());
       } else {
         await FirebaseFirestore.instance
@@ -91,6 +97,7 @@ class AuthController extends GetxController {
           'phoneNo': phoneNo,
           'createdAt': Timestamp.now(),
           'uid': userCredential.user!.uid,
+          'accountProvided': false
         });
         Get.to(InvestorPersonalInfoScreen());
       }

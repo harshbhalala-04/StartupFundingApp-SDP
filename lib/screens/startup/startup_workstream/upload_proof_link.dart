@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/startup_database.dart';
@@ -20,7 +22,7 @@ class _UploadProofLinkScreenState extends State<UploadProofLinkScreen> {
       createAlertDialogue("Please enter your proof url.");
     } else {
       Get.back();
-      StartupDataBase().addProofUrl(
+      StartupDataBase().uploadProofUrl(
           _proofLinkController.text, widget.workStreamId, widget.stageUid);
     }
   }

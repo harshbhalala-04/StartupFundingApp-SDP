@@ -2,11 +2,13 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/global.dart';
+import 'package:startupfunding/notificationHandler.dart';
 import 'package:startupfunding/screens/auth_screen.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/screens/investors/investor_onboarding_screen/investor_investment_profile_screen.dart';
@@ -24,6 +26,19 @@ import 'screens/start_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // App is terminated
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // App is closed but not terminated(It is inside RAM)
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+    await handleNetworkNotification(message);
+  });
+
+  // App is opened
+  FirebaseMessaging.onMessageOpenedApp.listen((message) async {});
+
+  initializeLocalNotification();  
   runApp(const MyApp());
 }
 

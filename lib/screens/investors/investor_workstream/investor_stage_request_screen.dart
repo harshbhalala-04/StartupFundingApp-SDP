@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/investor_controllers/verify_stage_controller.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/screens/investors/investor_workstream/payment_screen.dart';
 
 class InvestorStageRequestScreen extends StatefulWidget {
   final String workStreamId;
@@ -182,9 +183,11 @@ class _InvestorStageRequestScreenState
                                               if (verifyStageController
                                                   .isApprovedRequest[index]) {
                                               } else {
-                                                verifyStageController
-                                                        .isApprovedRequest[
-                                                    index] = true;
+                                                // verifyStageController
+                                                //         .isApprovedRequest[
+                                                //     index] = true;
+
+                                                Get.to(PaymentScreen(workStreamId: widget.workStreamId, stageId: verifyStageController.stage[index].stageUid, fundingAmount: verifyStageController.stage[index].stageFunding));
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(

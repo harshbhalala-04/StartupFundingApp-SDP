@@ -44,76 +44,30 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : SingleChildScrollView(
-                  physics: ScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Current Status",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontFamily: "Cabin",
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      statusScreenController
-                                          .currentStatus['datetime'],
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: "Cabin",
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                        statusScreenController
-                                            .currentStatus['statusDes'],
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontFamily: "Cabin",
-                                          fontSize: 20,
-                                        )),
-                                  ],
-                                ),
-                              ),
+              : statusScreenController.currentStatus.value.isEmpty
+                  ? Center(
+                      child: Image(image: AssetImage("assets/not_found.jpeg")),
+                    )
+                  : SingleChildScrollView(
+                      physics: ScrollPhysics(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Current Status",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontFamily: "Cabin",
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Divider(
-                            color: Colors.grey,
-                            height: 5,
-                            thickness: 1.5,
-                          ),
-                        ),
-                        ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: statusScreenController.status.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16),
                               child: Container(
+                                width: MediaQuery.of(context).size.width,
                                 child: Card(
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
@@ -127,8 +81,8 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          statusScreenController.status[index]
-                                              ['datetime'],
+                                          statusScreenController
+                                              .currentStatus['datetime'],
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontFamily: "Cabin",
@@ -136,8 +90,8 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
                                           ),
                                         ),
                                         Text(
-                                            statusScreenController.status[index]
-                                                ['statusDes'],
+                                            statusScreenController
+                                                .currentStatus['statusDes'],
                                             style: TextStyle(
                                               color: Colors.black,
                                               fontFamily: "Cabin",
@@ -148,13 +102,64 @@ class _ViewStatusScreenState extends State<ViewStatusScreen> {
                                   ),
                                 ),
                               ),
-                            );
-                          },
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Divider(
+                                color: Colors.grey,
+                                height: 5,
+                                thickness: 1.5,
+                              ),
+                            ),
+                            ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: statusScreenController.status.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    child: Card(
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              statusScreenController
+                                                  .status[index]['datetime'],
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "Cabin",
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            Text(
+                                                statusScreenController
+                                                    .status[index]['statusDes'],
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: "Cabin",
+                                                  fontSize: 20,
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
         ));
   }
 }

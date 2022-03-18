@@ -1,21 +1,65 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:startupfunding/controllers/startup_controllers/proof_video_picker_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/widgets/alert_dialogue.dart';
 
 class UploadProofVideoScreen extends StatefulWidget {
-  const UploadProofVideoScreen({Key? key}) : super(key: key);
+  final String workStreamId;
+  final String stageUid;
+
+  UploadProofVideoScreen({required this.workStreamId, required this.stageUid});
 
   @override
   State<UploadProofVideoScreen> createState() => _UploadProofVideoScreenState();
 }
 
 class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
-  // final ProofVideoPickerController proofVideoPickerController =
-  //     Get.put(ProofVideoPickerController());
+  File? file;
+  UploadTask? task;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path;
+
+    setState(() {
+      file = File(path!);
+    });
+  }
+
+  Future uploadFile() async {
+    if (file == null) {
+      createAlertDialogue("Please upload your proof video.");
+      return;
+    }
+
+    final fileName = p.basename(file!.path);
+    final destination = '/proof_of_work/pof_video/$fileName';
+
+    task = StartupDataBase.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
+
+    StartupDataBase()
+        .uploadStageVideo(urlDownload, widget.workStreamId, widget.stageUid);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final fileName = file != null ? p.basename(file!.path) : 'No File selected';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,9 +75,10 @@ class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Center(
+          child: SingleChildScrollView(
         child: Container(
           width: 300,
-          height: 300,
+          height: 350,
           padding: new EdgeInsets.all(10.0),
           child: Card(
             shape: RoundedRectangleBorder(
@@ -48,7 +93,7 @@ class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: InkWell(
                     onTap: () {
-                      // proofVideoPickerController.pickVideo(context);
+                      selectFile();
                     },
                     child: Container(
                       height: 150,
@@ -80,6 +125,17 @@ class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                    child: Text(
+                  fileName,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Cabin"),
+                )),
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -88,7 +144,8 @@ class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
                     width: 150,
                     child: ElevatedButton(
                       onPressed: () {
-                        // proofVideoPickerController.pickVideo(context);
+                        Get.back();
+                        uploadFile();
                       },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -111,7 +168,7 @@ class _UploadProofVideoScreenState extends State<UploadProofVideoScreen> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

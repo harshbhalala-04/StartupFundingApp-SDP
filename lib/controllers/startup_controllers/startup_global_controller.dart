@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_is_empty, avoid_function_literals_in_foreach_calls
 
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -9,6 +7,7 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_filter_controller.dart';
 import 'package:startupfunding/models/investor_model.dart';
 import 'package:startupfunding/models/startup_model.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class StartupGlobalController extends GetxController {
   final User? user = FirebaseAuth.instance.currentUser;
@@ -16,6 +15,14 @@ class StartupGlobalController extends GetxController {
   final isLoading = false.obs;
   StartupModel currentStartup = StartupModel();
   final currentIndex = 0.obs;
+
+  final isVerified = false.obs;
+  final isRejected = false.obs;
+  final isPending = false.obs;
+
+  final rejectedStartup = false.obs;
+  final pendingStartup = false.obs;
+  final approvedStartup = false.obs;
 
   DocumentSnapshot? lastUser;
   bool isLoadingMoreData = false;
@@ -27,6 +34,9 @@ class StartupGlobalController extends GetxController {
   int fnTerminate = 0;
   final endUser = false.obs;
   final AutoScrollController scrollController = AutoScrollController();
+
+  String newNotificationToken = "";
+  List<String>? notificationTokens;
 
   final StartupFilterController startupFilterController =
       Get.put(StartupFilterController());
@@ -131,7 +141,43 @@ class StartupGlobalController extends GetxController {
     await firestore.collection("Startups").doc(user!.uid).get().then((val) {
       currentStartup = StartupModel.fromJson(val.data()!);
       print(val.data()!['Stage']);
+      isRejected.value = val['isRejected'];
+      isVerified.value = val['isVerified'];
+
+      if (isRejected.value == false && isVerified.value == false) {
+        pendingStartup.value = true;
+      }
+      if (isRejected.value) {
+        rejectedStartup.value = true;
+      }
+      if (isVerified.value) {
+        approvedStartup.value = true;
+      }
     });
+
+    await FirebaseMessaging.instance.getToken().then((token) {
+      newNotificationToken = token!;
+    });
+
+    if (currentStartup.notificationTokens == null ||
+        currentStartup.notificationTokens == [] ||
+        !currentStartup.notificationTokens!.contains(newNotificationToken)) {
+      if (currentStartup.notificationTokens == null) {
+        notificationTokens = [];
+      } else {
+        notificationTokens = currentStartup.notificationTokens;
+      }
+
+      notificationTokens?.add(newNotificationToken);
+
+      if (newNotificationToken != '') {
+        await FirebaseFirestore.instance
+            .collection("Startups")
+            .doc(user!.uid)
+            .update({'notificationTokens': notificationTokens});
+      }
+    }
+
     isLoading.toggle();
     getInvestorsForFeed();
   }

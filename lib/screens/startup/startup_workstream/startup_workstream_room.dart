@@ -10,6 +10,7 @@ import 'package:startupfunding/database/startup_database.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/create_edit_stage_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/stage_proof_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/startup_request_stage_screen.dart';
+import 'package:startupfunding/screens/startup/startup_workstream/view_funding_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/view_status_screen.dart';
 import 'package:startupfunding/screens/startup/startup_workstream/work_proof.dart';
 import 'package:startupfunding/widgets/new_message.dart';
@@ -50,7 +51,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
         .doc(widget.workStreamId)
         .get()
         .then((val) {
-      stageCreated = val.data()!['stageCreated'];
+      stageCreated = val.data()!['stageCreated'] ?? false;
       createEditStageController.isStageSubmitted.value =
           val.data()!['submitStage'] == null
               ? false
@@ -70,7 +71,7 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
   @override
   void initState() {
     // TODO: implement initState
-    StageProofScreen(workStreamId: widget.workStreamId);
+
     getAndSetMessages();
     super.initState();
   }
@@ -193,7 +194,10 @@ class _StartupWorkStreamRoomState extends State<StartupWorkStreamRoom> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.to(ViewFundingScreen(
+                                        workStreamId: widget.workStreamId));
+                                  },
                                 ),
                               ),
                               Padding(

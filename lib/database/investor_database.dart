@@ -425,4 +425,57 @@ class InvestorDataBase {
           .update(tmpMap);
     });
   }
+
+  verificationRejected(String workStreamId, String stageId) async {
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageId)
+        .update({"verificationPending": false, "verificationRejected": true});
+  }
+
+  verificationApproved(String workStreamId, String stageId) async {
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageId)
+        .update({"verificationPending": false, "verificationApproved": true});
+  }
+
+  addAccountAddress(String privateKey) async {
+    await firestore
+        .collection("Investors")
+        .doc(user!.uid)
+        .update({"accountAddress": privateKey, "accountProvided": true});
+  }
+
+  addPaymentInformation(String ownAddress, String reciever, String amount,
+      String workStreamId, String stageId) {
+    final timestamp = Timestamp.now();
+    firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("transactions")
+        .doc()
+        .set({
+      "from": ownAddress,
+      "to": reciever,
+      "amount": amount,
+      "timestamp": timestamp,
+      "stageId": stageId
+    });
+
+    firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageId)
+        .update({
+      "fundingProvided": true,
+      "pendingRequest": false,
+      "approvedRequest": true
+    });
+  }
 }

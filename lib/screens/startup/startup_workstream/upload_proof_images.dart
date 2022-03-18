@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:startupfunding/controllers/startup_controllers/proof_image_picker_controller.dart';
@@ -66,6 +68,7 @@ class _UploadProofImagesScreenState extends State<UploadProofImagesScreen> {
                   : Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           InkWell(
                             onTap: () {
@@ -149,7 +152,6 @@ class _UploadProofImagesScreenState extends State<UploadProofImagesScreen> {
                                         ),
                                       )),
                           ),
-                          SizedBox(width: 15),
                           InkWell(
                               onTap: () {
                                 proofImagePickerController.pickImage(
@@ -242,6 +244,7 @@ class _UploadProofImagesScreenState extends State<UploadProofImagesScreen> {
                   : Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           InkWell(
                               onTap: () {
@@ -326,7 +329,6 @@ class _UploadProofImagesScreenState extends State<UploadProofImagesScreen> {
                                             ),
                                           ),
                                         ))),
-                          SizedBox(width: 15),
                           InkWell(
                             onTap: () {
                               proofImagePickerController.pickImage(context, 3);

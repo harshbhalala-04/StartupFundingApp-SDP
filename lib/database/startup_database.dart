@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/startup_controllers/create_edit_stage_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/upload_work_controller.dart';
 
 class StartupDataBase {
   final FirebaseAuth? auth = FirebaseAuth.instance;
@@ -48,27 +49,6 @@ class StartupDataBase {
         .collection("Startups")
         .doc(user!.uid)
         .update({"linkedinUrl": url});
-  }
-
-  void addProofUrl(String url, String workStreamId, String stageUid) async {
-    Map<String, dynamic> tmpMap = {};
-
-    await firestore
-        .collection("workstream")
-        .doc(workStreamId)
-        .collection("stages")
-        .doc(stageUid)
-        .get()
-        .then((val) {
-      tmpMap = val.data()!['proof_of_work'];
-      tmpMap['proofUrl'] = url;
-    });
-    await firestore
-        .collection("workstream")
-        .doc(workStreamId)
-        .collection("stages")
-        .doc(stageUid)
-        .update(tmpMap);
   }
 
   void addFounderInfo(String reply, String secondFounderName,
@@ -139,10 +119,10 @@ class StartupDataBase {
   }
 
   void addPitchDeckUrl(String url) async {
-    await firestore
-        .collection("Startups")
-        .doc(user!.uid)
-        .update({"pitchDeckUrl": url});
+    await firestore.collection("Startups").doc(user!.uid).update({
+      "pitchDeckUrl": url,
+      'isFieldAnswered': true,
+    });
   }
 
   uploadUserImages(File userImages, String folderTitle) async {
@@ -180,13 +160,14 @@ class StartupDataBase {
   uploadProofImages(List<File> uploadImages, String folderTitle,
       String stageUid, String workStreamId) async {
     List<String> urlList = [];
+    Get.find<UploadWorkController>().isImgUploaded.value = true;
     for (int i = 0; i < uploadImages.length; i++) {
       if (uploadImages[i].path != '') {
         final ref = FirebaseStorage.instance
             .ref()
             .child('proof_of_work')
             .child(folderTitle)
-            .child(user!.uid + folderTitle + '.jpg');
+            .child(user!.uid + folderTitle + i.toString() + '.jpg');
 
         await ref
             .putFile(uploadImages[i])
@@ -205,6 +186,79 @@ class StartupDataBase {
       "proof_of_work": {"photos": FieldValue.arrayUnion(urlList)},
       "uploadedProofImg": true,
     });
+  }
+
+  uploadStageDoc(String url, String workStreamId, String stageId) async {
+    try {
+      Get.find<UploadWorkController>().isDocUploaded.value = true;
+      Map<String, dynamic> tmpMap = {};
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc(stageId)
+          .get()
+          .then((val) {
+        if (val.data()!.containsKey('proof_of_work')) {
+          tmpMap = val.data()!['proof_of_work'];
+        }
+      });
+      tmpMap['document'] = url;
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc(stageId)
+          .update({"proof_of_work": tmpMap, "uploadedProofDoc": true});
+    } catch (e) {}
+  }
+
+  uploadStageVideo(String url, String workStreamId, String stageId) async {
+    try {
+      Get.find<UploadWorkController>().isVideoUploaded.value = true;
+      Map<String, dynamic> tmpMap = {};
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc(stageId)
+          .get()
+          .then((val) {
+        if (val.data()!.containsKey('proof_of_work')) {
+          tmpMap = val.data()!['proof_of_work'];
+        }
+      });
+      tmpMap['video'] = url;
+      await firestore
+          .collection("workstream")
+          .doc(workStreamId)
+          .collection("stages")
+          .doc(stageId)
+          .update({"proof_of_work": tmpMap, "uploadedProofVideo": true});
+    } catch (e) {}
+  }
+
+  void uploadProofUrl(String url, String workStreamId, String stageUid) async {
+    Get.find<UploadWorkController>().isUrlUploaded.value = true;
+    Map<String, dynamic> tmpMap = {};
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .get()
+        .then((val) {
+      if (val.data()!.containsKey('proof_of_work')) {
+        tmpMap = val.data()!['proof_of_work'];
+      }
+    });
+    tmpMap['url'] = url;
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .update({"proof_of_work": tmpMap, "uploadedProofUrl": true});
   }
 
   ///Add investor to exclude list
@@ -631,7 +685,7 @@ class StartupDataBase {
         .collection("status")
         .doc()
         .set({
-      "stageDes": "Stage ${stageIndex} is requested for funding.",
+      "statusDes": "Stage ${stageIndex} is requested for funding.",
       "timestamp": Timestamp.now()
     });
   }
@@ -655,9 +709,35 @@ class StartupDataBase {
         urlList.add(url);
       }
     }
-     await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection("Startups")
         .doc(user!.uid)
         .update({'workImgs': FieldValue.arrayUnion(urlList)});
+  }
+
+  submitStageProof(String workStreamId, String stageUid) async {
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("stages")
+        .doc(stageUid)
+        .update({"submitStageProof": true});
+
+    await firestore
+        .collection("workstream")
+        .doc(workStreamId)
+        .collection("status")
+        .doc()
+        .set({
+      "timestamp": Timestamp.now(),
+      "statusDes": "Proof has been submitted for ${stageUid}"
+    });
+  }
+
+  addAccountAddress(String privateKey) async {
+    await firestore
+        .collection("Startups")
+        .doc(user!.uid)
+        .update({"accountAddress": privateKey, "accountProvided": true});
   }
 }

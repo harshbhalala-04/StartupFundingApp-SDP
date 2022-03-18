@@ -1,12 +1,24 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/controllers/startup_controllers/upload_work_controller.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:http/http.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/pitch_deck_screen.dart';
+import 'package:startupfunding/widgets/alert_dialogue.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:path/path.dart' as p;
 
 class UploadProofDocScreen extends StatefulWidget {
+  final String workStreamId;
+  final String stageId;
+  UploadProofDocScreen({required this.workStreamId, required this.stageId});
   @override
   State<UploadProofDocScreen> createState() => _UploadProofDocScreenState();
 }
@@ -15,15 +27,58 @@ class _UploadProofDocScreenState extends State<UploadProofDocScreen> {
   final UploadWorkController uploadWorkController =
       Get.put(UploadWorkController());
 
+  File? file;
+  UploadTask? task;
+
+  checkData() {
+    uploadFile();
+  }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path;
+
+    setState(() {
+      file = File(path!);
+    });
+  }
+
+  Future uploadFile() async {
+    if (file == null) {
+      createAlertDialogue("Please upload your pitch deck.");
+      return;
+    }
+
+    final fileName = p.basename(file!.path);
+    final destination = '/proof_of_work/pof_doc/$fileName';
+
+    task = StartupDataBase.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
+
+    StartupDataBase().uploadStageDoc(urlDownload, widget.workStreamId, widget.stageId);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+
     // uploadWorkController.fetchWorkImages();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final fileName = file != null ? p.basename(file!.path) : 'No File selected';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -57,167 +112,55 @@ class _UploadProofDocScreenState extends State<UploadProofDocScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          uploadWorkController.pickImage(context, 0);
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          padding: new EdgeInsets.all(10.0),
-                          child: Obx(
-                            () => uploadWorkController.isUploadedImage[0]
-                                ? Image(
-                                    image: FileImage(
-                                        uploadWorkController.choosenWorkImg[0]))
-                                : Card(
-                                    shape: CircleBorder(),
-                                    color: Colors.white,
-                                    elevation: 10,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 37.5, 0, 0),
-                                            child: Icon(
-                                              Icons.add_sharp,
-                                              size: 40,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            )),
-                                      ],
-                                    )),
-                          ),
-                        ),
-                      ),
-                      // SizedBox(width: 15),
-                      InkWell(
-                        onTap: () {
-                          uploadWorkController.pickImage(context, 1);
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          padding: new EdgeInsets.all(10.0),
-                          child: Obx(
-                            () => uploadWorkController.isUploadedImage[1]
-                                ? Image(
-                                    image: FileImage(
-                                        uploadWorkController.choosenWorkImg[1]))
-                                : Card(
-                                    shape: CircleBorder(),
-                                    color: Colors.white,
-                                    elevation: 10,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 37.5, 0, 0),
-                                            child: Icon(
-                                              Icons.add_sharp,
-                                              size: 40,
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ],
+              SizedBox(height: 15),
+              Image.asset(
+                "assets/upload.png",
+                height: 68,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                'Drag & Drop Files Here',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontFamily: "Cabin",
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  selectFile();
+                },
+                child: Text(
+                  'Browse File',
+                  style: TextStyle(
+                      color: Colors.white, fontFamily: "Cabin", fontSize: 16),
+                ),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
                 ),
               ),
-              // SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          uploadWorkController.pickImage(context, 2);
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          padding: new EdgeInsets.all(10.0),
-                          child: Obx(() => uploadWorkController
-                                  .isUploadedImage[2]
-                              ? Image(
-                                  image: FileImage(
-                                      uploadWorkController.choosenWorkImg[2]))
-                              : Card(
-                                  shape: CircleBorder(),
-                                  color: Colors.white,
-                                  elevation: 10,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 37.5, 0, 0),
-                                        child: Icon(
-                                          Icons.add_sharp,
-                                          size: 40,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                        ),
-                      ),
-                      // SizedBox(width: 15),
-                      InkWell(
-                        onTap: () {
-                          uploadWorkController.pickImage(context, 3);
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 150,
-                          padding: new EdgeInsets.all(10.0),
-                          child: Obx(() => uploadWorkController
-                                  .isUploadedImage[3]
-                              ? Image(
-                                  image: FileImage(
-                                      uploadWorkController.choosenWorkImg[3]))
-                              : Card(
-                                  shape: CircleBorder(),
-                                  color: Colors.white,
-                                  elevation: 10,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0, 37.5, 0, 0),
-                                          child: Icon(
-                                            Icons.add_sharp,
-                                            size: 40,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          )),
-                                    ],
-                                  ),
-                                )),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              SizedBox(
+                height: 5,
               ),
+              Center(
+                  child: Text(
+                fileName,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Cabin"),
+              )),
+              SizedBox(
+                height: 5,
+              ),
+              task != null ? buildUploadStatus(task!) : Container(),
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -226,9 +169,8 @@ class _UploadProofDocScreenState extends State<UploadProofDocScreen> {
                   width: 250,
                   child: ElevatedButton(
                     onPressed: () {
+                      uploadFile();
                       Get.back();
-                      StartupDataBase()
-                          .uploadWorkImg(uploadWorkController.choosenWorkImg);
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
