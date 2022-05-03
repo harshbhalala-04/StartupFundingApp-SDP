@@ -47,7 +47,7 @@ class InvestorPaymentController extends GetxController {
    
     Get.off(PaymentConfirmScreen());
     InvestorDataBase().addPaymentInformation(ownAddress.toString(),
-        reciever.toString(), amount, workStreamId, stageId);
+        reciever.toString(), amount, workStreamId, stageId, transactionHash.value);
   }
 
   getBalance() async {

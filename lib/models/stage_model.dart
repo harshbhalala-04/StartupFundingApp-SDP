@@ -48,7 +48,7 @@ class StageModel {
         endDay: json["endDay"] == null ? null : json["endDay"],
         endMonth: json["endMonth"] == null ? null : json["endMonth"],
         endYear: json["endYear"] == null ? null : json["endYear"],
-        stageDes: json["statusDes"] == null ? null : json["statusDes"],
+        stageDes: json["stageDes"] == null ? null : json["stageDes"],
         stageFunding:
             json["stageFunding"] == null ? null : json["stageFunding"],
         stageTitle: json["stageTitle"] == null ? null : json["stageTitle"],
@@ -71,7 +71,7 @@ class StageModel {
         "endDay": endDay == null ? null : endDay,
         "endMonth": endMonth == null ? null : endMonth,
         "endYear": endYear == null ? null : endYear,
-        "statusDes": stageDes == null ? null : stageDes,
+        "stageDes": stageDes == null ? null : stageDes,
         "stageFunding": stageFunding == null ? null : stageFunding,
         "stageTitle": stageTitle == null ? null : stageTitle,
         "startDay": startDay == null ? null : startDay,

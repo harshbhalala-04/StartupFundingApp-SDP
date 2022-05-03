@@ -9,6 +9,8 @@ import 'package:startupfunding/models/investor_model.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:startupfunding/models/startup_model.dart';
 
+import '../../global.dart';
+
 class InvestorGlobalController extends GetxController {
   final User? user = FirebaseAuth.instance.currentUser;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -136,6 +138,10 @@ class InvestorGlobalController extends GetxController {
 
   getCurrentUser() async {
     isLoading.toggle();
+    await firestore.collection("URL").doc("GanacheUrl").get().then((val) {
+      rpcUrl = val.data()!['rpcUrl'];
+      wsUrl = val.data()!['wsUrl'];
+    });
     await firestore.collection("Investors").doc(user!.uid).get().then((val) {
       currentInvestor = InvestorModel.fromJson(val.data()!);
     });

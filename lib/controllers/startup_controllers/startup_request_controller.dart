@@ -26,7 +26,11 @@ class StartupRequestController extends GetxController {
               "recieved": myInviteList[i]['recieved'],
               "id": myInviteList[i]['id'],
               "image": myInviteList[i]['image'],
-              "time": myInviteList[i]['time']
+              "time": myInviteList[i]['time'],
+              "equity": myInviteList[i]['equity'],
+              "amount": myInviteList[i]['amount'],
+              "loanAmount": myInviteList[i]['loanAmount'],
+              "roi": myInviteList[i]['roi'],
             });
           } else if (myInviteList[i]['sent'] != "") {
             inviteSentList.add({

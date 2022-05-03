@@ -13,6 +13,16 @@ class InvestorDataBase {
 
   addInvestorPersonalInfo(String firstName, String lastName, String linkedinUrl,
       String cityName) async {
+    final InvestorGlobalController investorGlobalController =
+        Get.put(InvestorGlobalController());
+
+    investorGlobalController.currentInvestor.firstName = firstName;
+
+    investorGlobalController.currentInvestor.lastName =  lastName;
+    print("Inside database");
+    print(investorGlobalController.currentInvestor.firstName);
+    print(investorGlobalController.currentInvestor.lastName);
+
     await firestore.collection("Investors").doc(user!.uid).update({
       "firstName": firstName,
       "lastName": lastName,
@@ -51,6 +61,11 @@ class InvestorDataBase {
 
       String url = await ref.getDownloadURL();
 
+      final InvestorGlobalController investorGlobalController =
+          Get.put(InvestorGlobalController());
+
+      investorGlobalController.currentInvestor.investorImg = url;
+
       await firestore
           .collection("Investors")
           .doc(user!.uid)
@@ -88,7 +103,11 @@ class InvestorDataBase {
       String startupName,
       String investorUid,
       String investorImg,
-      String investorName) async {
+      String investorName,
+      String equity,
+      String amount,
+      String loanAmount,
+      String roi) async {
     DateTime time = DateTime.now();
 
     List<dynamic> myInviteList = [];
@@ -108,7 +127,11 @@ class InvestorDataBase {
           "recieved": "",
           "sent": startupName,
           "image": startupImg,
-          "id": startupUid
+          "id": startupUid,
+          "equity": equity,
+          "amount": amount,
+          "loanAmount": loanAmount,
+          "roi": roi,
         }
       ];
 
@@ -118,7 +141,11 @@ class InvestorDataBase {
           "recieved": investorName,
           "sent": "",
           "image": investorImg,
-          "id": investorUid
+          "id": investorUid,
+          "equity": equity,
+          "amount": amount,
+          "loanAmount": loanAmount,
+          "roi": roi,
         }
       ];
 
@@ -452,7 +479,7 @@ class InvestorDataBase {
   }
 
   addPaymentInformation(String ownAddress, String reciever, String amount,
-      String workStreamId, String stageId) {
+      String workStreamId, String stageId, String txHash) {
     final timestamp = Timestamp.now();
     firestore
         .collection("workstream")
@@ -464,7 +491,8 @@ class InvestorDataBase {
       "to": reciever,
       "amount": amount,
       "timestamp": timestamp,
-      "stageId": stageId
+      "stageId": stageId,
+      "txHash": txHash,
     });
 
     firestore

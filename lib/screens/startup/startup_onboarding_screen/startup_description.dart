@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/startup_database.dart';
+import 'package:startupfunding/screens/startup/startup_onboarding_screen/equity_detail_screen.dart';
 import 'package:startupfunding/screens/startup/startup_onboarding_screen/stage_startup_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -15,7 +16,7 @@ class StartupDescriptionScreen extends StatelessWidget {
     if (_textEditingController.text == "") {
       createAlertDialogue("Please enter short details of you startup");
     } else {
-      Get.to(StartupStageScreen());
+      Get.to(EquityDetailScreen());
       StartupDataBase().addStartupDescription(_textEditingController.text);
     }
   }

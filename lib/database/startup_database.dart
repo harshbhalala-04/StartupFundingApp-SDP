@@ -84,6 +84,11 @@ class StartupDataBase {
         .update({"startupDescription": description});
   }
 
+  void addEquityDetails(String amount, String equity, String valuation) async {
+    await firestore.collection("Startups").doc(user!.uid).update(
+        {"raisedAmount": amount, "equity": equity, "valuation": valuation});
+  }
+
   void addStartupCityName(String city) async {
     await firestore
         .collection("Startups")

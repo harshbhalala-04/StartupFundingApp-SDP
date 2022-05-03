@@ -53,6 +53,7 @@ class StartupRequestSentScreen extends StatelessWidget {
                       .inviteSentList[index]["image"],
                   title: Get.find<StartupRequestController>()
                       .inviteSentList[index]['sent'],
+                      startupReqRecieve: false,
                 )
             );
           },

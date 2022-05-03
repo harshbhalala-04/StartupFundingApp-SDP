@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_request_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/image_picker_controller.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_global_controller.dart';
 import 'package:startupfunding/screens/investors/investor_filter_screen.dart';
 import 'package:startupfunding/screens/investors/investor_workstream/chat_screen.dart';
@@ -17,7 +18,11 @@ import 'package:startupfunding/screens/investors/investor_request_screen.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/widgets/onboarding_app_bar.dart';
 
+import '../../global.dart';
+
 class InvestorHomeScreen extends StatelessWidget {
+  
+
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -27,16 +32,19 @@ class InvestorHomeScreen extends StatelessWidget {
   final InvestorGlobalController investorGlobalController =
       Get.put(InvestorGlobalController());
 
+     
+
   final screens = [
     InvestorFeedScreen(),
     InvestorRequestScreen(),
-    NotificationScreen(),
     InvestorProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     print("Investor Home screen starts building");
+    print(Get.find<InvestorGlobalController>().currentInvestor.investorImg);
+    
     return Scaffold(
       appBar: AppBar(
         title: OnBoardingAppBarTitle(),
@@ -88,6 +96,9 @@ class InvestorHomeScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
+          selectedItemColor: Colors.white,
+          selectedLabelStyle: TextStyle(color: Colors.white),
+          backgroundColor: Theme.of(context).primaryColor,
           currentIndex: investorGlobalController.currentIndex.value,
           onTap: (index) {
             investorGlobalController.currentIndex.value = index;
@@ -106,29 +117,32 @@ class InvestorHomeScreen extends StatelessWidget {
                 label: 'Requests',
                 backgroundColor: Theme.of(context).primaryColor),
             BottomNavigationBarItem(
-                icon: ImageIcon(
-                  AssetImage("assets/notification.png"),
-                ),
-                label: 'Notification',
-                backgroundColor: Theme.of(context).primaryColor),
-            BottomNavigationBarItem(
                 icon: Obx(
-                  () => investorGlobalController.isLoading.value ||
-                          investorGlobalController
-                                  .currentInvestor.investorImg ==
-                              null
+                  () => fromSignup
                       ? CircleAvatar(
                           radius: 18,
                           backgroundColor: Colors.grey,
+                          backgroundImage: FileImage(
+                              Get.find<ImagePickerController>()
+                                  .choosenImage
+                                  .value),
                         )
-                      : CircleAvatar(
-                          radius: 18,
-                          backgroundColor: Colors.grey,
-                          backgroundImage: CachedNetworkImageProvider(
-                              Get.find<InvestorGlobalController>()
-                                  .currentInvestor
-                                  .investorImg!),
-                        ),
+                      : investorGlobalController.isLoading.value ||
+                              investorGlobalController
+                                      .currentInvestor.investorImg ==
+                                  null
+                          ? CircleAvatar(
+                              radius: 18,
+                              backgroundColor: Colors.grey,
+                            )
+                          : CircleAvatar(
+                              radius: 18,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  Get.find<InvestorGlobalController>()
+                                      .currentInvestor
+                                      .investorImg!),
+                            ),
                 ),
                 label: 'Profile',
                 backgroundColor: Theme.of(context).primaryColor)

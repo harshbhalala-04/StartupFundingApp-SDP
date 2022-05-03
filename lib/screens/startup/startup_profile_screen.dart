@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
@@ -152,9 +153,59 @@ class StartupProfileScreen extends StatelessWidget {
                   iconImage: "assets/share_icon.png", title: "Share Startup")),
           InkWell(
               onTap: () {
-                FirebaseAuth.instance.signOut();
-                Get.off(StartScreen());
-                removeSharedPreferences();
+                // FirebaseAuth.instance.signOut();
+                // Get.off(StartScreen());
+                // removeSharedPreferences();
+
+                Get.dialog(
+                  AlertDialog(
+                    title: Text(
+                      'Log Out?',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                    ),
+                    content: Text(
+                      "Are you sure you want to log out and exit the app?",
+                      style: TextStyle(
+                        color: Color.fromRGBO(122, 122, 122, 1),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+
+                          removeSharedPreferences();
+                          FirebaseAuth.instance.signOut();
+                          SystemNavigator.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: CustomCard(
                   iconImage: "assets/logout_icon.png", title: "Log Out")),

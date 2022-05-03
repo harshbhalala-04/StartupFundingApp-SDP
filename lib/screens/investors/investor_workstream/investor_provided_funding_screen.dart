@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,6 @@ class InvestorProvidedFundingScreen extends StatefulWidget {
 
 class _InvestorProvidedFundingScreenState
     extends State<InvestorProvidedFundingScreen> {
-
   final ViewFundingController viewFundingController =
       Get.put(ViewFundingController());
 
@@ -46,86 +47,90 @@ class _InvestorProvidedFundingScreenState
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: viewFundingController.transactionList.length,
-              itemBuilder: (ctx, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ExpandablePanel(
-                          header: Text(
-                            "Funding amount: ${viewFundingController.transactionList[index].amount} ether",
-                            style: TextStyle(
-                              fontFamily: "Cabin",
-                              fontSize: 20,
+          : viewFundingController.transactionList.length == 0
+              ? Center(
+                  child: Image(image: AssetImage("assets/not_found.jpeg")),
+                )
+              : ListView.builder(
+                  itemCount: viewFundingController.transactionList.length,
+                  itemBuilder: (ctx, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
                             ),
                           ),
-                          collapsed: Text(
-                            "From Account: ${viewFundingController.transactionList[index].from}",
-                            softWrap: true,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: "Cabin",
-                              fontSize: 17,
-                            ),
-                          ),
-                          expanded: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ExpandablePanel(
+                              header: Text(
+                                "Funding amount: ${viewFundingController.transactionList[index].amount} ether",
+                                style: TextStyle(
+                                  fontFamily: "Cabin",
+                                  fontSize: 20,
+                                ),
+                              ),
+                              collapsed: Text(
                                 "From Account: ${viewFundingController.transactionList[index].from}",
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: "Cabin",
                                   fontSize: 17,
                                 ),
                               ),
-                              SizedBox(
-                                height: 5,
+                              expanded: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "From Account: ${viewFundingController.transactionList[index].from}",
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "To Account: ${viewFundingController.transactionList[index].to}",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        fontFamily: "Cabin",
+                                        fontSize: 17,
+                                        color: Colors.black),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Transaction Hash: ${viewFundingController.transactionList[index].txHash}",
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      fontFamily: "Cabin",
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "To Account: ${viewFundingController.transactionList[index].to}",
-                                softWrap: true,
-                                style: TextStyle(
-                                    fontFamily: "Cabin",
-                                    fontSize: 17,
-                                    color: Colors.black),
+                              theme: ExpandableThemeData(
+                                iconColor: Theme.of(context).primaryColor,
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Transaction Hash: ${viewFundingController.transactionList[index].txHash}",
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontFamily: "Cabin",
-                                  fontSize: 17,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
-                          theme: ExpandableThemeData(
-                            iconColor: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              })),
+                    );
+                  })),
     );
   }
 }

@@ -37,6 +37,14 @@ class _InvestorStageRequestScreenState
       body: ListView.builder(
           itemCount: verifyStageController.stage.length,
           itemBuilder: (ctx, index) {
+            print(verifyStageController.stage[index].stageTitle);
+            print(verifyStageController.stage[index].startDay);
+            print(verifyStageController.stage[index].endDay);
+            print(verifyStageController.stage[index].startMonth);
+            print(verifyStageController.stage[index].startYear);
+            print(verifyStageController.stage[index].endMonth);
+            print(verifyStageController.stage[index].endYear);
+            print(verifyStageController.stage[index].stageDes);
             return verifyStageController.isApprovedRequest[index] ||
                     verifyStageController.isPendingRequest[index]
                 ? Padding(
@@ -186,8 +194,23 @@ class _InvestorStageRequestScreenState
                                                 // verifyStageController
                                                 //         .isApprovedRequest[
                                                 //     index] = true;
-
-                                                Get.to(PaymentScreen(workStreamId: widget.workStreamId, stageId: verifyStageController.stage[index].stageUid, fundingAmount: verifyStageController.stage[index].stageFunding));
+                                                verifyStageController
+                                                        .isPendingRequest[
+                                                    index] = false;
+                                                verifyStageController
+                                                        .isApprovedRequest[
+                                                    index] = true;
+                                                Get.to(PaymentScreen(
+                                                    workStreamId:
+                                                        widget.workStreamId,
+                                                    stageId:
+                                                        verifyStageController
+                                                            .stage[index]
+                                                            .stageUid,
+                                                    fundingAmount:
+                                                        verifyStageController
+                                                            .stage[index]
+                                                            .stageFunding));
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(

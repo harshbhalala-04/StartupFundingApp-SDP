@@ -12,60 +12,70 @@ class StartupRequestRecieveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() =>  SingleChildScrollView(
-      child: Column(children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              Text(
-                'Recieved Invitations ',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Color.fromRGBO(51, 51, 51, 1),
-                ),
+    return Obx(() => SingleChildScrollView(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Recieved Invitations ',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color.fromRGBO(51, 51, 51, 1),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Obx(() => Text(
+                      '(' +
+                          Get.find<StartupRequestController>()
+                              .inviteRecievedList
+                              .length
+                              .toString() +
+                          ')',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromRGBO(51, 51, 51, 1),
+                      ))),
+                ],
               ),
-              SizedBox(
-                width: 4,
-              ),
-              Obx(() =>  Text(
-                  '(' +
-                      Get.find<StartupRequestController>()
-                          .inviteRecievedList
-                          .length
-                          .toString() +
-                      ')',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color.fromRGBO(51, 51, 51, 1),
-                  ))),
-            ],
-          ),
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount:
-              Get.find<StartupRequestController>().inviteRecievedList.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-                onTap: () {
-                  Get.to(InvestorDetailScreen(
-                    uid: Get.find<StartupRequestController>()
-                        .inviteRecievedList[index]["id"],
-                    fromReq: true,
-                    viewProfile: false,
-                  ));
-                },
-                child: UserCard(
-                  imgUrl: Get.find<StartupRequestController>()
-                      .inviteRecievedList[index]["image"],
-                  title: Get.find<StartupRequestController>()
-                      .inviteRecievedList[index]['recieved'],
-                ));
-          },
-        ),
-      ]),
-    ));
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: Get.find<StartupRequestController>()
+                  .inviteRecievedList
+                  .length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                    onTap: () {
+                      Get.to(InvestorDetailScreen(
+                        uid: Get.find<StartupRequestController>()
+                            .inviteRecievedList[index]["id"],
+                        fromReq: true,
+                        viewProfile: false,
+                      ));
+                    },
+                    child: UserCard(
+                      imgUrl: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]["image"],
+                      title: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]['recieved'],
+                      startupReqRecieve: true,
+                      amount: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]["amount"],
+                      equity: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]["equity"],
+                      loanAmount: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]["loanAmount"],
+                      roi: Get.find<StartupRequestController>()
+                          .inviteRecievedList[index]["roi"],
+                    ));
+              },
+            ),
+          ]),
+        ));
   }
 }

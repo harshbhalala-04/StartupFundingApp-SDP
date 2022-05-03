@@ -4,6 +4,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:startupfunding/database/investor_database.dart';
+import 'package:startupfunding/global.dart';
 import 'package:startupfunding/screens/investors/investor_home_screen.dart';
 import 'package:startupfunding/widgets/alert_dialogue.dart';
 import 'package:startupfunding/widgets/bottom_navigation_button.dart';
@@ -107,6 +108,7 @@ class _InvestorPersonalizeProfileScreenState
     } else if (Mentor.No == mentor) {
       mentorStartup = "No";
     }
+    fromSignup = true;
     Get.to(InvestorHomeScreen());
     InvestorDataBase().addInvestorPersonalizeInfo(
         expertiseAns, preferInvestement, mentorStartup);

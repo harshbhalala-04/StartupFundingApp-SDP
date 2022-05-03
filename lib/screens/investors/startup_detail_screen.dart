@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new
 
 import 'dart:io';
 
@@ -34,6 +34,11 @@ class StartupDetailScreen extends StatefulWidget {
 }
 
 class _StartupDetailScreenState extends State<StartupDetailScreen> {
+  TextEditingController equityController = new TextEditingController();
+  TextEditingController amountController = new TextEditingController();
+  TextEditingController loanAmountController = new TextEditingController();
+  TextEditingController roiController = new TextEditingController();
+
   void _launchURL(String url) async {
     await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
@@ -230,50 +235,265 @@ class _StartupDetailScreenState extends State<StartupDetailScreen> {
                                     },
                                   );
                                 } else {
-                                  // 1. Remove Startup from feed
-                                  Get.find<InvestorGlobalController>()
-                                      .removeStartupFromFeed(
-                                          widget.startup!.uid!);
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext ctx) {
+                                        return Container(
+                                          height: 400,
+                                          child: AlertDialog(
+                                            scrollable: true,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(16)),
+                                            ),
+                                            content: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    "Enter your bid",
+                                                    style: TextStyle(
+                                                      fontFamily: "Cabin",
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Your bidding amount",
+                                                    style: TextStyle(
+                                                      fontFamily: "Cabin",
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: TextFormField(
+                                                      onChanged: (val) {
+                                                        amountController.text =
+                                                            val;
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            'Enter amount in ether',
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 2),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "Equity Stack you want",
+                                                    style: TextStyle(
+                                                      fontFamily: "Cabin",
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: TextFormField(
+                                                      onChanged: (val) {
+                                                        equityController.text =
+                                                            val;
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            "Enter stack do u want",
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 2),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    "If you want to give loan then enter loan amount and rate of interest!",
+                                                    style: TextStyle(
+                                                      fontFamily: "Cabin",
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: TextFormField(
+                                                      onChanged: (val) {
+                                                        loanAmountController.text =
+                                                            val;
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            "Enter loan amount in ether",
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 2),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: TextFormField(
+                                                      onChanged: (val) {
+                                                        roiController.text =
+                                                            val;
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
+                                                        hintText:
+                                                            "Enter Rate of Interest in %",
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          10)),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  width: 2),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  ElevatedButton(
+                                                    onPressed: () {
+                                                      // 1. Remove Startup from feed
+                                                      Get.find<
+                                                              InvestorGlobalController>()
+                                                          .removeStartupFromFeed(
+                                                              widget.startup!
+                                                                  .uid!);
 
-                                  // 2. Go back to prev route
-                                  Get.back();
+                                                      // 2. Go back to prev route
+                                                      Get.back();
+                                                      Get.back();
 
-                                  Timestamp time = Timestamp.now();
-                                  Get.find<InvestorRequestController>()
-                                      .inviteSentList
-                                      .add({
-                                    "sent": widget.startup!.startupName,
-                                    "id": widget.startup!.uid,
-                                    "image": widget.startup!.startupLogoUrl,
-                                    "time": time,
-                                  });
-                                  Get.find<InvestorRequestController>()
-                                      .inviteSentList
-                                      .sort((a, b) =>
-                                          b["time"].compareTo(a["time"]));
+                                                      Timestamp time =
+                                                          Timestamp.now();
+                                                      Get.find<
+                                                              InvestorRequestController>()
+                                                          .inviteSentList
+                                                          .add({
+                                                        "sent": widget.startup!
+                                                            .startupName,
+                                                        "id":
+                                                            widget.startup!.uid,
+                                                        "image": widget.startup!
+                                                            .startupLogoUrl,
+                                                        "time": time,
+                                                      });
+                                                      Get.find<
+                                                              InvestorRequestController>()
+                                                          .inviteSentList
+                                                          .sort((a, b) => b[
+                                                                  "time"]
+                                                              .compareTo(
+                                                                  a["time"]));
 
-                                  // 3. Add startup to exclude list
-                                  InvestorDataBase().addStartupToExcludeList(
-                                      widget.startup!.uid!, true);
+                                                      // 3. Add startup to exclude list
+                                                      InvestorDataBase()
+                                                          .addStartupToExcludeList(
+                                                              widget.startup!
+                                                                  .uid!,
+                                                              true);
 
-                                  // 4. Add Startup to invite list
-                                  InvestorDataBase().addStartupToInviteList(
-                                      widget.startup!.uid!,
-                                      widget.startup!.startupLogoUrl!,
-                                      widget.startup!.startupName!,
-                                      Get.find<InvestorGlobalController>()
-                                          .currentInvestor
-                                          .uid!,
-                                      Get.find<InvestorGlobalController>()
-                                          .currentInvestor
-                                          .investorImg!,
-                                      Get.find<InvestorGlobalController>()
-                                              .currentInvestor
-                                              .firstName! +
-                                          " " +
-                                          Get.find<InvestorGlobalController>()
-                                              .currentInvestor
-                                              .lastName!);
+                                                      // 4. Add Startup to invite list
+                                                      InvestorDataBase().addStartupToInviteList(
+                                                          widget.startup!.uid!,
+                                                          widget.startup!
+                                                              .startupLogoUrl!,
+                                                          widget.startup!
+                                                              .startupName!,
+                                                          Get.find<
+                                                                  InvestorGlobalController>()
+                                                              .currentInvestor
+                                                              .uid!,
+                                                          Get.find<
+                                                                  InvestorGlobalController>()
+                                                              .currentInvestor
+                                                              .investorImg!,
+                                                          Get.find<InvestorGlobalController>()
+                                                                  .currentInvestor
+                                                                  .firstName! +
+                                                              " " +
+                                                              Get.find<
+                                                                      InvestorGlobalController>()
+                                                                  .currentInvestor
+                                                                  .lastName!,
+                                                          equityController.text,
+                                                          amountController
+                                                              .text,
+                                                              loanAmountController.text,
+                                                              roiController.text);
+                                                    },
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 20.0,
+                                                          vertical: 10),
+                                                      child: Text(
+                                                        "Invite",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontFamily: "Cabin",
+                                                            fontSize: 18),
+                                                      ),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    40),
+                                                              ),
+                                                            ),
+                                                            primary: Theme.of(
+                                                                    context)
+                                                                .primaryColor),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
                                 }
                               },
                               child: Padding(
@@ -328,6 +548,51 @@ class _StartupDetailScreenState extends State<StartupDetailScreen> {
                               fontFamily: "Cabin",
                               fontSize: 20,
                             ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 50,
+                      child: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Raised Amount: ${widget.startup!.raisedAmount!}",
+                                style: TextStyle(
+                                  fontFamily: "Cabin",
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                "Equity Percentage: ${widget.startup!.equity!}",
+                                style: TextStyle(
+                                  fontFamily: "Cabin",
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                "Company Valuation: ${widget.startup!.valuation!}",
+                                style: TextStyle(
+                                  fontFamily: "Cabin",
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

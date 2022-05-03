@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:startupfunding/controllers/startup_controllers/startup_filter_controller.dart';
+import 'package:startupfunding/global.dart';
 import 'package:startupfunding/models/investor_model.dart';
 import 'package:startupfunding/models/startup_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -138,6 +139,10 @@ class StartupGlobalController extends GetxController {
   getCurrentUser() async {
     print("Startup init scrreen get current user");
     isLoading.toggle();
+    await firestore.collection("URL").doc("GanacheUrl").get().then((val) {
+      rpcUrl = val.data()!['rpcUrl'];
+      wsUrl = val.data()!['wsUrl'];
+    });
     await firestore.collection("Startups").doc(user!.uid).get().then((val) {
       currentStartup = StartupModel.fromJson(val.data()!);
       print(val.data()!['Stage']);

@@ -31,7 +31,7 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
   final List<Widget> screens = [
     StartupInvestorsScreen(),
     StartupRequestScreen(),
-    StartupNotificationScreen(),
+    
     StartupProfileScreen(),
   ];
 
@@ -93,6 +93,9 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
+          selectedItemColor: Colors.white,
+          selectedLabelStyle: TextStyle(color: Colors.white),
+          backgroundColor: Theme.of(context).primaryColor,
           currentIndex: Get.find<StartupGlobalController>().currentIndex.value,
           onTap: (index) {
             Get.find<StartupGlobalController>().currentIndex.value = index;
@@ -111,13 +114,6 @@ class _StartupHomeScreenState extends State<StartupHomeScreen> {
               ),
               backgroundColor: Theme.of(context).primaryColor,
               label: "Request",
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(
-                AssetImage("assets/notification_icon.png"),
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-              label: "Notification",
             ),
             BottomNavigationBarItem(
               icon: Obx(

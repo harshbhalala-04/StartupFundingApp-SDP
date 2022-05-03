@@ -61,6 +61,7 @@ class InvestorRequestRecieveScreen extends StatelessWidget {
                       .inviteRecievedList[index]["image"],
                   title: Get.find<InvestorRequestController>()
                       .inviteRecievedList[index]['recieved'],
+                      startupReqRecieve: false,
                 ));
           },
         ),

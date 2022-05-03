@@ -12,31 +12,33 @@ StartupModel startupModelFromJson(String str) =>
 String startupModelToJson(StartupModel data) => json.encode(data.toJson());
 
 class StartupModel {
-  StartupModel({
-    this.coFounderImg,
-    this.email,
-    this.founderImg,
-    this.linkedinUrl,
-    this.phoneNo,
-    this.pitchDeckUrl,
-    this.regStartupName,
-    this.secondFounderEmail,
-    this.secondFounderLinkedinUrl,
-    this.secondFounderName,
-    this.singleUser,
-    this.startupCategory,
-    this.startupCity,
-    this.startupDescription,
-    this.startupLogoUrl,
-    this.startupName,
-    this.startupStage,
-    this.userName,
-    this.uid,
-    this.excludeInvestor,
-    this.accountAddress,
-    this.accountProvided,
-    this.notificationTokens,
-  });
+  StartupModel(
+      {this.coFounderImg,
+      this.email,
+      this.founderImg,
+      this.linkedinUrl,
+      this.phoneNo,
+      this.pitchDeckUrl,
+      this.regStartupName,
+      this.secondFounderEmail,
+      this.secondFounderLinkedinUrl,
+      this.secondFounderName,
+      this.singleUser,
+      this.startupCategory,
+      this.startupCity,
+      this.startupDescription,
+      this.startupLogoUrl,
+      this.startupName,
+      this.startupStage,
+      this.userName,
+      this.uid,
+      this.excludeInvestor,
+      this.accountAddress,
+      this.accountProvided,
+      this.notificationTokens,
+      this.equity,
+      this.valuation,
+      this.raisedAmount});
 
   String? coFounderImg;
   String? email;
@@ -61,52 +63,53 @@ class StartupModel {
   List<String>? notificationTokens;
   String? accountAddress;
   bool? accountProvided;
+  String? raisedAmount;
+  String? equity;
+  String? valuation;
 
   factory StartupModel.fromJson(Map<String, dynamic> json) => StartupModel(
-        coFounderImg:
-            json["coFounderImg"] == null ? null : json["coFounderImg"],
-        email: json["email"] == null ? null : json["email"],
-        founderImg: json["founderImg"] == null ? null : json["founderImg"],
-        linkedinUrl: json["linkedinUrl"] == null ? null : json["linkedinUrl"],
-        phoneNo: json["phoneNo"] == null ? null : json["phoneNo"],
-        pitchDeckUrl:
-            json["pitchDeckUrl"] == null ? null : json["pitchDeckUrl"],
-        regStartupName:
-            json["regStartupName"] == null ? null : json["regStartupName"],
-        secondFounderEmail: json["secondFounderEmail"] == null
-            ? null
-            : json["secondFounderEmail"],
-        secondFounderLinkedinUrl: json["secondFounderLinkedinUrl"] == null
-            ? null
-            : json["secondFounderLinkedinUrl"],
-        secondFounderName: json["secondFounderName"] == null
-            ? null
-            : json["secondFounderName"],
-        singleUser: json["singleUser"] == null ? null : json["singleUser"],
-        startupCategory:
-            json["startupCategory"] == null ? null : json["startupCategory"],
-        startupCity: json["startupCity"] == null ? null : json["startupCity"],
-        startupDescription: json["startupDescription"] == null
-            ? null
-            : json["startupDescription"],
-        startupLogoUrl:
-            json["startupLogoUrl"] == null ? null : json["startupLogoUrl"],
-        startupName: json["startupName"] == null ? null : json["startupName"],
-        startupStage:
-            json["startupStage"] == null ? null : json["startupStage"],
-        userName: json["userName"] == null ? null : json["userName"],
-        uid: json["uid"] == null ? null : json["uid"],
-        excludeInvestor: json["excludeInvestor"] == null
-            ? null
-            : List<String>.from(json["excludeInvestor"].map((x) => x)),
-        notificationTokens: json["notificationTokens"] == null
-            ? null
-            : List<String>.from(json["notificationTokens"].map((x) => x)),
-        accountAddress:
-            json["accountAddress"] == null ? null : json["accountAddress"],
-        accountProvided:
-            json["accountProvided"] == null ? null : json["accountProvided"],
-      );
+      coFounderImg: json["coFounderImg"] == null ? null : json["coFounderImg"],
+      email: json["email"] == null ? null : json["email"],
+      founderImg: json["founderImg"] == null ? null : json["founderImg"],
+      linkedinUrl: json["linkedinUrl"] == null ? null : json["linkedinUrl"],
+      phoneNo: json["phoneNo"] == null ? null : json["phoneNo"],
+      pitchDeckUrl: json["pitchDeckUrl"] == null ? null : json["pitchDeckUrl"],
+      regStartupName:
+          json["regStartupName"] == null ? null : json["regStartupName"],
+      secondFounderEmail: json["secondFounderEmail"] == null
+          ? null
+          : json["secondFounderEmail"],
+      secondFounderLinkedinUrl: json["secondFounderLinkedinUrl"] == null
+          ? null
+          : json["secondFounderLinkedinUrl"],
+      secondFounderName:
+          json["secondFounderName"] == null ? null : json["secondFounderName"],
+      singleUser: json["singleUser"] == null ? null : json["singleUser"],
+      startupCategory:
+          json["startupCategory"] == null ? null : json["startupCategory"],
+      startupCity: json["startupCity"] == null ? null : json["startupCity"],
+      startupDescription: json["startupDescription"] == null
+          ? null
+          : json["startupDescription"],
+      startupLogoUrl:
+          json["startupLogoUrl"] == null ? null : json["startupLogoUrl"],
+      startupName: json["startupName"] == null ? null : json["startupName"],
+      startupStage: json["startupStage"] == null ? null : json["startupStage"],
+      userName: json["userName"] == null ? null : json["userName"],
+      uid: json["uid"] == null ? null : json["uid"],
+      excludeInvestor: json["excludeInvestor"] == null
+          ? null
+          : List<String>.from(json["excludeInvestor"].map((x) => x)),
+      notificationTokens: json["notificationTokens"] == null
+          ? null
+          : List<String>.from(json["notificationTokens"].map((x) => x)),
+      accountAddress:
+          json["accountAddress"] == null ? null : json["accountAddress"],
+      accountProvided:
+          json["accountProvided"] == null ? null : json["accountProvided"],
+      equity: json["equity"] == null ? null : json["equity"],
+      raisedAmount: json["raisedAmount"] == null ? null : json["raisedAmount"],
+      valuation: json["valuation"] == null ? null : json["valuation"]);
 
   Map<String, dynamic> toJson() => {
         "coFounderImg": coFounderImg == null ? null : coFounderImg,
@@ -134,6 +137,9 @@ class StartupModel {
         "uid": uid == null ? null : uid,
         "accountAddress": accountAddress == null ? null : accountAddress,
         "accountProvided": accountProvided == null ? null : accountProvided,
+        "equity": equity == null ? null : equity,
+        "raisedAmount": raisedAmount == null ? null : raisedAmount,
+        "valuation": valuation == null ? null : valuation,
         "excludeInvestor": excludeInvestor == null
             ? null
             : List<dynamic>.from(excludeInvestor!.map((x) => x)),

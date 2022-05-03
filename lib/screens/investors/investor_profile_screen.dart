@@ -3,20 +3,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:startupfunding/controllers/investor_controllers/investor_global_controller.dart';
+import 'package:startupfunding/controllers/startup_controllers/image_picker_controller.dart';
 import 'package:startupfunding/screens/start_screen.dart';
 import 'package:startupfunding/screens/startup/investor_detail_screen.dart';
 import 'package:startupfunding/widgets/custom_card.dart';
 
+import '../../global.dart';
 import 'investor_profile_management/investor_delete_account_screen.dart';
 import 'investor_profile_management/investor_edit_profile_screen.dart';
 import 'investor_profile_management/investor_view_balance_screen.dart';
 
 class InvestorProfileScreen extends StatelessWidget {
-  const InvestorProfileScreen({Key? key}) : super(key: key);
-
   removeSharedPreferences() async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -25,6 +26,21 @@ class InvestorProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Inside view profile screen");
+    if (Get.find<InvestorGlobalController>().currentInvestor.firstName ==
+        null) {
+      print("First name is null");
+    } else {
+      print(
+          "First name: ${Get.find<InvestorGlobalController>().currentInvestor.firstName}");
+    }
+    if (Get.find<InvestorGlobalController>().currentInvestor.lastName == null) {
+      print("Last name is null");
+    } else {
+      print(
+          "Last name: ${Get.find<InvestorGlobalController>().currentInvestor.lastName}");
+    }
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -48,14 +64,23 @@ class InvestorProfileScreen extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 10, 10),
-                  child: CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: CachedNetworkImageProvider(
-                        Get.find<InvestorGlobalController>()
-                            .currentInvestor
-                            .investorImg!),
-                    backgroundColor: Colors.grey,
-                  ),
+                  child: fromSignup
+                      ? CircleAvatar(
+                          radius: 50.0,
+                          backgroundImage: FileImage(
+                              Get.find<ImagePickerController>()
+                                  .choosenImage
+                                  .value),
+                          backgroundColor: Colors.grey,
+                        )
+                      : CircleAvatar(
+                          radius: 50.0,
+                          backgroundImage: CachedNetworkImageProvider(
+                              Get.find<InvestorGlobalController>()
+                                  .currentInvestor
+                                  .investorImg!),
+                          backgroundColor: Colors.grey,
+                        ),
                 ),
                 SizedBox(
                   width: 10,
@@ -122,9 +147,59 @@ class InvestorProfileScreen extends StatelessWidget {
                   title: "View Balance")),
           InkWell(
               onTap: () {
-                FirebaseAuth.instance.signOut();
-                Get.off(StartScreen());
-                removeSharedPreferences();
+                // FirebaseAuth.instance.signOut();
+                // Get.off(StartScreen());
+                // removeSharedPreferences();
+
+                Get.dialog(
+                  AlertDialog(
+                    title: Text(
+                      'Log Out?',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                    ),
+                    content: Text(
+                      "Are you sure you want to log out and exit the app?",
+                      style: TextStyle(
+                        color: Color.fromRGBO(122, 122, 122, 1),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text(
+                          'No',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+
+                          removeSharedPreferences();
+                          FirebaseAuth.instance.signOut();
+                          SystemNavigator.pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor),
+                        child: Text(
+                          'Yes',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: CustomCard(
                   iconImage: "assets/logout_icon.png", title: "Log Out")),
