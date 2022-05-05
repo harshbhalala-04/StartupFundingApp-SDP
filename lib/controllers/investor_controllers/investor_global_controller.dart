@@ -20,8 +20,8 @@ class InvestorGlobalController extends GetxController {
   // Variables
   DocumentSnapshot? lastUser;
   bool isLoadingMoreData = false;
-  int itemLimit = 5;
-  bool hasMoreData = true;
+  int itemLimit = 10;
+  final hasMoreData = true.obs;
   int currentItemLength = 0;
   int prevItemLength = 0;
   List<StartupModel> startupsList = <StartupModel>[].obs;
@@ -41,11 +41,18 @@ class InvestorGlobalController extends GetxController {
   }
 
   void scrollListener() {
+    print("Here scroll listener function calls");    
+    print(scrollController.offset);
+    print(scrollController.position.outOfRange);
+    print(scrollController.position.maxScrollExtent);
     if (scrollController.offset >=
             scrollController.position.maxScrollExtent - 100 &&
         !scrollController.position.outOfRange) {
+          print("Inside first if condition");
       if (prevItemLength != currentItemLength) {
+        print("Here under if condition second time");
         prevItemLength = currentItemLength;
+        print("Once again call feed function");
         getStartupsForFeed();
       }
     }
@@ -80,7 +87,7 @@ class InvestorGlobalController extends GetxController {
 
       query = query.limit(itemLimit);
 
-      if (hasMoreData) {
+      if (hasMoreData.value) {
         await query.get().then((snapshot) {
           if (snapshot.docs.isNotEmpty) {
             print("Inside for each loop initialization");
@@ -99,28 +106,28 @@ class InvestorGlobalController extends GetxController {
             currentItemLength = currentItemLength + snapshot.docs.length;
 
             if (snapshot.docs.length < itemLimit) {
-              hasMoreData = false;
+              hasMoreData.value = false;
               fnTerminate = 1;
             }
           } else {
-            hasMoreData = false;
+            hasMoreData.value = false;
           }
         });
       }
 
       startupsList.addAll(tmpUsersList);
 
-      if (startupsList.length < 5 && hasMoreData) {
+      if (startupsList.length < 5 && hasMoreData.value) {
         getStartupsForFeed();
       }
 
-      if (startupsList.length == 0 && fnTerminate == 1 && !hasMoreData) {
+      if (startupsList.length == 0 && fnTerminate == 1 && !hasMoreData.value) {
         endUser.value = true;
         isLoading.toggle();
         return;
       }
 
-      if (startupsList.length == 0 && fnTerminate == 0 && !hasMoreData) {
+      if (startupsList.length == 0 && fnTerminate == 0 && !hasMoreData.value) {
         endUser.value = true;
         isLoading.toggle();
         return;

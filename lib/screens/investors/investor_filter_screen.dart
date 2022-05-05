@@ -153,7 +153,7 @@ class _InvestorFilterScreenState extends State<InvestorFilterScreen> {
                     Get.find<InvestorFilterController>().isFilterApplied.value =
                         true;
                     Get.find<InvestorGlobalController>().startupsList = [];
-                    Get.find<InvestorGlobalController>().hasMoreData = true;
+                    Get.find<InvestorGlobalController>().hasMoreData.value = true;
                     Get.find<InvestorGlobalController>().lastUser = null;
                     Get.find<InvestorGlobalController>().getStartupsForFeed();
                     Get.to(InvestorHomeScreen());
@@ -183,7 +183,7 @@ class _InvestorFilterScreenState extends State<InvestorFilterScreen> {
                     Get.find<InvestorFilterController>().isFilterApplied.value =
                         false;
                     Get.find<InvestorGlobalController>().startupsList = [];
-                    Get.find<InvestorGlobalController>().hasMoreData = true;
+                    Get.find<InvestorGlobalController>().hasMoreData.value = true;
                     Get.find<InvestorGlobalController>().lastUser = null;
 
                     Get.find<InvestorGlobalController>().getStartupsForFeed();

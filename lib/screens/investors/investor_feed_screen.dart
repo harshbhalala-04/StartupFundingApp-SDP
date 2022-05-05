@@ -15,7 +15,8 @@ class InvestorFeedScreen extends StatelessWidget {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : ListView.builder(
+        : Obx(() => ListView.builder(
+            // controller: Get.find<InvestorGlobalController>().scrollController,
             itemCount: Get.find<InvestorGlobalController>().startupsList.length,
             itemBuilder: (context, index) {
               return Column(
@@ -31,7 +32,8 @@ class InvestorFeedScreen extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           Get.to(StartupDetailScreen(
-                            startup:  Get.find<InvestorGlobalController>().startupsList[index],
+                            startup: Get.find<InvestorGlobalController>()
+                                .startupsList[index],
                             viewProfile: false,
                             fromDynamic: false,
                             fromReq: false,
@@ -108,6 +110,6 @@ class InvestorFeedScreen extends StatelessWidget {
                   ),
                 ],
               );
-            }));
+            })));
   }
 }

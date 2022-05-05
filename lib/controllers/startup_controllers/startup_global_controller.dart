@@ -27,7 +27,7 @@ class StartupGlobalController extends GetxController {
 
   DocumentSnapshot? lastUser;
   bool isLoadingMoreData = false;
-  int itemLimit = 5;
+  int itemLimit = 10;
   bool hasMoreData = true;
   int currentItemLength = 0;
   int prevItemLength = 0;

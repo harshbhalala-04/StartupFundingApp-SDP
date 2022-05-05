@@ -16,6 +16,7 @@ class StartupInvestorsScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           )
         : ListView.builder(
+            // controller: Get.find<StartupGlobalController>().scrollController,
             itemCount: Get.find<StartupGlobalController>().investersList.length,
             itemBuilder: (context, index) {
               return Column(
