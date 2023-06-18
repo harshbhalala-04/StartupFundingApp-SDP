@@ -8,17 +8,17 @@ class StartupDeleteAccScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Account !!'),
-          content: Text("Are You Sure You Want To Delete Your Account ?"),
+          title: const Text('Delete Account !!'),
+          content: const Text("Are You Sure You Want To Delete Your Account ?"),
           actions: <Widget>[
-            FlatButton(
-              child: Text("Cancle"),
+            ElevatedButton(
+              child: const Text("Cancle"),
               onPressed: () {
                 Get.back();
               },
             ),
-            FlatButton(
-              child: Text("Delete"),
+            ElevatedButton(
+              child: const Text("Delete"),
               onPressed: () {},
             ),
           ],
@@ -41,15 +41,15 @@ class StartupDeleteAccScreen extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Center(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 150),
+            const SizedBox(height: 150),
             Container(
-              padding: EdgeInsets.fromLTRB(25, 25, 0, 0),
+              padding: const EdgeInsets.fromLTRB(25, 25, 0, 0),
               alignment: Alignment.bottomLeft,
               child: Text(
                 "Enter Your Password ",
@@ -66,13 +66,13 @@ class StartupDeleteAccScreen extends StatelessWidget {
               child: Container(
                 height: 80,
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -83,13 +83,13 @@ class StartupDeleteAccScreen extends StatelessWidget {
                     showAlert(context);
                   },
                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(20),
                         ),
                       ),
                       primary: Theme.of(context).primaryColor),
-                  child: Text(
+                  child: const Text(
                     "Delete",
                     style: TextStyle(
                       fontFamily: "Cabin",

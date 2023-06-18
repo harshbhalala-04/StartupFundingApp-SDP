@@ -11,13 +11,13 @@ class InvestorDeleteAccScreen extends StatelessWidget {
           title: Text('Delete Account !!'),
           content: Text("Are You Sure You Want To Delete Your Account ?"),
           actions: <Widget>[
-            FlatButton(
+            ElevatedButton(
               child: Text("Cancle"),
               onPressed: () {
                 Get.back();
               },
             ),
-            FlatButton(
+            ElevatedButton(
               child: Text("Delete"),
               onPressed: () {},
             ),

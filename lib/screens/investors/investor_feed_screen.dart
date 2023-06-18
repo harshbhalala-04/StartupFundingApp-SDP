@@ -15,7 +15,7 @@ class InvestorFeedScreen extends StatelessWidget {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Obx(() => ListView.builder(
+        : ListView.builder(
             // controller: Get.find<InvestorGlobalController>().scrollController,
             itemCount: Get.find<InvestorGlobalController>().startupsList.length,
             itemBuilder: (context, index) {
@@ -110,6 +110,6 @@ class InvestorFeedScreen extends StatelessWidget {
                   ),
                 ],
               );
-            })));
+            }));
   }
 }
